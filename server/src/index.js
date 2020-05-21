@@ -1,6 +1,10 @@
-const app = require('express')();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+import express from 'express';
+import * as http from 'http'
+import IO from 'socket.io';
+
+const app = express();
+const server = http.createServer(app);
+const io = IO(server);
 
 app.get('/', (req, res) => {
   res.send('hello');
@@ -15,6 +19,6 @@ io.on('connection', (socket) => {
 });
 
 
-http.listen(8080, () => {
+server.listen(8080, () => {
   console.log('listening on 8080');
 });
