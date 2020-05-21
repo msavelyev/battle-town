@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "supervisor": "^0.12.0"
+  },
+  "scripts": {
+    "start": "supervisor ../server/src/index.js"
+  }
+}
