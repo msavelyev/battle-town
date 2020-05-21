@@ -1,12 +1,24 @@
-const http = require('http');
+const app = require('express')();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
 const Hello = require('../../lib/src/Hello');
 
 const hello = new Hello('World!');
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200);
-  res.end(hello.hello());
+app.get('/', (req, res) => {
+  res.send(hello.hello());
 });
-server.listen(8080);
-console.log('listening on 8080')
+
+io.on('connection', (socket) => {
+  console.log('connected');
+
+  socket.on('disconnect', () => {
+    console.log('disconnected');
+  })
+});
+
+
+http.listen(8080, () => {
+  console.log('listening on 8080');
+});
