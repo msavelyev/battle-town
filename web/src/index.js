@@ -1,5 +1,5 @@
-import Game from "./Game";
-import Renderer from "./Renderer";
+import Game from "./game/Game";
+import Renderer from "./game/Renderer";
 
 const io = require('socket.io-client');
 

@@ -1,7 +1,7 @@
-import Tank from "../../lib/src/Tank";
+import Tank from "../../../lib/src/Tank";
 import TankRenderer from "./TankRenderer";
-import Point from "../../lib/src/Point";
-import Direction from "../../lib/src/Direction";
+import Point from "../../../lib/src/Point";
+import Direction from "../../../lib/src/Direction";
 
 export default class Game {
 
