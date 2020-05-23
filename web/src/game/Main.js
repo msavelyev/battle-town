@@ -20,8 +20,8 @@ export default class Main {
     }
 
     const canvas = document.getElementById('canvas');
-    canvas.width = conf.width;
-    canvas.height = conf.height;
+    canvas.width = conf.world.width;
+    canvas.height = conf.world.height;
 
     const ctx = canvas.getContext('2d');
 

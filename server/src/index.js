@@ -10,6 +10,7 @@ import randomColor from '../../lib/src/randomColor.js';
 import Tank from '../../lib/src/Tank.js';
 import TankMove from '../../lib/src/TankMove.js';
 import World from '../../lib/src/World.js';
+import initLevel from './level.js';
 
 const app = express();
 const server = http.createServer(app);
@@ -20,19 +21,23 @@ app.get('/', (req, res) => {
 });
 
 const WIDTH = 800;
-const HEIGHT = 600;
+const HEIGHT = 576;
 
-const world = new World(WIDTH, HEIGHT);
+
+const world = new World(
+  WIDTH,
+  HEIGHT,
+  initLevel(),
+  []
+);
 
 io.on('connection', (socket) => {
   console.log('connected');
 
   const id = v4();
-  const tank = new Tank(id, new Point(0, 0), randomColor(), Direction.UP);
+  const tank = new Tank(id, new Point(2, 2), randomColor(), Direction.UP);
   socket.emit('init', new Configuration(
-    WIDTH,
-    HEIGHT,
-    world.tanks,
+    world,
     tank
   ));
 
@@ -56,7 +61,6 @@ io.on('connection', (socket) => {
   })
 
 });
-
 
 server.listen(8080, () => {
   console.log('listening on 8080');

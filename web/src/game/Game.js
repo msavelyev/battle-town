@@ -1,5 +1,10 @@
 import Tank from '../../../lib/src/Tank.js';
 import World from '../../../lib/src/World.js';
+import BlockRenderer from './blocks/BlockRenderer.js';
+import BrickRenderer from './blocks/BrickRenderer.js';
+import JungleRenderer from './blocks/JungleRenderer.js';
+import StoneRenderer from './blocks/StoneRenderer.js';
+import WaterRenderer from './blocks/WaterRenderer.js';
 import TankRenderer from  './TankRenderer.js';
 import Point from '../../../lib/src/Point.js';
 import Direction from '../../../lib/src/Direction.js';
@@ -7,16 +12,18 @@ import Direction from '../../../lib/src/Direction.js';
 export default class Game {
 
   constructor(client, conf) {
-    this.world = new World(conf.width, conf.height);
+    this.world = World.create(conf.world);
     this.client = client;
-
-    conf.tanks.forEach(tank => this.world.addTank(Tank.create(tank)));
 
     this.tank = Tank.create(conf.tank);
     this.world.addTank(this.tank);
 
     this.ticks = [
-      new TankRenderer(this.world)
+      new TankRenderer(this.world),
+      new StoneRenderer(this.world),
+      new BrickRenderer(this.world),
+      new WaterRenderer(this.world),
+      new JungleRenderer(this.world)
     ];
   }
 

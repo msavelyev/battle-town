@@ -13,14 +13,6 @@ export default class TankRenderer {
 
   updateTank(canvas, event, tank) {
     this.drawTank(canvas, tank);
-
-    canvas.strokeStyle = 'black';
-    canvas.strokeRect(
-      tank.position.x,
-      tank.position.y,
-      Tank.SIZE,
-      Tank.SIZE
-    );
   }
 
   drawTank(canvas, tank) {
@@ -28,7 +20,7 @@ export default class TankRenderer {
     const y = tank.position.y;
 
     canvas.fillStyle = tank.color;
-    canvas.setTransform(1, 0, 0, 1, x, y);
+    canvas.setTransform(1, 0, 0, 1, x * Tank.SIZE, y * Tank.SIZE);
     canvas.transform(1, 0, 0, 1, Tank.SIZE / 2, Tank.SIZE / 2);
     canvas.rotate(this.directionToAngle(tank.direction) * Math.PI / 180);
     canvas.transform(1, 0, 0, 1, -Tank.SIZE / 2, -Tank.SIZE / 2);
@@ -40,6 +32,14 @@ export default class TankRenderer {
     canvas.lineTo(a/10, a);
     canvas.lineTo(a/2, 0);
     canvas.fill();
+
+    canvas.strokeStyle = 'black';
+    canvas.strokeRect(
+      0,
+      0,
+      Tank.SIZE,
+      Tank.SIZE
+    );
 
     canvas.resetTransform();
   }
