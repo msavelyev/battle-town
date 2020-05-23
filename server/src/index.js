@@ -4,6 +4,7 @@ import IO from 'socket.io';
 import {v4} from 'uuid';
 
 import Configuration from '../../lib/src/Configuration.js';
+import Direction from '../../lib/src/Direction.js';
 import Point from '../../lib/src/Point.js';
 import randomColor from '../../lib/src/randomColor.js';
 import Tank from '../../lib/src/Tank.js';
@@ -27,7 +28,7 @@ io.on('connection', (socket) => {
   console.log('connected');
 
   const id = v4();
-  const tank = new Tank(id, new Point(0, 0), randomColor());
+  const tank = new Tank(id, new Point(0, 0), randomColor(), Direction.UP);
   socket.emit('init', new Configuration(
     WIDTH,
     HEIGHT,
