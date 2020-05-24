@@ -29,6 +29,10 @@ export default function initLevel() {
     row.split('').forEach((cell, x) => {
       const blockType = parseInt(cell);
 
+      if (blockType === BlockType.EMPTY) {
+        return;
+      }
+
       blocks.push(new Block(new Point(x, y), blockType));
     });
   });

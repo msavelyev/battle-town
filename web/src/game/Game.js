@@ -1,5 +1,6 @@
 import Direction from '../../../lib/src/Direction.js';
 import Tank from '../../../lib/src/Tank.js';
+import TankMove from '../../../lib/src/TankMove.js';
 import World from '../../../lib/src/World.js';
 import BrickRenderer from './renderer/blocks/BrickRenderer.js';
 import JungleRenderer from './renderer/blocks/JungleRenderer.js';
@@ -57,12 +58,12 @@ export default class Game {
   }
 
   move(direction) {
-    this.tank.move(direction);
+    this.onMove(new TankMove(this.tank.id, direction));
     this.client.move(direction);
   }
 
   onMove(tankMove) {
-    this.world.findTank(tankMove.id).move(tankMove.direction);
+    this.world.moveTank(tankMove.id, tankMove.direction);
   }
 
   onConnected(tank) {
