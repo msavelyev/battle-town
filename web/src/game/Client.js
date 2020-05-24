@@ -42,8 +42,16 @@ export default class Client {
     this.on('disconnected', cb);
   }
 
+  onPong(cb) {
+    this.on('p', cb);
+  }
+
   move(direction) {
     this.socket.emit('move', direction);
+  }
+
+  ping() {
+    this.socket.emit('p');
   }
 
 }

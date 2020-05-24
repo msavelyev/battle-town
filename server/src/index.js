@@ -47,7 +47,6 @@ io.on('connection', (socket) => {
 
   socket.on('move', direction => {
     tank.move(direction);
-    console.log('moving ' + direction);
 
     socket.broadcast.emit('move', new TankMove(id, direction));
   });
@@ -59,6 +58,10 @@ io.on('connection', (socket) => {
 
     socket.broadcast.emit('disconnected', id);
   })
+
+  socket.on('p', () => {
+    socket.emit('p');
+  });
 
 });
 

@@ -1,13 +1,12 @@
+import Direction from '../../../lib/src/Direction.js';
 import Tank from '../../../lib/src/Tank.js';
 import World from '../../../lib/src/World.js';
-import BlockRenderer from './blocks/BlockRenderer.js';
 import BrickRenderer from './blocks/BrickRenderer.js';
 import JungleRenderer from './blocks/JungleRenderer.js';
 import StoneRenderer from './blocks/StoneRenderer.js';
 import WaterRenderer from './blocks/WaterRenderer.js';
-import TankRenderer from  './TankRenderer.js';
-import Point from '../../../lib/src/Point.js';
-import Direction from '../../../lib/src/Direction.js';
+import PingRenderer from './PingRenderer.js';
+import TankRenderer from './TankRenderer.js';
 
 export default class Game {
 
@@ -18,21 +17,24 @@ export default class Game {
     this.tank = Tank.create(conf.tank);
     this.world.addTank(this.tank);
 
+    this.pingRenderer = new PingRenderer(this.client);
+
     this.ticks = [
       new TankRenderer(this.world),
       new StoneRenderer(this.world),
       new BrickRenderer(this.world),
       new WaterRenderer(this.world),
-      new JungleRenderer(this.world)
+      new JungleRenderer(this.world),
+      this.pingRenderer
     ];
   }
 
   update(canvas, event) {
     canvas.fillStyle = 'white';
-    canvas.fillRect(0, 0, this.world.width, this.world.height);
+    canvas.fillRect(0, 0, canvas.canvas.width, canvas.canvas.height);
 
     canvas.strokeStyle = 'black';
-    canvas.strokeRect(0, 0, this.world.width, this.world.height);
+    canvas.strokeRect(0, 0, canvas.canvas.width, canvas.canvas.height);
 
     this.ticks.forEach(tick => tick.update(canvas, event));
   }
@@ -69,6 +71,9 @@ export default class Game {
 
   onDisconnected(id) {
     this.world.removeTank(id);
+  }
+
+  stop() {
   }
 
 }

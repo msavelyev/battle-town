@@ -29,7 +29,11 @@ export default class Main {
       this.client.onMove();
       this.client.onConnected();
       this.client.onDisconnected();
+      this.client.onPong();
 
+      if (this.game) {
+        this.game.stop();
+      }
       this.game = null;
       if (this.renderer) {
         this.renderer.stop();
