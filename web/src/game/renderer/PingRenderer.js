@@ -17,18 +17,18 @@ export default class PingRenderer {
     this.client.ping();
   }
 
-  update(canvas, event) {
+  update(ctx, event) {
     const text = 'ping: ' + this.latency + 'ms';
 
-    canvas.font = '20px monospace'
+    ctx.font = '20px monospace'
 
-    canvas.lineWidth = 5;
-    canvas.strokeStyle = 'white';
-    canvas.strokeText(text, 5, 20);
-    canvas.fillStyle = 'black';
-    canvas.fillText(text, 5, 20);
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'white';
+    ctx.strokeText(text, 5, 20);
+    ctx.fillStyle = 'black';
+    ctx.fillText(text, 5, 20);
 
-    canvas.lineWidth = 1;
+    ctx.lineWidth = 1;
   }
 
   pong() {

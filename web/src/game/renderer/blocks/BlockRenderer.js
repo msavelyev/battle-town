@@ -9,26 +9,26 @@ export default class BlockRenderer {
     this.color = color;
   }
 
-  update(canvas, event) {
+  update(ctx, event) {
     this.world.blocks.forEach(block => {
       if (block.type === this.type) {
-        this.drawBlock(canvas, block.position);
+        this.drawBlock(ctx, block.position);
       }
     });
   }
 
-  drawBlock(canvas, position) {
+  drawBlock(ctx, position) {
     const x = position.x;
     const y = position.y;
 
-    canvas.setTransform(1, 0, 0, 1, x * World.BLOCK_SIZE, y * World.BLOCK_SIZE);
+    ctx.setTransform(1, 0, 0, 1, x * World.BLOCK_SIZE, y * World.BLOCK_SIZE);
 
-    canvas.fillStyle = this.color;
-    canvas.fillRect(0, 0, World.BLOCK_SIZE, World.BLOCK_SIZE);
-    canvas.strokeStyle = 'black';
-    canvas.strokeRect(0, 0, World.BLOCK_SIZE, World.BLOCK_SIZE);
+    ctx.fillStyle = this.color;
+    ctx.fillRect(0, 0, World.BLOCK_SIZE, World.BLOCK_SIZE);
+    ctx.strokeStyle = 'black';
+    ctx.strokeRect(0, 0, World.BLOCK_SIZE, World.BLOCK_SIZE);
 
-    canvas.resetTransform();
+    ctx.resetTransform();
   }
 
 }

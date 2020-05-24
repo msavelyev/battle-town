@@ -7,41 +7,41 @@ export default class TankRenderer {
     this.world = world;
   }
 
-  update(canvas, event) {
-    this.world.tanks.forEach(tank => this.updateTank(canvas, event, tank));
+  update(ctx, event) {
+    this.world.tanks.forEach(tank => this.updateTank(ctx, event, tank));
   }
 
-  updateTank(canvas, event, tank) {
-    this.drawTank(canvas, tank);
+  updateTank(ctx, event, tank) {
+    this.drawTank(ctx, tank);
   }
 
-  drawTank(canvas, tank) {
+  drawTank(ctx, tank) {
     const x = tank.position.x;
     const y = tank.position.y;
 
-    canvas.fillStyle = tank.color;
-    canvas.setTransform(1, 0, 0, 1, x * Tank.SIZE, y * Tank.SIZE);
-    canvas.transform(1, 0, 0, 1, Tank.SIZE / 2, Tank.SIZE / 2);
-    canvas.rotate(this.directionToAngle(tank.direction) * Math.PI / 180);
-    canvas.transform(1, 0, 0, 1, -Tank.SIZE / 2, -Tank.SIZE / 2);
-    canvas.beginPath();
+    ctx.fillStyle = tank.color;
+    ctx.setTransform(1, 0, 0, 1, x * Tank.SIZE, y * Tank.SIZE);
+    ctx.transform(1, 0, 0, 1, Tank.SIZE / 2, Tank.SIZE / 2);
+    ctx.rotate(this.directionToAngle(tank.direction) * Math.PI / 180);
+    ctx.transform(1, 0, 0, 1, -Tank.SIZE / 2, -Tank.SIZE / 2);
+    ctx.beginPath();
 
     const a = Tank.SIZE;
-    canvas.moveTo(a/2, 0);
-    canvas.lineTo(a - a/10, a);
-    canvas.lineTo(a/10, a);
-    canvas.lineTo(a/2, 0);
-    canvas.fill();
+    ctx.moveTo(a/2, 0);
+    ctx.lineTo(a - a/10, a);
+    ctx.lineTo(a/10, a);
+    ctx.lineTo(a/2, 0);
+    ctx.fill();
 
-    canvas.strokeStyle = 'black';
-    canvas.strokeRect(
+    ctx.strokeStyle = 'black';
+    ctx.strokeRect(
       0,
       0,
       Tank.SIZE,
       Tank.SIZE
     );
 
-    canvas.resetTransform();
+    ctx.resetTransform();
   }
 
   directionToAngle(direction) {

@@ -3,8 +3,8 @@ const FRAME_TIME = 1000 / FPS;
 
 export default class Renderer {
 
-  constructor(canvas, game) {
-    this.canvas = canvas;
+  constructor(ctx, game) {
+    this.ctx = ctx;
     this.game = game;
 
     this.lastFrameTime = 0;
@@ -25,7 +25,7 @@ export default class Renderer {
     }
     this.lastFrameTime = time;
 
-    this.game.update(this.canvas, {
+    this.game.update(this.ctx, {
       time,
       delta
     });

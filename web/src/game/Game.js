@@ -29,14 +29,14 @@ export default class Game {
     ];
   }
 
-  update(canvas, event) {
-    canvas.fillStyle = 'white';
-    canvas.fillRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+  update(ctx, event) {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    canvas.strokeStyle = 'black';
-    canvas.strokeRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+    ctx.strokeStyle = 'black';
+    ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    this.ticks.forEach(tick => tick.update(canvas, event));
+    this.ticks.forEach(tick => tick.update(ctx, event));
   }
 
   keydown(event) {
