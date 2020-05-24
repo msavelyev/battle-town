@@ -1,5 +1,5 @@
-import BlockType from '../../../../lib/src/BlockType.js';
-import World from '../../../../lib/src/World.js';
+import BlockType from '../../../../../lib/src/BlockType.js';
+import World from '../../../../../lib/src/World.js';
 
 export default class BlockRenderer {
 

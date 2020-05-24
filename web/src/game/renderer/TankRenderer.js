@@ -1,5 +1,5 @@
-import Direction from '../../../lib/src/Direction.js';
-import Tank from '../../../lib/src/Tank.js';
+import Direction from '../../../../lib/src/Direction.js';
+import Tank from '../../../../lib/src/Tank.js';
 
 export default class TankRenderer {
 

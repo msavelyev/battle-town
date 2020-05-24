@@ -1,12 +1,12 @@
 import Direction from '../../../lib/src/Direction.js';
 import Tank from '../../../lib/src/Tank.js';
 import World from '../../../lib/src/World.js';
-import BrickRenderer from './blocks/BrickRenderer.js';
-import JungleRenderer from './blocks/JungleRenderer.js';
-import StoneRenderer from './blocks/StoneRenderer.js';
-import WaterRenderer from './blocks/WaterRenderer.js';
-import PingRenderer from './PingRenderer.js';
-import TankRenderer from './TankRenderer.js';
+import BrickRenderer from './renderer/blocks/BrickRenderer.js';
+import JungleRenderer from './renderer/blocks/JungleRenderer.js';
+import StoneRenderer from './renderer/blocks/StoneRenderer.js';
+import WaterRenderer from './renderer/blocks/WaterRenderer.js';
+import PingRenderer from './renderer/PingRenderer.js';
+import TankRenderer from './renderer/TankRenderer.js';
 
 export default class Game {
 
