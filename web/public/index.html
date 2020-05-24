@@ -13,12 +13,19 @@
             border: 0;
             padding: 0
         }
+
+        .inactive {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <h1 id="loading">Loading</h1>
-
-    <canvas id="canvas"></canvas>
+    <div id="disconnected">
+        <h1>Connecting</h1>
+    </div>
+    <div id="connected" class="inactive">
+        <canvas id="canvas"></canvas>
+    </div>
 
     <script src="../src/index.js"></script>
 </body>

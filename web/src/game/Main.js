@@ -4,38 +4,59 @@ import Client from './Client.js';
 
 export default class Main {
 
-  constructor() {
+  constructor(canvas) {
     this.client = new Client();
     this.client.onInit(this.init.bind(this));
+
+    this.canvas = canvas;
+
+    this.game = null;
+    this.renderer = null;
   }
 
   start() {
     this.client.connect();
   }
 
-  init(conf) {
-    const loading = document.getElementById('loading');
-    if (loading) {
-      loading.remove();
-    }
+  onConnect(cb) {
+    this.client.onConnect(cb);
+  }
 
-    const canvas = document.getElementById('canvas');
-    canvas.width = conf.world.width;
-    canvas.height = conf.world.height;
+  onDisconnect(cb) {
+    this.client.onDisconnect(() => {
+      cb();
 
-    const ctx = canvas.getContext('2d');
+      this.client.onMove();
+      this.client.onConnected();
+      this.client.onDisconnected();
 
-    const game = new Game(this.client, conf);
-    this.client.onMove(game.onMove.bind(game));
-    this.client.onConnected(game.onConnected.bind(game));
-    this.client.onDisconnected(game.onDisconnected.bind(game));
-
-    const renderer = new Renderer(ctx, game);
-    renderer.start();
-
-    document.addEventListener('keydown', event => {
-      game.onkey(event);
+      this.game = null;
+      if (this.renderer) {
+        this.renderer.stop();
+      }
+      this.renderer = null;
     });
+  }
+
+  init(conf) {
+    this.canvas.width = conf.world.width;
+    this.canvas.height = conf.world.height;
+
+    const ctx = this.canvas.getContext('2d');
+
+    this.game = new Game(this.client, conf);
+    this.client.onMove(this.game.onMove.bind(this.game));
+    this.client.onConnected(this.game.onConnected.bind(this.game));
+    this.client.onDisconnected(this.game.onDisconnected.bind(this.game));
+
+    this.renderer = new Renderer(ctx, this.game);
+    this.renderer.start();
+  }
+
+  keydown(event) {
+    if (this.game) {
+      this.game.keydown(event);
+    }
   }
 
 }

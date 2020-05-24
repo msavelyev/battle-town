@@ -37,7 +37,7 @@ export default class Game {
     this.ticks.forEach(tick => tick.update(canvas, event));
   }
 
-  onkey(event) {
+  keydown(event) {
     switch (event.key) {
       case 'ArrowUp':
         this.move(Direction.UP);

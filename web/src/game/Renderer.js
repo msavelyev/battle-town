@@ -8,10 +8,15 @@ export default class Renderer {
     this.game = game;
 
     this.lastFrameTime = 0;
+    this.stopped = false;
   }
 
 
   update(time) {
+    if (this.stopped) {
+      return;
+    }
+
     const delta = time - this.lastFrameTime;
 
     if(delta < FRAME_TIME) {
@@ -29,6 +34,10 @@ export default class Renderer {
 
   start() {
     requestAnimationFrame(this.update.bind(this));
+  }
+
+  stop() {
+    this.stopped = true;
   }
 
 }

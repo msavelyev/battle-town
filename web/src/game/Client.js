@@ -3,28 +3,43 @@ import io from 'socket.io-client';
 export default class Client {
 
   constructor() {
-    this.initCb = () => {};
+    this.socket = io('http://localhost:8080', { autoConnect: false });
+  }
+
+  on(event, cb) {
+    if (cb) {
+      this.socket.on(event, cb);
+    } else {
+      this.socket.off(event);
+    }
   }
 
   connect() {
-    this.socket = io('http://localhost:8080');
-    this.socket.on('init', this.initCb);
+    this.socket.connect();
+  }
+
+  onConnect(cb) {
+    this.on('connect', cb);
+  }
+
+  onDisconnect(cb) {
+    this.on('disconnect', cb);
   }
 
   onInit(cb) {
-    this.initCb = cb;
+    this.on('init', cb);
   }
 
   onMove(cb) {
-    this.socket.on('move', cb);
+    this.on('move', cb);
   }
 
   onConnected(cb) {
-    this.socket.on('connected', cb);
+    this.on('connected', cb);
   }
 
   onDisconnected(cb) {
-    this.socket.on('disconnected', cb);
+    this.on('disconnected', cb);
   }
 
   move(direction) {
