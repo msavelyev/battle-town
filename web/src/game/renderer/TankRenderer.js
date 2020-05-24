@@ -33,14 +33,6 @@ export default class TankRenderer {
     ctx.lineTo(a/2, 0);
     ctx.fill();
 
-    ctx.strokeStyle = 'black';
-    ctx.strokeRect(
-      0,
-      0,
-      Tank.SIZE,
-      Tank.SIZE
-    );
-
     ctx.resetTransform();
   }
 

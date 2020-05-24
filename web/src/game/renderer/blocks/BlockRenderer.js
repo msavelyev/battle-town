@@ -25,7 +25,7 @@ export default class BlockRenderer {
 
     ctx.fillStyle = this.color;
     ctx.fillRect(0, 0, World.BLOCK_SIZE, World.BLOCK_SIZE);
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = 'white';
     ctx.strokeRect(0, 0, World.BLOCK_SIZE, World.BLOCK_SIZE);
 
     ctx.resetTransform();
