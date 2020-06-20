@@ -10,6 +10,10 @@ export default class SocketioServer extends NetServer {
     this.io = IO(server);
   }
 
+  start() {
+
+  }
+
   onConnected(cb) {
     this.io.on('connection', (socket) => {
       cb(new SocketioClient(socket));

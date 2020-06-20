@@ -24,9 +24,9 @@ export default class GameServer {
 
   static create(server) {
     server.onConnected(client => {
-      console.log('connected');
-
       const id = uuid();
+      console.log('connected', id);
+
       const tank = new Tank(id, new Point(2, 2), randomColor(), Direction.UP);
       client.send('init', new Configuration(
         world,
@@ -55,6 +55,8 @@ export default class GameServer {
         client.send('p');
       });
     });
+
+    server.start();
   }
 
 }
