@@ -1,11 +1,12 @@
 import Game from './Game.js';
+import Client from './proto/Client.js';
 import Renderer from './Renderer.js';
-import Client from './Client.js';
+import SocketioClient from './proto/SocketioClient.js';
 
 export default class Main {
 
   constructor(canvas) {
-    this.client = new Client();
+    this.client = new Client(new SocketioClient());
     this.client.onInit(this.init.bind(this));
 
     this.canvas = canvas;
