@@ -6,42 +6,44 @@ import BrickRenderer from './renderer/blocks/BrickRenderer.js';
 import JungleRenderer from './renderer/blocks/JungleRenderer.js';
 import StoneRenderer from './renderer/blocks/StoneRenderer.js';
 import WaterRenderer from './renderer/blocks/WaterRenderer.js';
+import BulletRenderer from './renderer/BulletRenderer.js';
 import PingRenderer from './renderer/PingRenderer.js';
 import TankRenderer from './renderer/TankRenderer.js';
 
 export default class Game {
 
-  constructor(client, conf) {
+  constructor(ctx, client, conf) {
+    this.ctx = ctx;
     this.world = World.create(conf.world);
     this.client = client;
 
     this.tank = Tank.create(conf.tank);
     this.world.addTank(this.tank);
 
-    this.pingRenderer = new PingRenderer(this.client);
-
     this.ticks = [
-      new TankRenderer(this.world),
-      new StoneRenderer(this.world),
-      new BrickRenderer(this.world),
-      new WaterRenderer(this.world),
-      new JungleRenderer(this.world),
-      this.pingRenderer
+      this.world,
+      new TankRenderer(ctx, this.world),
+      new StoneRenderer(ctx, this.world),
+      new BrickRenderer(ctx, this.world),
+      new WaterRenderer(ctx, this.world),
+      new JungleRenderer(ctx, this.world),
+      new BulletRenderer(ctx, this.world),
+      new PingRenderer(ctx, this.client)
     ];
   }
 
-  update(ctx, event) {
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  update(event) {
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-    ctx.strokeStyle = 'black';
-    ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.ctx.strokeStyle = 'black';
+    this.ctx.strokeRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-    this.ticks.forEach(tick => tick.update(ctx, event));
+    this.ticks.forEach(tick => tick.update(event));
   }
 
   keydown(event) {
-    switch (event.key) {
+    switch (event.code) {
       case 'ArrowUp':
         this.move(Direction.UP);
         break;
@@ -54,6 +56,9 @@ export default class Game {
       case 'ArrowRight':
         this.move(Direction.RIGHT);
         break;
+      case 'Space':
+        this.shoot();
+        break;
     }
   }
 
@@ -64,6 +69,15 @@ export default class Game {
 
   onMove(tankMove) {
     this.world.moveTank(tankMove.id, tankMove.direction);
+  }
+
+  shoot() {
+    this.onShoot(this.tank.id);
+    this.client.shoot();
+  }
+
+  onShoot(id) {
+    this.world.shoot(id);
   }
 
   onConnected(tank) {

@@ -3,8 +3,8 @@ import BlockRenderer from './BlockRenderer.js';
 
 export default class WaterRenderer extends BlockRenderer {
 
-  constructor(world) {
-    super(world, BlockType.WATER, 'blue');
+  constructor(ctx, world) {
+    super(ctx, world, BlockType.WATER, 'blue');
   }
 
 }

@@ -1,18 +1,18 @@
-import BlockType from '../../../../../lib/src/BlockType.js';
 import World from '../../../../../lib/src/World.js';
 
 export default class BlockRenderer {
 
-  constructor(world, type, color) {
+  constructor(ctx, world, type, color) {
+    this.ctx = ctx;
     this.world = world;
     this.type = type;
     this.color = color;
   }
 
-  update(ctx, event) {
+  update() {
     this.world.blocks.forEach(block => {
       if (block.type === this.type) {
-        this.drawBlock(ctx, block.position);
+        this.drawBlock(this.ctx, block.position);
       }
     });
   }

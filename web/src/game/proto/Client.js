@@ -37,8 +37,16 @@ export default class Client {
     this.netClient.on('p', cb);
   }
 
+  onShoot(cb) {
+    this.netClient.on('shoot', cb);
+  }
+
   move(direction) {
     this.netClient.send('move', direction);
+  }
+
+  shoot() {
+    this.netClient.send('shoot');
   }
 
   ping() {

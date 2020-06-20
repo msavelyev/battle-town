@@ -6,23 +6,32 @@ import Point from '../../../lib/src/Point.js';
 import randomColor from '../../../lib/src/randomColor.js';
 import Tank from '../../../lib/src/Tank.js';
 import TankMove from '../../../lib/src/TankMove.js';
+import Ticker from '../../../lib/src/Ticker.js';
 import World from '../../../lib/src/World.js';
 import initLevel from '../level.js';
 
 const WIDTH = 800;
 const HEIGHT = 576;
 
-const world = new World(
-  WIDTH,
-  HEIGHT,
-  initLevel(),
-  []
-);
-
-
 export default class GameServer {
 
+  constructor(world) {
+    this.world = world;
+  }
+
+  update(event) {
+    this.world.update(event);
+  }
+
   static create(server) {
+    const world = new World(
+      WIDTH,
+      HEIGHT,
+      initLevel(),
+      [],
+      []
+    );
+
     server.onConnected(client => {
       const id = uuid();
       console.log('connected', id);
@@ -38,7 +47,8 @@ export default class GameServer {
       world.addTank(tank);
 
       client.on('move', direction => {
-        tank.move(direction);
+        console.log('tank', id, 'move', direction);
+        world.moveTank(id, direction);
 
         client.broadcast('move', new TankMove(id, direction));
       });
@@ -49,12 +59,21 @@ export default class GameServer {
         world.removeTank(id);
 
         client.broadcast('disconnected', id);
-      })
+      });
+
+      client.on('shoot', () => {
+        world.shoot(id);
+        client.broadcast('shoot', id);
+      });
 
       client.on('p', () => {
         client.send('p');
       });
     });
+
+    const gameServer = new GameServer(world);
+    const ticker = new Ticker(gameServer);
+    ticker.start();
 
     server.start();
   }

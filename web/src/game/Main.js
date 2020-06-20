@@ -1,7 +1,7 @@
 import Game from './Game.js';
 import Client from './proto/Client.js';
 import WrtcClient from './proto/WrtcClient.js';
-import Renderer from './Renderer.js';
+import Ticker from '../../../lib/src/Ticker.js';
 
 export default class Main {
 
@@ -12,7 +12,7 @@ export default class Main {
     this.canvas = canvas;
 
     this.game = null;
-    this.renderer = null;
+    this.ticker = null;
   }
 
   start() {
@@ -36,10 +36,10 @@ export default class Main {
         this.game.stop();
       }
       this.game = null;
-      if (this.renderer) {
-        this.renderer.stop();
+      if (this.ticker) {
+        this.ticker.stop();
       }
-      this.renderer = null;
+      this.ticker = null;
     });
   }
 
@@ -49,13 +49,14 @@ export default class Main {
 
     const ctx = this.canvas.getContext('2d');
 
-    this.game = new Game(this.client, conf);
+    this.game = new Game(ctx, this.client, conf);
     this.client.onMove(this.game.onMove.bind(this.game));
+    this.client.onShoot(this.game.onShoot.bind(this.game));
     this.client.onConnected(this.game.onConnected.bind(this.game));
     this.client.onDisconnected(this.game.onDisconnected.bind(this.game));
 
-    this.renderer = new Renderer(ctx, this.game);
-    this.renderer.start();
+    this.ticker = new Ticker(this.game);
+    this.ticker.start();
   }
 
   keydown(event) {

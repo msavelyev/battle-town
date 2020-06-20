@@ -1,37 +1,31 @@
 import Direction from '../../../../lib/src/Direction.js';
 import Tank from '../../../../lib/src/Tank.js';
 
-export default class TankRenderer {
+export default class BulletRenderer {
 
   constructor(ctx, world) {
     this.ctx = ctx;
     this.world = world;
   }
 
-  update(event) {
-    this.world.tanks.forEach(tank => this.updateTank(this.ctx, event, tank));
+  update() {
+    this.world.bullets.forEach(bullet => this.drawBullet(this.ctx, bullet));
   }
 
-  updateTank(ctx, event, tank) {
-    this.drawTank(ctx, tank);
-  }
+  drawBullet(ctx, bullet) {
+    const x = bullet.position.x;
+    const y = bullet.position.y;
 
-  drawTank(ctx, tank) {
-    const x = tank.position.x;
-    const y = tank.position.y;
-
-    ctx.fillStyle = tank.color;
+    ctx.fillStyle = 'black';
     ctx.setTransform(1, 0, 0, 1, x * Tank.SIZE, y * Tank.SIZE);
-    ctx.transform(1, 0, 0, 1, Tank.SIZE / 2, Tank.SIZE / 2);
-    ctx.rotate(this.directionToAngle(tank.direction) * Math.PI / 180);
-    ctx.transform(1, 0, 0, 1, -Tank.SIZE / 2, -Tank.SIZE / 2);
     ctx.beginPath();
 
     const a = Tank.SIZE;
-    ctx.moveTo(a/2, 0);
-    ctx.lineTo(a - a/10, a);
-    ctx.lineTo(a/10, a);
-    ctx.lineTo(a/2, 0);
+    ctx.moveTo(a/2 - 5, a/2 - 5);
+    ctx.lineTo(a/2 - 5, a/2 + 5);
+    ctx.lineTo(a/2 + 5, a/2 + 5);
+    ctx.lineTo(a/2 + 5, a/2 - 5);
+    ctx.lineTo(a/2 - 5, a/2 - 5);
     ctx.fill();
 
     ctx.resetTransform();

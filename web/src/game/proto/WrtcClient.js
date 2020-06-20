@@ -25,6 +25,7 @@ export default class WrtcClient extends NetClient {
     if (data) {
       payload.data = data;
     }
+    console.log('send', name, data);
     this.dataChannel.send(JSON.stringify(payload));
   }
 

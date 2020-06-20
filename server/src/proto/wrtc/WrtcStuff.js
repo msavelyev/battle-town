@@ -3,9 +3,9 @@ import wrtc from 'wrtc';
 
 import WrtcClient from './WrtcClient.js';
 
-const TIME_TO_CONNECTED = 10000;
+const TIME_TO_CONNECTED = 1000;
 const TIME_TO_HOST_CANDIDATES = 3000;
-const TIME_TO_RECONNECTED = 10000;
+const TIME_TO_RECONNECTED = 1000;
 
 const RTCPeerConnection = wrtc.RTCPeerConnection;
 

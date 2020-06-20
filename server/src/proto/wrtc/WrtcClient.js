@@ -12,10 +12,8 @@ export default class WrtcClient extends NetClient {
 
     this.dataChannel.addEventListener('message', msg => {
       const payload = msg.data;
-      console.log('got message', payload);
 
       const {name, data} = JSON.parse(payload);
-
       this.trigger(name, data);
     });
   }

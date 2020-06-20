@@ -1,7 +1,8 @@
 
 export default class PingRenderer {
 
-  constructor(client) {
+  constructor(ctx, client) {
+    this.ctx = ctx;
     this.latency = -1;
     this.lastPing = new Date();
     this.timeout = null;
@@ -17,18 +18,18 @@ export default class PingRenderer {
     this.client.ping();
   }
 
-  update(ctx, event) {
+  update() {
     const text = 'ping: ' + this.latency + 'ms';
 
-    ctx.font = '20px monospace'
+    this.ctx.font = '20px monospace'
 
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = 'white';
-    ctx.strokeText(text, 5, 20);
-    ctx.fillStyle = 'black';
-    ctx.fillText(text, 5, 20);
+    this.ctx.lineWidth = 5;
+    this.ctx.strokeStyle = 'white';
+    this.ctx.strokeText(text, 5, 20);
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillText(text, 5, 20);
 
-    ctx.lineWidth = 1;
+    this.ctx.lineWidth = 1;
   }
 
   pong() {
