@@ -1,7 +1,9 @@
+import NetClient from '../base/NetClient.js';
 
-export default class GameClient {
+export default class SocketioClient extends NetClient {
 
   constructor(socket) {
+    super();
     this.socket = socket;
   }
 

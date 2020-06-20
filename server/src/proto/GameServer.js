@@ -1,4 +1,3 @@
-import IO from 'socket.io';
 import {v4 as uuid} from 'uuid';
 
 import Configuration from '../../../lib/src/Configuration.js';
@@ -9,7 +8,6 @@ import Tank from '../../../lib/src/Tank.js';
 import TankMove from '../../../lib/src/TankMove.js';
 import World from '../../../lib/src/World.js';
 import initLevel from '../level.js';
-import GameClient from './GameClient.js';
 
 const WIDTH = 800;
 const HEIGHT = 576;
@@ -24,18 +22,8 @@ const world = new World(
 
 export default class GameServer {
 
-  constructor(server, onConnected) {
-    this.io = IO(server);
-    this.onConnected = onConnected;
-
-    this.io.on('connection', (socket) => {
-      const client = new GameClient(socket);
-      onConnected(client);
-    });
-  }
-
   static create(server) {
-    new GameServer(server, client => {
+    server.onConnected(client => {
       console.log('connected');
 
       const id = uuid();
