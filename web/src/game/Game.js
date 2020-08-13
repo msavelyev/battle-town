@@ -9,6 +9,7 @@ import WaterRenderer from './renderer/blocks/WaterRenderer.js';
 import BulletRenderer from './renderer/BulletRenderer.js';
 import PingRenderer from './renderer/PingRenderer.js';
 import TankRenderer from './renderer/TankRenderer.js';
+import FpsRenderer from './renderer/FpsRenderer.js';
 
 export default class Game {
 
@@ -28,7 +29,8 @@ export default class Game {
       new WaterRenderer(ctx, this.world),
       new JungleRenderer(ctx, this.world),
       new BulletRenderer(ctx, this.world),
-      new PingRenderer(ctx, this.client)
+      new PingRenderer(ctx, this.client),
+      new FpsRenderer(ctx)
     ];
   }
 

@@ -21,13 +21,13 @@ export default class PingRenderer {
   update() {
     const text = 'ping: ' + this.latency + 'ms';
 
-    this.ctx.font = '20px monospace';
+    this.ctx.font = '15px monospace';
 
     this.ctx.lineWidth = 5;
     this.ctx.strokeStyle = 'white';
-    this.ctx.strokeText(text, 5, 20);
+    this.ctx.strokeText(text, 5, 30);
     this.ctx.fillStyle = 'black';
-    this.ctx.fillText(text, 5, 20);
+    this.ctx.fillText(text, 5, 30);
 
     this.ctx.lineWidth = 1;
   }
