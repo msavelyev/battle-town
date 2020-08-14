@@ -1,5 +1,7 @@
 import {v4 as uuid} from 'uuid';
 
+import * as process from 'process';
+
 import Configuration from '../../../lib/src/Configuration.js';
 import Direction from '../../../lib/src/Direction.js';
 import Point from '../../../lib/src/Point.js';
@@ -9,6 +11,7 @@ import TankMove from '../../../lib/src/TankMove.js';
 import Ticker from '../../../lib/src/Ticker.js';
 import World from '../../../lib/src/World.js';
 import initLevel from '../level.js';
+import Fps from '../../../lib/src/util/Fps.js';
 
 const WIDTH = 800;
 const HEIGHT = 576;
@@ -17,10 +20,16 @@ export default class GameServer {
 
   constructor(world) {
     this.world = world;
+    this.fps = new Fps();
   }
 
   update(event) {
     this.world.update(event);
+    this.fps.update(event);
+  }
+
+  printFps() {
+    process.stdout.write(`${this.fps.get()}\r`);
   }
 
   static create(server) {
@@ -76,6 +85,8 @@ export default class GameServer {
     ticker.start();
 
     server.start();
+
+    setInterval(gameServer.printFps.bind(gameServer), 1000);
   }
 
 }

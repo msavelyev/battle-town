@@ -1,18 +1,17 @@
+import Fps from '../../../../lib/src/util/Fps.js';
 
 export default class FpsRenderer {
 
   constructor(ctx) {
     this.ctx = ctx;
 
-    this.currentFrames = 0;
-    this.fps = 0;
-    this.time = new Date().getTime();
+    this.fps = new Fps();
   }
 
   update() {
-    this.updateFps();
+    this.fps.update();
 
-    const text = 'fps: ' + this.fps;
+    const text = 'fps: ' + this.fps.get();
 
     this.ctx.font = '15px monospace';
 
@@ -23,17 +22,6 @@ export default class FpsRenderer {
     this.ctx.fillText(text, 5, 15);
 
     this.ctx.lineWidth = 1;
-  }
-
-  updateFps() {
-    let currentTime = new Date().getTime();
-    if ((currentTime - this.time) < 1000) {
-      this.currentFrames += 1;
-    } else {
-      this.time = currentTime;
-      this.fps = this.currentFrames;
-      this.currentFrames = 0;
-    }
   }
 
 }
