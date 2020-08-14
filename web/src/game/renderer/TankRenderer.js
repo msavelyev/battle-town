@@ -1,5 +1,4 @@
 import Direction from '../../../../lib/src/Direction.js';
-import Tank from '../../../../lib/src/Tank.js';
 
 export default class TankRenderer {
 
@@ -19,15 +18,16 @@ export default class TankRenderer {
   drawTank(ctx, tank) {
     const x = tank.position.x;
     const y = tank.position.y;
+    const size = tank.getSize();
 
     ctx.fillStyle = tank.color;
-    ctx.setTransform(1, 0, 0, 1, x * Tank.SIZE, y * Tank.SIZE);
-    ctx.transform(1, 0, 0, 1, Tank.SIZE / 2, Tank.SIZE / 2);
+    ctx.setTransform(1, 0, 0, 1, x * size, y * size);
+    ctx.transform(1, 0, 0, 1, size / 2, size / 2);
     ctx.rotate(this.directionToAngle(tank.direction) * Math.PI / 180);
-    ctx.transform(1, 0, 0, 1, -Tank.SIZE / 2, -Tank.SIZE / 2);
+    ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
     ctx.beginPath();
 
-    const a = Tank.SIZE;
+    const a = size;
     ctx.moveTo(a/2, 0);
     ctx.lineTo(a - a/10, a);
     ctx.lineTo(a/10, a);

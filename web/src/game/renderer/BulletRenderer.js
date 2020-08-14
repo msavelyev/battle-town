@@ -1,5 +1,4 @@
 import Direction from '../../../../lib/src/Direction.js';
-import Tank from '../../../../lib/src/Tank.js';
 
 export default class BulletRenderer {
 
@@ -17,16 +16,24 @@ export default class BulletRenderer {
     const y = bullet.position.y;
 
     ctx.fillStyle = 'black';
-    ctx.setTransform(1, 0, 0, 1, x * Tank.SIZE, y * Tank.SIZE);
+    ctx.setTransform(1, 0, 0, 1, x * bullet.getSize(), y * bullet.getSize());
     ctx.beginPath();
 
-    const a = Tank.SIZE;
+    const a = bullet.getSize();
     ctx.moveTo(a/2 - 5, a/2 - 5);
     ctx.lineTo(a/2 - 5, a/2 + 5);
     ctx.lineTo(a/2 + 5, a/2 + 5);
     ctx.lineTo(a/2 + 5, a/2 - 5);
     ctx.lineTo(a/2 - 5, a/2 - 5);
     ctx.fill();
+
+    ctx.strokeStyle = 'green';
+    ctx.moveTo(0, 0);
+    ctx.lineTo(a, 0);
+    ctx.lineTo(a, a);
+    ctx.lineTo(0, a);
+    ctx.lineTo(0, 0);
+    ctx.stroke();
 
     ctx.resetTransform();
   }
