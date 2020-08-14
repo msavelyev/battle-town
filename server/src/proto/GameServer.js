@@ -72,7 +72,7 @@ export default class GameServer {
     });
 
     const gameServer = new GameServer(world);
-    const ticker = new Ticker(gameServer);
+    const ticker = new Ticker(gameServer, setImmediate);
     ticker.start();
 
     server.start();

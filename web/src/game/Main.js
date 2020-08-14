@@ -55,7 +55,7 @@ export default class Main {
     this.client.onConnected(this.game.onConnected.bind(this.game));
     this.client.onDisconnected(this.game.onDisconnected.bind(this.game));
 
-    this.ticker = new Ticker(this.game);
+    this.ticker = new Ticker(this.game, requestAnimationFrame.bind(null));
     this.ticker.start();
   }
 
