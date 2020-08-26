@@ -91,6 +91,7 @@ export default class GameServer {
       room.broadcast(player, 'disconnected', id);
 
       this.removePlayer(player);
+      room.remove(player);
     });
 
     client.on('shoot', () => {
