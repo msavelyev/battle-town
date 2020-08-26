@@ -81,12 +81,13 @@ export default class GameServer {
 
     const world = room.world;
 
-    const tank = new Tank(id, new Point(2, 2), randomColor(), Direction.UP);
+    let tank = new Tank(id, new Point(2, 2), randomColor(), Direction.UP);
+    tank = world.placeTank(tank);
     client.send('init', new Configuration(world, tank));
 
-    room.broadcast(player, 'connected', tank);
-
     world.addTank(tank);
+
+    room.broadcast(player, 'connected', tank);
 
     client.on('move', direction => {
       console.log('tank', id, 'move', direction);
@@ -117,6 +118,7 @@ export default class GameServer {
 
     world.onTankDestroyed(tank => {
       const newTank = world.placeTank(tank);
+      world.addTank(newTank);
       const player = this.findPlayer(tank.id);
       room.broadcast(player, 'connected', newTank);
       player.socket.send('new-tank', newTank);
