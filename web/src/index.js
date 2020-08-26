@@ -17,5 +17,9 @@ window.addEventListener('load', () => {
     main.keydown(event);
   });
 
+  window.addEventListener('beforeunload', () => {
+    main.disconnect();
+  });
+
   main.start()
 });

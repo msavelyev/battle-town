@@ -36,6 +36,10 @@ export default class WrtcClient extends NetClient {
       });
   }
 
+  disconnect() {
+    this.send('disconnect');
+  }
+
   onMessage(msg) {
     const payload = JSON.parse(msg.data);
     const {name, data} = payload;

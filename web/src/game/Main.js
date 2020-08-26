@@ -65,4 +65,8 @@ export default class Main {
     }
   }
 
+  disconnect() {
+    this.client.disconnect();
+  }
+
 }

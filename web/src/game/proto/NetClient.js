@@ -15,4 +15,8 @@ export default class NetClient {
     throw new Error('not implemented yet');
   }
 
+  disconnect() {
+    throw new Error('not implemented yet');
+  }
+
 }

@@ -9,6 +9,10 @@ export default class Client {
     this.netClient.connect();
   }
 
+  disconnect() {
+    this.netClient.disconnect();
+  }
+
   onConnect(cb) {
     this.netClient.on('connect', cb);
   }
