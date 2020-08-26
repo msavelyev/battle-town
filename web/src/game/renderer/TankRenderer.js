@@ -23,6 +23,12 @@ export default class TankRenderer {
     ctx.fillStyle = tank.color;
     ctx.setTransform(1, 0, 0, 1, x * size, y * size);
     ctx.transform(1, 0, 0, 1, size / 2, size / 2);
+
+    ctx.textAlign = 'center';
+    ctx.font = '8pt Helvetica'
+    ctx.fillText(tank.id.substr(0, 8), 0, -20);
+    ctx.textAlign = 'left';
+
     ctx.rotate(this.directionToAngle(tank.direction) * Math.PI / 180);
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
     ctx.beginPath();
