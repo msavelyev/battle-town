@@ -17,9 +17,9 @@ export default class FpsRenderer {
 
     this.ctx.lineWidth = 5;
     this.ctx.strokeStyle = 'white';
-    this.ctx.strokeText(text, 5, 15);
+    this.ctx.strokeText(text, 5, 12);
     this.ctx.fillStyle = 'black';
-    this.ctx.fillText(text, 5, 15);
+    this.ctx.fillText(text, 5, 12);
 
     this.ctx.lineWidth = 1;
   }

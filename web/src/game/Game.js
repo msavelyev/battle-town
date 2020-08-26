@@ -10,6 +10,7 @@ import BulletRenderer from './renderer/BulletRenderer.js';
 import PingRenderer from './renderer/PingRenderer.js';
 import TankRenderer from './renderer/TankRenderer.js';
 import FpsRenderer from './renderer/FpsRenderer.js';
+import ScoreRenderer from './renderer/ScoreRenderer.js';
 
 export default class Game {
 
@@ -30,7 +31,8 @@ export default class Game {
       new BulletRenderer(ctx, this.world),
       new JungleRenderer(ctx, this.world),
       new PingRenderer(ctx, this.client),
-      new FpsRenderer(ctx)
+      new FpsRenderer(ctx),
+      new ScoreRenderer(ctx, this.world)
     ];
   }
 

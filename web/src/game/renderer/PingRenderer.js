@@ -25,9 +25,9 @@ export default class PingRenderer {
 
     this.ctx.lineWidth = 5;
     this.ctx.strokeStyle = 'white';
-    this.ctx.strokeText(text, 5, 30);
+    this.ctx.strokeText(text, 5, 27);
     this.ctx.fillStyle = 'black';
-    this.ctx.fillText(text, 5, 30);
+    this.ctx.fillText(text, 5, 27);
 
     this.ctx.lineWidth = 1;
   }
