@@ -69,7 +69,7 @@ export default class WrtcClient extends NetClient {
   }
 
   async connectAsync() {
-    const response = await fetch('http://localhost:8080/a/connection');
+    const response = await fetch('/a/connection');
     const connection = await response.json();
 
     const id = connection.id;
@@ -87,7 +87,7 @@ export default class WrtcClient extends NetClient {
     const answer = await localPeerConnection.createAnswer();
     await localPeerConnection.setLocalDescription(answer);
 
-    await fetch('http://localhost:8080/a/connection/remote', {
+    await fetch('/a/connection/remote', {
       method: 'POST',
       body: JSON.stringify({
         id,
