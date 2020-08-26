@@ -65,6 +65,10 @@ export default class GameServer {
     }
   }
 
+  findPlayer(id) {
+    return this.players.find(player => player.id === id);
+  }
+
   clientConnected(client) {
     const id = uuid();
     console.log('connected', id);
@@ -109,6 +113,13 @@ export default class GameServer {
 
     client.on('p', () => {
       client.send('p');
+    });
+
+    world.onTankDestroyed(tank => {
+      const newTank = world.placeTank(tank);
+      const player = this.findPlayer(tank.id);
+      room.broadcast(player, 'connected', newTank);
+      player.socket.send('new-tank', newTank);
     });
   }
 

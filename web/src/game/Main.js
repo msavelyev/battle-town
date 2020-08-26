@@ -54,6 +54,7 @@ export default class Main {
     this.client.onShoot(this.game.onShoot.bind(this.game));
     this.client.onConnected(this.game.onConnected.bind(this.game));
     this.client.onDisconnected(this.game.onDisconnected.bind(this.game));
+    this.client.onNewTank(this.game.newTank.bind(this.game));
 
     this.ticker = new Ticker(this.game, requestAnimationFrame.bind(null));
     this.ticker.start();

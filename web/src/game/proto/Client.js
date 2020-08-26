@@ -45,6 +45,10 @@ export default class Client {
     this.netClient.on('shoot', cb);
   }
 
+  onNewTank(cb) {
+    this.netClient.on('new-tank', cb);
+  }
+
   move(direction) {
     this.netClient.send('move', direction);
   }

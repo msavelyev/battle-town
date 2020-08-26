@@ -93,4 +93,9 @@ export default class Game {
   stop() {
   }
 
+  newTank(data) {
+    this.tank = Tank.create(data);
+    this.world.addTank(this.tank);
+  }
+
 }
