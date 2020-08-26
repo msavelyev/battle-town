@@ -6,9 +6,7 @@ import WrtcServer from './proto/wrtc/WrtcServer.js';
 const app = express();
 const server = http.createServer(app);
 
-app.get('/', (req, res) => {
-  res.send('hello');
-});
+app.use('/', express.static('../web-build/dist'));
 
 GameServer.create(new WrtcServer(app));
 
