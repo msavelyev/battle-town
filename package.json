@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "start": "cd server && npm start",
+    "buildServer": "cd server && npm install",
+    "buildClient": "cd web && npm install --only=dev && npm install",
+    "buildWeb": "cd web-build && npm install && npm run build",
+    "build": "npm run buildServer && npm run buildClient && npm run buildWeb"
+  },
+  "engines": {
+    "node": "13.14.0"
+  }
+}

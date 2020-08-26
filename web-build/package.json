@@ -3,6 +3,8 @@
     "parcel-bundler": "^1.12.4"
   },
   "scripts": {
-    "start": "rm -rf .cache dist && parcel ../web/public/index.html"
+    "clean": "rm -rf .cache dist",
+    "start": "npm run clean && parcel ../web/public/index.html",
+    "build": "npm run clean && parcel build ../web/public/index.html"
   }
 }
