@@ -19,10 +19,6 @@ export default class WrtcClient extends NetClient {
   }
 
   send(name, data) {
-    if (this.dataChannel.readyState !== 'open') {
-      console.log('skipping one client');
-      return;
-    }
     this.dataChannel.send(JSON.stringify({name, data}));
   }
 

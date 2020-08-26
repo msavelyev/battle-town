@@ -123,9 +123,18 @@ export default class WrtcStuff {
     const connection = client.connection;
     await connection.setRemoteDescription(remoteDescription);
 
+    this.waitUntilConnected(client);
+  }
+
+  waitUntilConnected(client) {
     setTimeout(() => {
-      this.onConnectedCallback(client);
-    }, 500);
+      console.log('checking if data channel is ready');
+      if (client.dataChannel.readyState !== 'open') {
+        this.waitUntilConnected(client);
+      } else {
+        this.onConnectedCallback(client);
+      }
+    }, 500)
   }
 
 }
