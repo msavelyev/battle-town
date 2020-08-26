@@ -27,14 +27,6 @@ export default class BulletRenderer {
     ctx.lineTo(a/2 - 5, a/2 - 5);
     ctx.fill();
 
-    ctx.strokeStyle = 'green';
-    ctx.moveTo(0, 0);
-    ctx.lineTo(a, 0);
-    ctx.lineTo(a, a);
-    ctx.lineTo(0, a);
-    ctx.lineTo(0, 0);
-    ctx.stroke();
-
     ctx.resetTransform();
   }
 
