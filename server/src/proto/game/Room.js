@@ -29,6 +29,10 @@ export default class Room {
     return this.players.length >= MAX_PLAYERS_IN_ROOM;
   }
 
+  isEmpty() {
+    return this.players.length === 0;
+  }
+
   add(player) {
     this.players.push(player);
     console.log('added player', player.id, 'to room', this.id);

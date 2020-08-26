@@ -57,6 +57,14 @@ export default class GameServer {
     return room;
   }
 
+  removeFromRoom(room, player) {
+    room.remove(player);
+    if (room.isEmpty()) {
+      console.log('removing room', room.id);
+      this.rooms = this.rooms.filter(r => r !== room);
+    }
+  }
+
   clientConnected(client) {
     const id = uuid();
     console.log('connected', id);
@@ -91,7 +99,7 @@ export default class GameServer {
       room.broadcast(player, 'disconnected', id);
 
       this.removePlayer(player);
-      room.remove(player);
+      this.removeFromRoom(room, player);
     });
 
     client.on('shoot', () => {
