@@ -2,6 +2,7 @@ import {v4 as uuid} from 'uuid';
 import wrtc from 'wrtc';
 
 import WrtcClient from './WrtcClient.js';
+import {iceServers} from '../../../../lib/src/iceServers.js';
 
 const TIME_TO_CONNECTED = 1000;
 const TIME_TO_HOST_CANDIDATES = 3000;
@@ -89,7 +90,8 @@ export default class WrtcStuff {
 
   async createConnection() {
     const peerConnection = new RTCPeerConnection({
-      sdpSemantics: 'unified-plan'
+      sdpSemantics: 'unified-plan',
+      iceServers: iceServers
     });
 
     const id = uuid();
@@ -114,7 +116,14 @@ export default class WrtcStuff {
 
     return {
       id,
-      desc: peerConnection.localDescription
+      desc: this.disableTrickleIce(peerConnection.localDescription)
+    };
+  }
+
+  disableTrickleIce(desc) {
+    return {
+      type: desc.type,
+      sdp: desc.sdp.replace(/\r\na=ice-options:trickle/g, '')
     };
   }
 

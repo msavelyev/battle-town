@@ -1,6 +1,7 @@
 import NetClient from './NetClient.js';
 
 import 'regenerator-runtime/runtime';
+import {iceServers} from '../../../../lib/src/iceServers.js';
 
 export default class WrtcClient extends NetClient {
 
@@ -76,7 +77,8 @@ export default class WrtcClient extends NetClient {
     const desc = connection.desc;
 
     const localPeerConnection = new RTCPeerConnection({
-      sdpSemantics: 'unified-plan'
+      sdpSemantics: 'unified-plan',
+      iceServers: iceServers
     });
 
     this.peerConnection = localPeerConnection;
