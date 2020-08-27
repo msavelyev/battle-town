@@ -1,12 +1,12 @@
 import Game from './Game.js';
 import Client from './proto/Client.js';
-import WrtcClient from './proto/WrtcClient.js';
 import Ticker from '../../../lib/src/Ticker.js';
+import SocketioClient from './proto/SocketioClient.js';
 
 export default class Main {
 
   constructor(canvas) {
-    this.client = new Client(new WrtcClient());
+    this.client = new Client(new SocketioClient());
     this.client.onInit(this.init.bind(this));
 
     this.canvas = canvas;

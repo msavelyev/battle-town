@@ -5,8 +5,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "socket.io": "^2.3.0",
-    "uuid": "^8.1.0",
-    "wrtc": "^0.4.5"
+    "uuid": "^8.1.0"
   },
   "scripts": {
     "start": "node src/index.js"
