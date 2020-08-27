@@ -58,6 +58,7 @@ export default class Main {
     this.client.on(MessageType.KILLED, this.game.onKilled.bind(this.game));
     this.client.on(MessageType.SCORE, this.game.onScore.bind(this.game));
     this.client.on(MessageType.BULLET_EXPLODED, this.game.onBulletExploded.bind(this.game));
+    this.client.on(MessageType.SYNC, this.game.onSync.bind(this.game));
 
     this.ticker = new Ticker(this.game, requestAnimationFrame.bind(null));
     this.ticker.start();

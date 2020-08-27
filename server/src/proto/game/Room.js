@@ -1,5 +1,6 @@
 import World from '../../../../lib/src/World.js';
 import initLevel from '../../level.js';
+import MessageType from '../../../../lib/src/proto/MessageType.js';
 
 const WIDTH = 800;
 const HEIGHT = 576;
@@ -19,6 +20,10 @@ export default class Room {
     );
 
     this.players = [];
+
+    this.syncTimer = setInterval(() => {
+      this.broadcast(MessageType.SYNC, this.world);
+    }, 500);
   }
 
   update(event) {
@@ -56,6 +61,10 @@ export default class Room {
     this.players.forEach(player => {
       player.socket.send(name, data);
     });
+  }
+
+  stop() {
+    clearTimeout(this.syncTimer);
   }
 
 }

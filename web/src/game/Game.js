@@ -73,6 +73,7 @@ export default class Game {
 
   onMove(data) {
     const tankMove = TankMove.create(data);
+    console.log('moving', tankMove);
     this.world.moveTank(tankMove.id, tankMove.direction, tankMove.position);
   }
 
@@ -108,6 +109,11 @@ export default class Game {
 
   onBulletExploded(id) {
     this.world.removeBullet(id);
+  }
+
+  onSync(data) {
+    const newWorld = World.create(data);
+    this.world.sync(newWorld);
   }
 
   stop() {

@@ -62,6 +62,7 @@ export default class GameServer {
     room.remove(player);
     if (room.isEmpty()) {
       console.log('removing room', room.id);
+      room.stop();
       this.rooms = this.rooms.filter(r => r !== room);
     }
   }
