@@ -71,8 +71,9 @@ export default class Game {
     this.client.move(direction);
   }
 
-  onMove(tankMove) {
-    this.world.moveTank(tankMove.id, tankMove.direction);
+  onMove(data) {
+    const tankMove = TankMove.create(data);
+    this.world.moveTank(tankMove.id, tankMove.direction, tankMove.position);
   }
 
   shoot() {
@@ -80,24 +81,36 @@ export default class Game {
     this.client.shoot();
   }
 
-  onShoot(id) {
-    this.world.shoot(id);
+  onShoot(id, position) {
+    this.world.shoot(id, position);
   }
 
-  onConnected(tank) {
-    this.world.addTank(Tank.create(tank));
+  onConnected(data) {
+    const tank = Tank.create(data);
+    this.world.addTank(tank);
+
+    if (tank.id === this.tank.id) {
+      this.tank = tank;
+    }
   }
 
   onDisconnected(id) {
-    this.world.removeTank(id);
+    this.world.removeTank(id, true);
+  }
+
+  onKilled(tank) {
+    this.world.removeTank(tank.id, false);
+  }
+
+  onScore(score) {
+    this.world.score = score;
+  }
+
+  onBulletExploded(id) {
+    this.world.removeBullet(id);
   }
 
   stop() {
-  }
-
-  newTank(data) {
-    this.tank = Tank.create(data);
-    this.world.addTank(this.tank);
   }
 
 }

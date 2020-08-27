@@ -12,6 +12,7 @@ import Ticker from '../../../../lib/src/Ticker.js';
 import Fps from '../../../../lib/src/util/Fps.js';
 import Player from './Player.js';
 import Room from './Room.js';
+import MessageType from '../../../../lib/src/proto/MessageType.js';
 
 export default class GameServer {
 
@@ -83,45 +84,48 @@ export default class GameServer {
 
     let tank = new Tank(id, new Point(2, 2), randomColor(), Direction.UP);
     tank = world.placeTank(tank);
-    client.send('init', new Configuration(world, tank));
+    client.send(MessageType.INIT, new Configuration(world, tank));
 
     world.addTank(tank);
 
-    room.broadcast(player, 'connected', tank);
+    room.broadcastExcept(player, MessageType.CONNECTED, tank);
 
-    client.on('move', direction => {
+    client.on(MessageType.MOVE, direction => {
       console.log('tank', id, 'move', direction);
-      world.moveTank(id, direction);
+      const newPosition = world.moveTank(id, direction);
 
-      room.broadcast(player, 'move', new TankMove(id, direction));
+      room.broadcastExcept(player, MessageType.MOVE, new TankMove(id, direction, newPosition));
     });
 
-    client.on('disconnect', () => {
+    client.on(MessageType.DISCONNECT, () => {
       console.log('disconnected');
 
-      world.removeTank(id);
+      world.removeTank(id, true);
 
-      room.broadcast(player, 'disconnected', id);
+      room.broadcastExcept(player, MessageType.DISCONNECTED, id);
 
       this.removePlayer(player);
       this.removeFromRoom(room, player);
     });
 
-    client.on('shoot', () => {
+    client.on(MessageType.SHOOT, () => {
       world.shoot(id);
-      room.broadcast(player, 'shoot', id);
+      room.broadcastExcept(player, MessageType.SHOOT, id);
     });
 
-    client.on('p', () => {
-      client.send('p');
+    client.on(MessageType.PING, () => {
+      client.send(MessageType.PING);
     });
 
-    world.onTankDestroyed(tank => {
+    world.onTankDestroyed((tank, bullet) => {
+      room.broadcast(MessageType.KILLED, tank);
+
       const newTank = world.placeTank(tank);
       world.addTank(newTank);
-      const player = this.findPlayer(tank.id);
-      room.broadcast(player, 'connected', newTank);
-      player.socket.send('new-tank', newTank);
+
+      room.broadcast(MessageType.CONNECTED, newTank);
+      room.broadcast(MessageType.SCORE, world.score);
+      room.broadcast(MessageType.BULLET_EXPLODED, bullet.id);
     });
   }
 

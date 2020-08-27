@@ -1,3 +1,4 @@
+import MessageType from '../../../../lib/src/proto/MessageType.js';
 
 export default class PingRenderer {
 
@@ -8,7 +9,7 @@ export default class PingRenderer {
     this.timeout = null;
 
     this.client = client;
-    this.client.onPong(this.pong.bind(this));
+    this.client.on(MessageType.PING, this.pong.bind(this));
 
     this.ping();
   }

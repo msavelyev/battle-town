@@ -1,3 +1,4 @@
+import MessageType from '../../../../lib/src/proto/MessageType.js';
 
 export default class Client {
 
@@ -13,52 +14,20 @@ export default class Client {
     this.netClient.disconnect();
   }
 
-  onConnect(cb) {
-    this.netClient.on('connect', cb);
-  }
-
-  onDisconnect(cb) {
-    this.netClient.on('disconnect', cb);
-  }
-
-  onInit(cb) {
-    this.netClient.on('init', cb);
-  }
-
-  onMove(cb) {
-    this.netClient.on('move', cb);
-  }
-
-  onConnected(cb) {
-    this.netClient.on('connected', cb);
-  }
-
-  onDisconnected(cb) {
-    this.netClient.on('disconnected', cb);
-  }
-
-  onPong(cb) {
-    this.netClient.on('p', cb);
-  }
-
-  onShoot(cb) {
-    this.netClient.on('shoot', cb);
-  }
-
-  onNewTank(cb) {
-    this.netClient.on('new-tank', cb);
+  on(messageType, cb) {
+    this.netClient.on(messageType, cb);
   }
 
   move(direction) {
-    this.netClient.send('move', direction);
+    this.netClient.send(MessageType.MOVE, direction);
   }
 
   shoot() {
-    this.netClient.send('shoot');
+    this.netClient.send(MessageType.SHOOT);
   }
 
   ping() {
-    this.netClient.send('p');
+    this.netClient.send(MessageType.PING);
   }
 
 }

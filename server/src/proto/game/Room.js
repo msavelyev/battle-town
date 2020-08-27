@@ -42,13 +42,19 @@ export default class Room {
     this.players = this.players.filter(p => p !== player);
   }
 
-  broadcast(player, name, data) {
+  broadcastExcept(player, name, data) {
     this.players.forEach(otherPlayer => {
       if (otherPlayer === player) {
         return;
       }
 
       otherPlayer.socket.send(name, data);
+    });
+  }
+
+  broadcast(name, data) {
+    this.players.forEach(player => {
+      player.socket.send(name, data);
     });
   }
 
