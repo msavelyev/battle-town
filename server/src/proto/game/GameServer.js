@@ -1,6 +1,7 @@
 import {v4 as uuid} from 'uuid';
 
 import * as process from 'process';
+import { performance } from 'perf_hooks';
 
 import Configuration from '../../../../lib/src/Configuration.js';
 import Direction from '../../../../lib/src/Direction.js';
@@ -28,7 +29,7 @@ export default class GameServer {
   init() {
     this.server.onConnected(this.clientConnected.bind(this));
 
-    const ticker = new Ticker(this, setImmediate);
+    const ticker = new Ticker(this, setTimeout, performance.now);
     ticker.start();
 
     this.server.start();
