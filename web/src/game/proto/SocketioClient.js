@@ -6,7 +6,7 @@ export default class SocketioClient extends NetClient {
   constructor() {
     super();
 
-    this.socket = io('http://localhost:8080', { autoConnect: false });
+    this.socket = io(window.location.origin, { autoConnect: false });
   }
 
   on(name, cb) {
@@ -23,6 +23,10 @@ export default class SocketioClient extends NetClient {
 
   connect() {
     this.socket.connect();
+  }
+
+  disconnect() {
+    this.socket.disconnect();
   }
 
 }
