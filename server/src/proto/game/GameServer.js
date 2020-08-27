@@ -92,7 +92,6 @@ export default class GameServer {
     room.broadcastExcept(player, MessageType.CONNECTED, tank);
 
     client.on(MessageType.MOVE, direction => {
-      console.log('tank', id, 'move', direction);
       const newPosition = world.moveTank(id, direction);
 
       room.broadcastExcept(player, MessageType.MOVE, new TankMove(id, direction, newPosition));
