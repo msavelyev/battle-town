@@ -1,4 +1,5 @@
 import Direction from '../../../../lib/src/Direction.js';
+import Entity from '../../../../lib/src/Entity.js';
 
 export default class TankRenderer {
 
@@ -18,10 +19,10 @@ export default class TankRenderer {
   drawTank(ctx, tank) {
     const x = tank.position.x;
     const y = tank.position.y;
-    const size = tank.getSize();
+    const size = tank.getSize() * Entity.BLOCK_SIZE;
 
     ctx.fillStyle = tank.color;
-    ctx.setTransform(1, 0, 0, 1, x * size, y * size);
+    ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
     ctx.transform(1, 0, 0, 1, size / 2, size / 2);
 
     ctx.textAlign = 'center';

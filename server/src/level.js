@@ -33,7 +33,11 @@ export default function initLevel() {
         return;
       }
 
-      blocks.push(new Block(new Point(x, y), blockType));
+      for (let dx = 0; dx < 2; dx++) {
+        for (let dy = 0; dy < 2; dy++) {
+          blocks.push(new Block(new Point(x * 2 + dx, y * 2 + dy), blockType));
+        }
+      }
     });
   });
 

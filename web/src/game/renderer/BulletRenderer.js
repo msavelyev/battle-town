@@ -1,4 +1,5 @@
 import Direction from '../../../../lib/src/Direction.js';
+import Entity from '../../../../lib/src/Entity.js';
 
 export default class BulletRenderer {
 
@@ -14,12 +15,13 @@ export default class BulletRenderer {
   drawBullet(ctx, bullet) {
     const x = bullet.position.x;
     const y = bullet.position.y;
+    const size = bullet.getSize() * Entity.BLOCK_SIZE;
 
     ctx.fillStyle = 'black';
-    ctx.setTransform(1, 0, 0, 1, x * bullet.getSize(), y * bullet.getSize());
+    ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
     ctx.beginPath();
 
-    const a = bullet.getSize();
+    const a = size;
     ctx.moveTo(a/2 - 5, a/2 - 5);
     ctx.lineTo(a/2 - 5, a/2 + 5);
     ctx.lineTo(a/2 + 5, a/2 + 5);
