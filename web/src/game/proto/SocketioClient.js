@@ -6,7 +6,7 @@ export default class SocketioClient extends NetClient {
   constructor() {
     super();
 
-    this.socket = io(window.location.origin, { autoConnect: false });
+    this.socket = io(process.env.SERVER_HOST, { autoConnect: false });
   }
 
   on(name, cb) {
