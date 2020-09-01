@@ -5,6 +5,6 @@
   "scripts": {
     "clean": "rm -rf .cache dist",
     "start": "npm run clean && parcel ../web/public/index.html",
-    "build": "npm run clean && parcel build ../web/public/index.html"
+    "build": "npm run clean && parcel build ../web/public/index.html --no-source-maps"
   }
 }
