@@ -23,6 +23,8 @@ const level = `
 1111111111111111111111111
 `;
 
+const BLOCKS_PER_CELL = 2;
+
 export default function initLevel() {
   const blocks = [];
   level.trim().split('\n').forEach((row, y) => {
@@ -33,9 +35,10 @@ export default function initLevel() {
         return;
       }
 
-      for (let dx = 0; dx < 2; dx++) {
-        for (let dy = 0; dy < 2; dy++) {
-          blocks.push(new Block(new Point(x * 2 + dx, y * 2 + dy), blockType));
+      for (let dx = 0; dx < BLOCKS_PER_CELL; dx++) {
+        for (let dy = 0; dy < BLOCKS_PER_CELL; dy++) {
+          const point = new Point(x * BLOCKS_PER_CELL + dx, y * BLOCKS_PER_CELL + dy);
+          blocks.push(new Block(point, blockType));
         }
       }
     });
