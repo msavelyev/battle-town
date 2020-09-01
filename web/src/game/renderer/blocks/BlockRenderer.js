@@ -29,17 +29,17 @@ export default class BlockRenderer {
 
     ctx.fillStyle = this.color;
     if (block.type === BlockType.BRICK) {
-      ctx.drawImage(sprites, 16, 0, 16, 16, 0, 0, size, size);
+      ctx.drawImage(sprites.brick, 0, 0, 16, 16, 0, 0, size, size);
     } else if (block.type === BlockType.STONE) {
-      ctx.drawImage(sprites, 32, 0, 16, 16, 0, 0, size, size);
+      ctx.drawImage(sprites.stone, 0, 0, 16, 16, 0, 0, size, size);
     } else if (block.type === BlockType.WATER) {
       if (Math.ceil(event.time / 400) % 2 === 0) {
-        ctx.drawImage(sprites, 0, 16, 16, 16, 0, 0, size, size);
+        ctx.drawImage(sprites.water1, 0, 0, 16, 16, 0, 0, size, size);
       } else {
-        ctx.drawImage(sprites, 16, 16, 16, 16, 0, 0, size, size);
+        ctx.drawImage(sprites.water2, 0, 0, 16, 16, 0, 0, size, size);
       }
     } else if (block.type === BlockType.JUNGLE) {
-      ctx.drawImage(sprites, 48, 0, 16, 16, 0, 0, size, size);
+      ctx.drawImage(sprites.jungle, 0, 0, 16, 16, 0, 0, size, size);
     } else {
       ctx.fillRect(0, 0, size, size);
       ctx.strokeStyle = 'white';

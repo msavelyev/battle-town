@@ -34,7 +34,7 @@ export default class TankRenderer {
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
     ctx.beginPath();
 
-    ctx.drawImage(sprites, 32, 32, 32, 32, 0, 0, size, size);
+    ctx.drawImage(sprites.tank, 0, 0, 32, 32, 0, 0, size, size);
 
     ctx.resetTransform();
   }
