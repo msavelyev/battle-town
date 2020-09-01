@@ -23,7 +23,7 @@ export default class Room {
 
     this.syncTimer = setInterval(() => {
       this.broadcast(MessageType.SYNC, this.world);
-    }, 5000);
+    }, 500);
   }
 
   update(event) {
@@ -45,16 +45,6 @@ export default class Room {
 
   remove(player) {
     this.players = this.players.filter(p => p !== player);
-  }
-
-  broadcastExcept(player, name, data) {
-    this.players.forEach(otherPlayer => {
-      if (otherPlayer === player) {
-        return;
-      }
-
-      otherPlayer.socket.send(name, data);
-    });
   }
 
   broadcast(name, data) {

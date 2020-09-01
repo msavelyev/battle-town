@@ -90,14 +90,13 @@ export default class GameServer {
 
     world.addTank(tank);
 
-    room.broadcastExcept(player, MessageType.CONNECTED, tank);
+    room.broadcast(MessageType.CONNECTED, tank);
 
     client.on(MessageType.START_MOVING, direction => {
       direction = Direction.create(direction);
       const movedTank = world.startMoving(id, direction);
 
-      room.broadcastExcept(
-        player,
+      room.broadcast(
         MessageType.START_MOVING,
         new TankMove(id, direction, movedTank.position)
       );
@@ -107,8 +106,7 @@ export default class GameServer {
       direction = Direction.create(direction);
       const stoppedTank = world.stopMoving(id, direction);
 
-      room.broadcastExcept(
-        player,
+      room.broadcast(
         MessageType.STOP_MOVING,
         new TankMove(id, direction, stoppedTank.position)
       );
@@ -119,7 +117,7 @@ export default class GameServer {
 
       world.removeTank(id, true);
 
-      room.broadcastExcept(player, MessageType.DISCONNECTED, id);
+      room.broadcast(MessageType.DISCONNECTED, id);
 
       this.removePlayer(player);
       this.removeFromRoom(room, player);
@@ -127,7 +125,7 @@ export default class GameServer {
 
     client.on(MessageType.SHOOT, () => {
       world.shoot(id);
-      room.broadcastExcept(player, MessageType.SHOOT, id);
+      room.broadcast(MessageType.SHOOT, id);
     });
 
     client.on(MessageType.PING, () => {
