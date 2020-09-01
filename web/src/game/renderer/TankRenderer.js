@@ -36,6 +36,11 @@ export default class TankRenderer {
 
     ctx.drawImage(sprites.tank, 0, 0, 32, 32, 0, 0, size, size);
 
+    const tmp = ctx.globalCompositeOperation;
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.fillRect(0, 0, size, size);
+    ctx.globalCompositeOperation = tmp;
+
     ctx.resetTransform();
   }
 
