@@ -1,11 +1,11 @@
 import Entity from '../../../../lib/src/Entity.js';
-import sprites from './Sprites.js';
 
 export default class BulletRenderer {
 
-  constructor(ctx, world) {
+  constructor(ctx, world, sprites) {
     this.ctx = ctx;
     this.world = world;
+    this.sprites = sprites;
   }
 
   update() {
@@ -16,6 +16,7 @@ export default class BulletRenderer {
     const x = bullet.position.x;
     const y = bullet.position.y;
     const size = bullet.size * Entity.BLOCK_SIZE;
+    const img = this.sprites.bullet;
 
     ctx.fillStyle = 'white';
     ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
@@ -24,14 +25,14 @@ export default class BulletRenderer {
     ctx.rotate(bullet.direction.angle * Math.PI / 180);
     ctx.transform(1, 0, 0, 1, - size / 2, - size / 2);
     ctx.drawImage(
-      sprites.bullet,
+      img,
       0, 0,
-      sprites.bullet.width,
-      sprites.bullet.height,
-      Math.ceil((size - sprites.bullet.width) / 2),
-      Math.ceil((size - sprites.bullet.height) / 2),
-      sprites.bullet.width,
-      sprites.bullet.height
+      img.width,
+      img.height,
+      Math.ceil((size - img.width) / 2),
+      Math.ceil((size - img.height) / 2),
+      img.width,
+      img.height
     );
 
     ctx.resetTransform();

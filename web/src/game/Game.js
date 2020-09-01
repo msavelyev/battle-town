@@ -13,7 +13,7 @@ import ScoreRenderer from './renderer/ScoreRenderer.js';
 
 export default class Game {
 
-  constructor(ctx, client, conf) {
+  constructor(ctx, client, sprites, conf) {
     this.ctx = ctx;
     this.world = World.create(conf.world);
     this.client = client;
@@ -23,12 +23,12 @@ export default class Game {
 
     this.ticks = [
       this.world,
-      new StoneRenderer(ctx, this.world),
-      new BrickRenderer(ctx, this.world),
-      new WaterRenderer(ctx, this.world),
-      new BulletRenderer(ctx, this.world),
-      new TankRenderer(ctx, this.world),
-      new JungleRenderer(ctx, this.world),
+      new StoneRenderer(ctx, this.world, sprites),
+      new BrickRenderer(ctx, this.world, sprites),
+      new WaterRenderer(ctx, this.world, sprites),
+      new BulletRenderer(ctx, this.world, sprites),
+      new TankRenderer(ctx, this.world, sprites),
+      new JungleRenderer(ctx, this.world, sprites),
       new PingRenderer(ctx, this.client),
       new FpsRenderer(ctx),
       new ScoreRenderer(ctx, this.world)

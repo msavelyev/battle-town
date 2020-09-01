@@ -7,11 +7,12 @@ import Input from './Input.js';
 
 export default class Main {
 
-  constructor(canvas) {
+  constructor(canvas, sprites) {
     this.client = new Client(new SocketioClient());
     this.client.on(MessageType.INIT, this.init.bind(this));
 
     this.canvas = canvas;
+    this.sprites = sprites;
 
     this.game = null;
     this.ticker = null;
@@ -52,7 +53,7 @@ export default class Main {
 
     const ctx = this.canvas.getContext('2d');
 
-    this.game = new Game(ctx, this.client, conf);
+    this.game = new Game(ctx, this.client, this.sprites, conf);
     this.input = new Input(this.game);
     this.client.on(MessageType.START_MOVING, this.game.onStartMoving.bind(this.game));
     this.client.on(MessageType.STOP_MOVING, this.game.onStopMoving.bind(this.game));

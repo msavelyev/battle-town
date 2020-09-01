@@ -1,11 +1,11 @@
 import Entity from '../../../../lib/src/Entity.js';
-import sprites from './Sprites.js';
 
 export default class TankRenderer {
 
-  constructor(ctx, world) {
+  constructor(ctx, world, sprites) {
     this.ctx = ctx;
     this.world = world;
+    this.sprites = sprites;
   }
 
   update(event) {
@@ -34,7 +34,7 @@ export default class TankRenderer {
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
     ctx.beginPath();
 
-    ctx.drawImage(sprites.tank, 0, 0, 32, 32, 0, 0, size, size);
+    ctx.drawImage(this.sprites.tank, 0, 0, 32, 32, 0, 0, size, size);
 
     const tmp = ctx.globalCompositeOperation;
     ctx.globalCompositeOperation = 'multiply';

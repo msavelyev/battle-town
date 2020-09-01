@@ -1,29 +1,35 @@
 import Main from './game/Main';
+import Sprites from './game/renderer/Sprites.js';
 
 window.addEventListener('load', () => {
   const canvas = document.getElementById('canvas');
-  const main = new Main(canvas);
 
-  main.onConnect(() => {
-    document.getElementById('connected').classList.remove('inactive');
-    document.getElementById('disconnected').classList.add('inactive');
-  });
-  main.onDisconnect(() => {
-    document.getElementById('connected').classList.add('inactive');
-    document.getElementById('disconnected').classList.remove('inactive');
-  });
+  const spritesImg = new Image();
+  spritesImg.addEventListener('load', () => {
+    const main = new Main(canvas, new Sprites(spritesImg));
 
-  document.addEventListener('keydown', event => {
-    main.keydown(event);
-  });
+    main.onConnect(() => {
+      document.getElementById('connected').classList.remove('inactive');
+      document.getElementById('disconnected').classList.add('inactive');
+    });
+    main.onDisconnect(() => {
+      document.getElementById('connected').classList.add('inactive');
+      document.getElementById('disconnected').classList.remove('inactive');
+    });
 
-  document.addEventListener('keyup', event => {
-    main.keyup(event);
-  });
+    document.addEventListener('keydown', event => {
+      main.keydown(event);
+    });
 
-  window.addEventListener('beforeunload', () => {
-    main.disconnect();
-  });
+    document.addEventListener('keyup', event => {
+      main.keyup(event);
+    });
 
-  main.start();
+    window.addEventListener('beforeunload', () => {
+      main.disconnect();
+    });
+
+    main.start();
+  });
+  spritesImg.src = document.getElementById('sprites').href;
 });
