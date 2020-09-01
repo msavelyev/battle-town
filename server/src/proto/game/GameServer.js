@@ -93,6 +93,7 @@ export default class GameServer {
     room.broadcastExcept(player, MessageType.CONNECTED, tank);
 
     client.on(MessageType.START_MOVING, direction => {
+      direction = Direction.create(direction);
       const movedTank = world.startMoving(id, direction);
 
       room.broadcastExcept(
@@ -103,6 +104,7 @@ export default class GameServer {
     });
 
     client.on(MessageType.STOP_MOVING, direction => {
+      direction = Direction.create(direction);
       const stoppedTank = world.stopMoving(id, direction);
 
       room.broadcastExcept(

@@ -1,4 +1,3 @@
-import Direction from '../../../../lib/src/Direction.js';
 import Entity from '../../../../lib/src/Entity.js';
 import sprites from './Sprites.js';
 
@@ -31,28 +30,13 @@ export default class TankRenderer {
     ctx.fillText(tank.id.substr(0, 8), 0, -20);
     ctx.textAlign = 'left';
 
-    ctx.rotate(this.directionToAngle(tank.direction) * Math.PI / 180);
+    ctx.rotate(tank.direction.angle * Math.PI / 180);
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
     ctx.beginPath();
 
     ctx.drawImage(sprites, 32, 32, 32, 32, 0, 0, size, size);
 
     ctx.resetTransform();
-  }
-
-  directionToAngle(direction) {
-    switch (direction) {
-      case Direction.UP:
-        return 0;
-      case Direction.RIGHT:
-        return 90;
-      case Direction.DOWN:
-        return 180;
-      case Direction.LEFT:
-        return 270;
-      default:
-        throw new Error('Unknown direction ' + direction);
-    }
   }
 
 }

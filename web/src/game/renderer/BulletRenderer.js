@@ -1,4 +1,3 @@
-import Direction from '../../../../lib/src/Direction.js';
 import Entity from '../../../../lib/src/Entity.js';
 
 export default class BulletRenderer {
@@ -30,21 +29,6 @@ export default class BulletRenderer {
     ctx.fill();
 
     ctx.resetTransform();
-  }
-
-  directionToAngle(direction) {
-    switch (direction) {
-      case Direction.UP:
-        return 0;
-      case Direction.RIGHT:
-        return 90;
-      case Direction.DOWN:
-        return 180;
-      case Direction.LEFT:
-        return 270;
-      default:
-        throw new Error('Unknown direction ' + direction);
-    }
   }
 
 }
