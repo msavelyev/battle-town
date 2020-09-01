@@ -84,7 +84,7 @@ export default class GameServer {
 
     const world = room.world;
 
-    let tank = new Tank(id, new Point(2, 2), randomColor(), Direction.UP);
+    let tank = new Tank(id, new Point(2, 2), randomColor(), Direction.UP, false);
     tank = world.placeTank(tank);
     client.send(MessageType.INIT, new Configuration(world, tank));
 
@@ -92,10 +92,24 @@ export default class GameServer {
 
     room.broadcastExcept(player, MessageType.CONNECTED, tank);
 
-    client.on(MessageType.MOVE, direction => {
-      const newPosition = world.moveTank(id, direction);
+    client.on(MessageType.START_MOVING, direction => {
+      const movedTank = world.startMoving(id, direction);
 
-      room.broadcastExcept(player, MessageType.MOVE, new TankMove(id, direction, newPosition));
+      room.broadcastExcept(
+        player,
+        MessageType.START_MOVING,
+        new TankMove(id, direction, movedTank.position)
+      );
+    });
+
+    client.on(MessageType.STOP_MOVING, direction => {
+      const stoppedTank = world.stopMoving(id, direction);
+
+      room.broadcastExcept(
+        player,
+        MessageType.STOP_MOVING,
+        new TankMove(id, direction, stoppedTank.position)
+      );
     });
 
     client.on(MessageType.DISCONNECT, () => {

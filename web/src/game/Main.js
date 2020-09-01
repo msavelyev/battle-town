@@ -28,7 +28,8 @@ export default class Main {
     this.client.on(MessageType.DISCONNECT, () => {
       cb();
 
-      this.client.on(MessageType.MOVE);
+      this.client.on(MessageType.START_MOVING);
+      this.client.on(MessageType.STOP_MOVING);
       this.client.on(MessageType.CONNECTED);
       this.client.on(MessageType.DISCONNECTED);
       this.client.on(MessageType.PING);
@@ -51,7 +52,8 @@ export default class Main {
     const ctx = this.canvas.getContext('2d');
 
     this.game = new Game(ctx, this.client, conf);
-    this.client.on(MessageType.MOVE, this.game.onMove.bind(this.game));
+    this.client.on(MessageType.START_MOVING, this.game.onStartMoving.bind(this.game));
+    this.client.on(MessageType.STOP_MOVING, this.game.onStopMoving.bind(this.game));
     this.client.on(MessageType.SHOOT, this.game.onShoot.bind(this.game));
     this.client.on(MessageType.CONNECTED, this.game.onConnected.bind(this.game));
     this.client.on(MessageType.DISCONNECTED, this.game.onDisconnected.bind(this.game));
@@ -71,6 +73,12 @@ export default class Main {
   keydown(event) {
     if (this.game) {
       this.game.keydown(event);
+    }
+  }
+
+  keyup(event) {
+    if (this.game) {
+      this.game.keyup(event);
     }
   }
 

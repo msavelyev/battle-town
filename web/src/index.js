@@ -17,6 +17,10 @@ window.addEventListener('load', () => {
     main.keydown(event);
   });
 
+  document.addEventListener('keyup', event => {
+    main.keyup(event);
+  });
+
   window.addEventListener('beforeunload', () => {
     main.disconnect();
   });

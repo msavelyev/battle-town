@@ -18,8 +18,12 @@ export default class Client {
     this.netClient.on(messageType, cb);
   }
 
-  move(direction) {
-    this.netClient.send(MessageType.MOVE, direction);
+  startMoving(direction) {
+    this.netClient.send(MessageType.START_MOVING, direction);
+  }
+
+  stopMoving(direction) {
+    this.netClient.send(MessageType.STOP_MOVING);
   }
 
   shoot() {

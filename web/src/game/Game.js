@@ -49,16 +49,16 @@ export default class Game {
   keydown(event) {
     switch (event.code) {
       case 'ArrowUp':
-        this.move(Direction.UP);
+        this.startMoving(Direction.UP);
         break;
       case 'ArrowDown':
-        this.move(Direction.DOWN);
+        this.startMoving(Direction.DOWN);
         break;
       case 'ArrowLeft':
-        this.move(Direction.LEFT);
+        this.startMoving(Direction.LEFT);
         break;
       case 'ArrowRight':
-        this.move(Direction.RIGHT);
+        this.startMoving(Direction.RIGHT);
         break;
       case 'Space':
         this.shoot();
@@ -66,14 +66,26 @@ export default class Game {
     }
   }
 
-  move(direction) {
-    this.onMove(new TankMove(this.tank.id, direction));
-    this.client.move(direction);
+  keyup(event) {
+    this.onStopMoving(new TankMove(this.tank.id))
+    this.client.stopMoving();
   }
 
-  onMove(data) {
+  startMoving(direction) {
+    this.onStartMoving(new TankMove(this.tank.id, direction));
+    this.client.startMoving(direction);
+  }
+
+  onStartMoving(data) {
     const tankMove = TankMove.create(data);
-    this.world.moveTank(tankMove.id, tankMove.direction, tankMove.position);
+    this.world.startMoving(tankMove.id, tankMove.direction, tankMove.position);
+    console.log('start moving', data.id);
+  }
+
+  onStopMoving(data) {
+    const tankMove = TankMove.create(data);
+    this.world.stopMoving(tankMove.id, tankMove.position);
+    console.log('stop moving', data.id);
   }
 
   shoot() {

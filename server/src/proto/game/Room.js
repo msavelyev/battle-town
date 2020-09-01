@@ -23,7 +23,7 @@ export default class Room {
 
     this.syncTimer = setInterval(() => {
       this.broadcast(MessageType.SYNC, this.world);
-    }, 500);
+    }, 5000);
   }
 
   update(event) {
