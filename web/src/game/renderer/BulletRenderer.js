@@ -17,7 +17,7 @@ export default class BulletRenderer {
     const y = bullet.position.y;
     const size = bullet.getSize() * Entity.BLOCK_SIZE;
 
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'white';
     ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
     ctx.beginPath();
 

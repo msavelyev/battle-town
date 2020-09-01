@@ -21,5 +21,5 @@ window.addEventListener('load', () => {
     main.disconnect();
   });
 
-  main.start()
+  main.start();
 });

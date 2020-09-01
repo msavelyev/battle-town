@@ -1,5 +1,6 @@
 import Direction from '../../../../lib/src/Direction.js';
 import Entity from '../../../../lib/src/Entity.js';
+import sprites from './Sprites.js';
 
 export default class TankRenderer {
 
@@ -34,12 +35,7 @@ export default class TankRenderer {
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
     ctx.beginPath();
 
-    const a = size;
-    ctx.moveTo(a/2, 0);
-    ctx.lineTo(a - a/10, a);
-    ctx.lineTo(a/10, a);
-    ctx.lineTo(a/2, 0);
-    ctx.fill();
+    ctx.drawImage(sprites, 32, 32, 32, 32, 0, 0, size, size);
 
     ctx.resetTransform();
   }
