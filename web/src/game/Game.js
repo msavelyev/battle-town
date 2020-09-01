@@ -79,13 +79,11 @@ export default class Game {
   onStartMoving(data) {
     const tankMove = TankMove.create(data);
     this.world.startMoving(tankMove.id, tankMove.direction, tankMove.position);
-    console.log('start moving', data.id);
   }
 
   onStopMoving(data) {
     const tankMove = TankMove.create(data);
     this.world.stopMoving(tankMove.id, tankMove.position);
-    console.log('stop moving', data.id);
   }
 
   shoot() {
