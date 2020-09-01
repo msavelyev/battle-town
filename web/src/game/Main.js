@@ -3,6 +3,7 @@ import Client from './proto/Client.js';
 import Ticker from '../../../lib/src/Ticker.js';
 import SocketioClient from './proto/SocketioClient.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
+import Input from './Input.js';
 
 export default class Main {
 
@@ -52,6 +53,7 @@ export default class Main {
     const ctx = this.canvas.getContext('2d');
 
     this.game = new Game(ctx, this.client, conf);
+    this.input = new Input(this.game);
     this.client.on(MessageType.START_MOVING, this.game.onStartMoving.bind(this.game));
     this.client.on(MessageType.STOP_MOVING, this.game.onStopMoving.bind(this.game));
     this.client.on(MessageType.SHOOT, this.game.onShoot.bind(this.game));
@@ -71,14 +73,14 @@ export default class Main {
   }
 
   keydown(event) {
-    if (this.game) {
-      this.game.keydown(event);
+    if (this.input) {
+      this.input.keydown(event);
     }
   }
 
   keyup(event) {
-    if (this.game) {
-      this.game.keyup(event);
+    if (this.input) {
+      this.input.keyup(event);
     }
   }
 

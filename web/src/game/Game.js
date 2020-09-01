@@ -1,4 +1,3 @@
-import Direction from '../../../lib/src/Direction.js';
 import Tank from '../../../lib/src/Tank.js';
 import TankMove from '../../../lib/src/TankMove.js';
 import World from '../../../lib/src/World.js';
@@ -44,31 +43,6 @@ export default class Game {
     this.ctx.strokeRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
     this.ticks.forEach(tick => tick.update(event));
-  }
-
-  keydown(event) {
-    switch (event.code) {
-      case 'ArrowUp':
-        this.startMoving(Direction.UP);
-        break;
-      case 'ArrowDown':
-        this.startMoving(Direction.DOWN);
-        break;
-      case 'ArrowLeft':
-        this.startMoving(Direction.LEFT);
-        break;
-      case 'ArrowRight':
-        this.startMoving(Direction.RIGHT);
-        break;
-      case 'Space':
-        this.shoot();
-        break;
-    }
-  }
-
-  keyup(event) {
-    this.onStopMoving(new TankMove(this.tank.id))
-    this.client.stopMoving();
   }
 
   startMoving(direction) {
