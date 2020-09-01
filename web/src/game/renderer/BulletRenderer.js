@@ -15,7 +15,7 @@ export default class BulletRenderer {
   drawBullet(ctx, bullet) {
     const x = bullet.position.x;
     const y = bullet.position.y;
-    const size = bullet.getSize() * Entity.BLOCK_SIZE;
+    const size = bullet.size * Entity.BLOCK_SIZE;
 
     ctx.fillStyle = 'white';
     ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
@@ -23,7 +23,16 @@ export default class BulletRenderer {
 
     ctx.rotate(bullet.direction.angle * Math.PI / 180);
     ctx.transform(1, 0, 0, 1, - size / 2, - size / 2);
-    ctx.drawImage(sprites.bullet, (size - sprites.bullet.width) / 2, (size - sprites.bullet.height) / 2);
+    ctx.drawImage(
+      sprites.bullet,
+      0, 0,
+      sprites.bullet.width,
+      sprites.bullet.height,
+      Math.ceil((size - sprites.bullet.width) / 2),
+      Math.ceil((size - sprites.bullet.height) / 2),
+      sprites.bullet.width,
+      sprites.bullet.height
+    );
 
     ctx.resetTransform();
   }
