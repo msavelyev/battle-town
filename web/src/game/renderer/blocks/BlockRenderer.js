@@ -11,15 +11,15 @@ export default class BlockRenderer {
     this.color = color;
   }
 
-  update() {
+  update(event) {
     this.world.blocks.forEach(block => {
       if (block.type === this.type) {
-        this.drawBlock(this.ctx, block);
+        this.drawBlock(this.ctx, block, event);
       }
     });
   }
 
-  drawBlock(ctx, block) {
+  drawBlock(ctx, block, event) {
     const position = block.getPosition();
     const size = block.getSize() * Entity.BLOCK_SIZE;
     const x = position.x;
@@ -33,7 +33,11 @@ export default class BlockRenderer {
     } else if (block.type === BlockType.STONE) {
       ctx.drawImage(sprites, 32, 0, 16, 16, 0, 0, size, size);
     } else if (block.type === BlockType.WATER) {
-      ctx.drawImage(sprites, 0, 16, 16, 16, 0, 0, size, size);
+      if (Math.ceil(event.time / 400) % 2 === 0) {
+        ctx.drawImage(sprites, 0, 16, 16, 16, 0, 0, size, size);
+      } else {
+        ctx.drawImage(sprites, 16, 16, 16, 16, 0, 0, size, size);
+      }
     } else if (block.type === BlockType.JUNGLE) {
       ctx.drawImage(sprites, 48, 0, 16, 16, 0, 0, size, size);
     } else {
