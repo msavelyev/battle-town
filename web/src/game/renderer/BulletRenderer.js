@@ -1,4 +1,5 @@
 import Entity from '../../../../lib/src/Entity.js';
+import sprites from './Sprites.js';
 
 export default class BulletRenderer {
 
@@ -18,15 +19,11 @@ export default class BulletRenderer {
 
     ctx.fillStyle = 'white';
     ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
-    ctx.beginPath();
+    ctx.transform(1, 0, 0, 1, size / 2, size / 2);
 
-    const a = size;
-    ctx.moveTo(a/2 - 5, a/2 - 5);
-    ctx.lineTo(a/2 - 5, a/2 + 5);
-    ctx.lineTo(a/2 + 5, a/2 + 5);
-    ctx.lineTo(a/2 + 5, a/2 - 5);
-    ctx.lineTo(a/2 - 5, a/2 - 5);
-    ctx.fill();
+    ctx.rotate(bullet.direction.angle * Math.PI / 180);
+    ctx.transform(1, 0, 0, 1, - size / 2, - size / 2);
+    ctx.drawImage(sprites.bullet, (size - sprites.bullet.width) / 2, (size - sprites.bullet.height) / 2);
 
     ctx.resetTransform();
   }
