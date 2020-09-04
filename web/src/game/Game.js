@@ -12,6 +12,7 @@ import ScoreRenderer from './renderer/ScoreRenderer.js';
 import NetMessage from '../../../lib/src/proto/NetMessage.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
 import TickRenderer from './renderer/TickRenderer.js';
+import increaseTick from '../../../lib/src/util/increaseTick.js';
 
 export default class Game {
 
@@ -50,7 +51,7 @@ export default class Game {
     this.ctx.strokeRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
     if (this.moving) {
-      const move = new TankMove(this.moveId++, this.direction);
+      const move = new TankMove(increaseTick(this.moveId, val => this.moveId = val), this.direction);
       this.handleEvent(new NetMessage(
         this.id,
         this.world.tick,
@@ -82,7 +83,7 @@ export default class Game {
       this.id,
       this.world.tick,
       MessageType.SHOOT,
-      new TankMove(this.moveId++, tank.direction)
+      new TankMove(increaseTick(this.moveId, val => this.moveId = val), tank.direction)
     ));
   }
 
