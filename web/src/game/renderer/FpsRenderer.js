@@ -11,7 +11,7 @@ export default class FpsRenderer {
   update() {
     this.fps.update();
 
-    const text = 'fps: ' + this.fps.get();
+    const text = 'fps: ' + this.fps.fps;
 
     this.ctx.font = '15px monospace';
 

@@ -150,7 +150,7 @@ export default class GameServer {
   }
 
   printFps() {
-    process.stdout.write(`${this.fps.get()}\r`);
+    process.stdout.write(`FPS:${this.fps.fps}, tick:${this.ticker.tick}\r`);
   }
 
   static create(server) {
