@@ -22,6 +22,7 @@ export default class Room {
       new World(id, WIDTH, HEIGHT, initLevel(), [], [], {}, -1, null, {})
     ];
     this.events = [];
+    this.queue = [];
 
     this.tickTimer = setInterval(() => {
       this.broadcast(MessageType.TICK, this.lastWorld());
@@ -36,6 +37,27 @@ export default class Room {
     const copy = this.lastWorld().copy();
     copy.update(event);
     this.addWorld(copy);
+
+    let minTick = this.ticker.tick;
+    for (let netMessage of this.queue) {
+      switch (netMessage.type){
+        case MessageType.SHOOT:
+        case MessageType.MOVE:
+          netMessage.tick = this.ticker.tick;
+          copy.handleEvent(netMessage);
+          break;
+        default:
+          minTick = Math.min(minTick, netMessage.tick);
+          break;
+      }
+      this.addEvent(netMessage);
+    }
+
+    if (minTick < this.ticker.tick) {
+      this.recalculateWorlds(minTick);
+    }
+
+    this.queue = [];
   }
 
   isFull() {
@@ -91,14 +113,9 @@ export default class Room {
 
   handleEvent(client, netMessage) {
     switch (netMessage.type) {
-      case MessageType.START_MOVING:
-      case MessageType.STOP_MOVING:
+      case MessageType.MOVE:
       case MessageType.SHOOT:
-        this.lastWorld().handleEvent(netMessage);
-        // this.addEvent(netMessage);
-        // if (!this.recalculateWorlds(netMessage.tick)) {
-        //   console.log('dropping message', netMessage, 'min tick', this.worlds[0].tick);
-        // }
+        this.queue.push(netMessage);
         break;
       case MessageType.PING:
         client.send(new NetMessage(null, this.ticker.tick, MessageType.PING));

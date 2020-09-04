@@ -1,4 +1,5 @@
 import Entity from '../../../../lib/src/Entity.js';
+import Direction from '../../../../lib/src/Direction.js';
 
 export default class BulletRenderer {
 
@@ -22,7 +23,7 @@ export default class BulletRenderer {
     ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
     ctx.transform(1, 0, 0, 1, size / 2, size / 2);
 
-    ctx.rotate(bullet.direction.angle * Math.PI / 180);
+    ctx.rotate(Direction.angle(bullet.direction) * Math.PI / 180);
     ctx.transform(1, 0, 0, 1, - size / 2, - size / 2);
     ctx.drawImage(
       img,

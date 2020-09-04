@@ -32,7 +32,6 @@ export default class SocketioClient extends NetClient {
   }
 
   sendMessage(netMessage) {
-    netMessage.tick = this.lastTick;
     this.socket.emit(EventType.MESSAGE, netMessage);
   }
 

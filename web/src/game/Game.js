@@ -37,6 +37,8 @@ export default class Game {
       new TickRenderer(ctx, this.world, this.client)
     ];
 
+    this.moving = false;
+    this.direction = null;
     this.moveId = 0;
   }
 
@@ -47,30 +49,31 @@ export default class Game {
     this.ctx.strokeStyle = 'black';
     this.ctx.strokeRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
+    if (this.moving) {
+      const move = new TankMove(this.moveId++, this.direction);
+      this.handleEvent(new NetMessage(
+        this.id,
+        this.world.tick,
+        MessageType.MOVE,
+        move
+      ));
+    }
+
     this.ticks.forEach(tick => tick.update(event));
   }
 
   startMoving(direction) {
-    const tank = this.world.findTank(this.id);
-    if (tank.moving && tank.direction.eq(direction)) {
+    if (this.moving && this.direction === direction) {
       return;
     }
-    this.handleEvent(new NetMessage(
-      this.id,
-      this.world.tick,
-      MessageType.START_MOVING,
-      new TankMove(this.moveId++, direction, tank.position)
-    ));
+
+    this.moving = true;
+    this.direction = direction;
   }
 
   stopMoving() {
-    const tank = this.world.findTank(this.id);
-    this.handleEvent(new NetMessage(
-      this.id,
-      this.world.tick,
-      MessageType.STOP_MOVING,
-      new TankMove(this.moveId++, tank.direction, tank.position)
-    ));
+    this.moving = false;
+    this.direction = null;
   }
 
   shoot() {
@@ -79,20 +82,21 @@ export default class Game {
       this.id,
       this.world.tick,
       MessageType.SHOOT,
-      new TankMove(this.moveId++, tank.direction, tank.position)
+      new TankMove(this.moveId++, tank.direction)
     ));
   }
 
   handleEvent(netMessage) {
     if (this.world.handleEvent(netMessage)) {
-      this.world.lastMove = netMessage.data.moveId;
       this.client.send(netMessage);
+      this.world.addUnackedMessage(netMessage);
+      return true;
     }
+    return false;
   }
 
   onSync(data) {
-    const newWorld = World.create(data);
-    this.world.sync(this.id, newWorld);
+    this.world.sync(this.id, data);
   }
 
   stop() {
