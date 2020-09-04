@@ -21,9 +21,11 @@ export default class Input {
   }
 
   keyup(event) {
-    const tank = this.game.world.findTank(this.game.id);
+    if (!this.game.moving) {
+      return;
+    }
 
-    if (tank.direction !== this.keyToDirection(event.code)) {
+    if (this.game.direction !== this.keyToDirection(event.code)) {
       return;
     }
 
