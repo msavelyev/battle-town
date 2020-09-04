@@ -1,5 +1,4 @@
-import Tank from '../../../lib/src/Tank.js';
-import TankMove from '../../../lib/src/TankMove.js';
+import TankMove from '../../../lib/src/event/TankMove.js';
 import World from '../../../lib/src/World.js';
 import BrickRenderer from './renderer/blocks/BrickRenderer.js';
 import JungleRenderer from './renderer/blocks/JungleRenderer.js';
@@ -10,16 +9,19 @@ import PingRenderer from './renderer/PingRenderer.js';
 import TankRenderer from './renderer/TankRenderer.js';
 import FpsRenderer from './renderer/FpsRenderer.js';
 import ScoreRenderer from './renderer/ScoreRenderer.js';
+import NetMessage from '../../../lib/src/proto/NetMessage.js';
+import MessageType from '../../../lib/src/proto/MessageType.js';
+import TickRenderer from './renderer/TickRenderer.js';
 
 export default class Game {
 
   constructor(ctx, client, sprites, conf) {
     this.ctx = ctx;
     this.world = World.create(conf.world);
+    this.world.authoritative = false;
     this.client = client;
 
-    this.tank = Tank.create(conf.tank);
-    this.world.addTank(this.tank);
+    this.id = conf.id;
 
     this.ticks = [
       this.world,
@@ -31,8 +33,11 @@ export default class Game {
       new JungleRenderer(ctx, this.world, sprites),
       new PingRenderer(ctx, this.client),
       new FpsRenderer(ctx),
-      new ScoreRenderer(ctx, this.world)
+      new ScoreRenderer(ctx, this.world),
+      new TickRenderer(ctx, this.world, this.client)
     ];
+
+    this.moveId = 0;
   }
 
   update(event) {
@@ -46,57 +51,48 @@ export default class Game {
   }
 
   startMoving(direction) {
-    this.onStartMoving(new TankMove(this.tank.id, direction));
-    this.client.startMoving(direction);
+    const tank = this.world.findTank(this.id);
+    if (tank.moving && tank.direction.eq(direction)) {
+      return;
+    }
+    this.handleEvent(new NetMessage(
+      this.id,
+      this.world.tick,
+      MessageType.START_MOVING,
+      new TankMove(this.moveId++, direction, tank.position)
+    ));
   }
 
-  onStartMoving(data) {
-    const tankMove = TankMove.create(data);
-    this.world.startMoving(tankMove.id, tankMove.direction, tankMove.position);
-  }
-
-  onStopMoving(data) {
-    const tankMove = TankMove.create(data);
-    this.world.stopMoving(tankMove.id, tankMove.position);
+  stopMoving() {
+    const tank = this.world.findTank(this.id);
+    this.handleEvent(new NetMessage(
+      this.id,
+      this.world.tick,
+      MessageType.STOP_MOVING,
+      new TankMove(this.moveId++, tank.direction, tank.position)
+    ));
   }
 
   shoot() {
-    this.onShoot(this.tank.id);
-    this.client.shoot();
+    const tank = this.world.findTank(this.id);
+    this.handleEvent(new NetMessage(
+      this.id,
+      this.world.tick,
+      MessageType.SHOOT,
+      new TankMove(this.moveId++, tank.direction, tank.position)
+    ));
   }
 
-  onShoot(id, position) {
-    this.world.shoot(id, position);
-  }
-
-  onConnected(data) {
-    const tank = Tank.create(data);
-    this.world.addTank(tank);
-
-    if (tank.id === this.tank.id) {
-      this.tank = tank;
+  handleEvent(netMessage) {
+    if (this.world.handleEvent(netMessage)) {
+      this.world.lastMove = netMessage.data.moveId;
+      this.client.send(netMessage);
     }
-  }
-
-  onDisconnected(id) {
-    this.world.removeTank(id, true);
-  }
-
-  onKilled(tank) {
-    this.world.removeTank(tank.id, false);
-  }
-
-  onScore(score) {
-    this.world.score = score;
-  }
-
-  onBulletExploded(id) {
-    this.world.removeBullet(id);
   }
 
   onSync(data) {
     const newWorld = World.create(data);
-    this.world.sync(newWorld);
+    this.world.sync(this.id, newWorld);
   }
 
   stop() {

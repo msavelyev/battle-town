@@ -1,33 +1,41 @@
 import World from '../../../../lib/src/World.js';
 import initLevel from '../../level.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
+import NetMessage from '../../../../lib/src/proto/NetMessage.js';
+import {FRAME_TIME} from '../../../../lib/src/Ticker.js';
+import compareTick from '../../../../lib/src/util/compareTick.js';
 
 const WIDTH = 800;
 const HEIGHT = 576;
 const MAX_PLAYERS_IN_ROOM = 2;
+const TICKS_TO_KEEP = 60;
 
 export default class Room {
 
-  constructor(id) {
+  constructor(id, ticker) {
     this.id = id;
-    this.world = new World(
-      id,
-      WIDTH,
-      HEIGHT,
-      initLevel(),
-      [],
-      []
-    );
+    this.ticker = ticker;
 
     this.players = [];
 
-    this.syncTimer = setInterval(() => {
-      this.broadcast(MessageType.SYNC, this.world);
-    }, 500);
+    this.worlds = [
+      new World(id, WIDTH, HEIGHT, initLevel(), [], [], {}, -1, null, {})
+    ];
+    this.events = [];
+
+    this.tickTimer = setInterval(() => {
+      this.broadcast(MessageType.TICK, this.lastWorld());
+    }, FRAME_TIME);
+  }
+
+  lastWorld() {
+    return this.worlds[this.worlds.length - 1];
   }
 
   update(event) {
-    this.world.update(event);
+    const copy = this.lastWorld().copy();
+    copy.update(event);
+    this.addWorld(copy);
   }
 
   isFull() {
@@ -47,14 +55,90 @@ export default class Room {
     this.players = this.players.filter(p => p !== player);
   }
 
-  broadcast(name, data) {
+  broadcast(name, data, tick) {
+    if (!tick) {
+      tick = this.ticker.tick;
+    }
+
     this.players.forEach(player => {
-      player.socket.send(name, data);
+      player.client.send(new NetMessage(player.id, tick, name, data));
     });
   }
 
+  addEvent(netMessage) {
+    this.events = this._addTicked(netMessage, this.events);
+  }
+
+  addWorld(world) {
+    this.worlds = this._addTicked(world, this.worlds);
+  }
+
+  _addTicked(what, where) {
+    where.push(what);
+    where.sort((a, b) => a.tick - b.tick);
+
+    const maxTick = this.ticker.tick;
+    return where.filter(item => compareTick(item.tick, (maxTick - TICKS_TO_KEEP)) >= 0);
+  }
+
   stop() {
-    clearTimeout(this.syncTimer);
+    clearInterval(this.tickTimer);
+  }
+
+  findWorld(tick) {
+    return this.worlds.find(world => world.tick === tick);
+  }
+
+  handleEvent(client, netMessage) {
+    switch (netMessage.type) {
+      case MessageType.START_MOVING:
+      case MessageType.STOP_MOVING:
+      case MessageType.SHOOT:
+        this.lastWorld().handleEvent(netMessage);
+        // this.addEvent(netMessage);
+        // if (!this.recalculateWorlds(netMessage.tick)) {
+        //   console.log('dropping message', netMessage, 'min tick', this.worlds[0].tick);
+        // }
+        break;
+      case MessageType.PING:
+        client.send(new NetMessage(null, this.ticker.tick, MessageType.PING));
+        break;
+      default:
+        console.error('Unknown message', netMessage);
+    }
+  }
+
+  recalculateWorlds(tick) {
+    let prevWorld = null;
+
+    if (compareTick(this.worlds[0].tick, tick) >= 0) {
+      return false;
+    }
+
+    for (let i = 0; i < this.worlds.length; i++) {
+      const currentWorld = this.worlds[i];
+      if (compareTick(currentWorld.tick, tick) < 0) {
+        prevWorld = currentWorld;
+        continue;
+      }
+
+      const currentEvent = currentWorld.event;
+      const events = this.findEventsForTick(currentEvent.tick);
+      const newWorld = prevWorld.copy();
+      for (let netMessage of events) {
+        newWorld.handleEvent(netMessage);
+      }
+      newWorld.update(currentEvent);
+      this.worlds[i] = newWorld;
+
+      prevWorld = newWorld;
+    }
+
+    return true;
+  }
+
+  findEventsForTick(tick) {
+    return this.events.filter(event => event.tick === tick);
   }
 
 }

@@ -4,12 +4,13 @@ import Ticker from '../../../lib/src/Ticker.js';
 import SocketioClient from './proto/SocketioClient.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
 import Input from './Input.js';
+import EventType from '../../../lib/src/proto/EventType.js';
 
 export default class Main {
 
   constructor(canvas, sprites) {
     this.client = new Client(new SocketioClient());
-    this.client.on(MessageType.INIT, this.init.bind(this));
+    this.client.onMessage(MessageType.INIT, this.init.bind(this));
 
     this.canvas = canvas;
     this.sprites = sprites;
@@ -23,18 +24,14 @@ export default class Main {
   }
 
   onConnect(cb) {
-    this.client.on(MessageType.CONNECT, cb);
+    this.client.on(EventType.CONNECT, cb);
   }
 
   onDisconnect(cb) {
-    this.client.on(MessageType.DISCONNECT, () => {
+    this.client.on(EventType.DISCONNECT, () => {
       cb();
 
-      this.client.on(MessageType.START_MOVING);
-      this.client.on(MessageType.STOP_MOVING);
-      this.client.on(MessageType.CONNECTED);
-      this.client.on(MessageType.DISCONNECTED);
-      this.client.on(MessageType.PING);
+      this.client.onMessage(MessageType.PING);
 
       if (this.game) {
         this.game.stop();
@@ -55,22 +52,13 @@ export default class Main {
 
     this.game = new Game(ctx, this.client, this.sprites, conf);
     this.input = new Input(this.game);
-    this.client.on(MessageType.START_MOVING, this.game.onStartMoving.bind(this.game));
-    this.client.on(MessageType.STOP_MOVING, this.game.onStopMoving.bind(this.game));
-    this.client.on(MessageType.SHOOT, this.game.onShoot.bind(this.game));
-    this.client.on(MessageType.CONNECTED, this.game.onConnected.bind(this.game));
-    this.client.on(MessageType.DISCONNECTED, this.game.onDisconnected.bind(this.game));
-    this.client.on(MessageType.KILLED, this.game.onKilled.bind(this.game));
-    this.client.on(MessageType.SCORE, this.game.onScore.bind(this.game));
-    this.client.on(MessageType.BULLET_EXPLODED, this.game.onBulletExploded.bind(this.game));
-    this.client.on(MessageType.SYNC, this.game.onSync.bind(this.game));
+    this.client.onMessage(MessageType.TICK, this.game.onSync.bind(this.game));
 
     this.ticker = new Ticker(
-      this.game,
-      window.setTimeout.bind(null),
+      window.setInterval.bind(null),
       window.performance.now.bind(window.performance)
     );
-    this.ticker.start();
+    this.ticker.start(this.game);
   }
 
   keydown(event) {

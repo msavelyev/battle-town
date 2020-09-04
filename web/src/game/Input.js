@@ -1,5 +1,4 @@
 import Direction from '../../../lib/src/Direction.js';
-import TankMove from '../../../lib/src/TankMove.js';
 
 export default class Input {
 
@@ -22,14 +21,13 @@ export default class Input {
   }
 
   keyup(event) {
-    const tank = this.game.world.findTank(this.game.tank.id);
+    const tank = this.game.world.findTank(this.game.id);
 
     if (!tank.direction.eq(this.keyToDirection(event.code))) {
       return;
     }
 
-    this.game.onStopMoving(new TankMove(this.game.tank.id))
-    this.game.client.stopMoving();
+    this.game.stopMoving();
   }
 
   keyToDirection(keyCode) {

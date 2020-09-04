@@ -1,36 +1,33 @@
 import {v4 as uuid} from 'uuid';
 
 import * as process from 'process';
-import { performance } from 'perf_hooks';
 
 import Configuration from '../../../../lib/src/Configuration.js';
 import Direction from '../../../../lib/src/Direction.js';
 import Point from '../../../../lib/src/Point.js';
 import randomColor from '../../../../lib/src/randomColor.js';
 import Tank from '../../../../lib/src/Tank.js';
-import TankMove from '../../../../lib/src/TankMove.js';
-import Ticker from '../../../../lib/src/Ticker.js';
 import Fps from '../../../../lib/src/util/Fps.js';
 import Player from './Player.js';
 import Room from './Room.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
+import EventType from '../../../../lib/src/proto/EventType.js';
+import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 
 export default class GameServer {
 
-  constructor(server) {
+  constructor(server, ticker) {
     this.fps = new Fps();
     this.rooms = [];
     this.players = [];
     this.server = server;
+    this.ticker = ticker;
 
     this.init();
   }
 
   init() {
     this.server.onConnected(this.clientConnected.bind(this));
-
-    const ticker = new Ticker(this, setTimeout, performance.now);
-    ticker.start();
 
     this.server.start();
 
@@ -52,7 +49,7 @@ export default class GameServer {
     }
 
     const id = uuid();
-    const room = new Room(id);
+    const room = new Room(id, this.ticker);
     console.log('created room', id);
     this.rooms.push(room);
 
@@ -82,65 +79,25 @@ export default class GameServer {
     const room = this.findRoom();
     room.add(player);
 
-    const world = room.world;
+    const world = room.lastWorld();
 
     let tank = new Tank(id, new Point(2, 2), randomColor(), Direction.UP, false);
     tank = world.placeTank(tank);
-    client.send(MessageType.INIT, new Configuration(world, tank));
+    client.send(new NetMessage(id, this.ticker.tick, MessageType.INIT, new Configuration(id, world)));
 
     world.addTank(tank);
 
-    room.broadcast(MessageType.CONNECTED, tank);
-
-    client.on(MessageType.START_MOVING, direction => {
-      direction = Direction.create(direction);
-      const movedTank = world.startMoving(id, direction);
-
-      room.broadcast(
-        MessageType.START_MOVING,
-        new TankMove(id, direction, movedTank.position)
-      );
+    client.on(EventType.MESSAGE, netMessage => {
+      room.handleEvent(client, netMessage);
     });
 
-    client.on(MessageType.STOP_MOVING, direction => {
-      direction = Direction.create(direction);
-      const stoppedTank = world.stopMoving(id, direction);
-
-      room.broadcast(
-        MessageType.STOP_MOVING,
-        new TankMove(id, direction, stoppedTank.position)
-      );
-    });
-
-    client.on(MessageType.DISCONNECT, () => {
+    client.on(EventType.DISCONNECT, () => {
       console.log('disconnected');
 
-      world.removeTank(id, true);
-
-      room.broadcast(MessageType.DISCONNECTED, id);
+      room.lastWorld().removeTank(id, true);
 
       this.removePlayer(player);
       this.removeFromRoom(room, player);
-    });
-
-    client.on(MessageType.SHOOT, () => {
-      world.shoot(id);
-      room.broadcast(MessageType.SHOOT, id);
-    });
-
-    client.on(MessageType.PING, () => {
-      client.send(MessageType.PING);
-    });
-
-    world.onTankDestroyed((tank, bullet) => {
-      room.broadcast(MessageType.KILLED, tank);
-
-      const newTank = world.placeTank(tank);
-      world.addTank(newTank);
-
-      room.broadcast(MessageType.CONNECTED, newTank);
-      room.broadcast(MessageType.SCORE, world.score);
-      room.broadcast(MessageType.BULLET_EXPLODED, bullet.id);
     });
   }
 
@@ -151,10 +108,6 @@ export default class GameServer {
 
   printFps() {
     process.stdout.write(`FPS:${this.fps.fps}, tick:${this.ticker.tick}\r`);
-  }
-
-  static create(server) {
-    return new GameServer(server);
   }
 
 }

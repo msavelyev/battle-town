@@ -1,9 +1,13 @@
 import MessageType from '../../../../lib/src/proto/MessageType.js';
+import EventType from '../../../../lib/src/proto/EventType.js';
 
 export default class Client {
 
   constructor(netClient) {
     this.netClient = netClient;
+    this.callbacks = {};
+
+    this.netClient.on(EventType.MESSAGE, this.handleMessage.bind(this));
   }
 
   connect() {
@@ -14,20 +18,27 @@ export default class Client {
     this.netClient.disconnect();
   }
 
-  on(messageType, cb) {
-    this.netClient.on(messageType, cb);
+  on(eventType, cb) {
+    this.netClient.on(eventType, cb);
   }
 
-  startMoving(direction) {
-    this.netClient.send(MessageType.START_MOVING, direction);
+  handleMessage(netMessage) {
+    const messageType = netMessage.type;
+    if (this.callbacks[messageType]) {
+      this.callbacks[messageType](netMessage.data);
+    }
   }
 
-  stopMoving(direction) {
-    this.netClient.send(MessageType.STOP_MOVING);
+  onMessage(messageType, cb) {
+    if (!cb) {
+      delete this.callbacks[messageType];
+    } else {
+      this.callbacks[messageType] = cb;
+    }
   }
 
-  shoot() {
-    this.netClient.send(MessageType.SHOOT);
+  send(netMessage) {
+    this.netClient.sendMessage(netMessage);
   }
 
   ping() {

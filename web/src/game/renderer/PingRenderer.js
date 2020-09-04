@@ -9,7 +9,7 @@ export default class PingRenderer {
     this.timeout = null;
 
     this.client = client;
-    this.client.on(MessageType.PING, this.pong.bind(this));
+    this.client.onMessage(MessageType.PING, this.pong.bind(this));
 
     this.ping();
   }

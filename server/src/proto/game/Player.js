@@ -1,9 +1,9 @@
 
 export default class Player {
 
-  constructor(id, socket) {
+  constructor(id, client) {
     this.id = id;
-    this.socket = socket;
+    this.client = client;
   }
 
 }
