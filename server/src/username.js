@@ -1,0 +1,8 @@
+import randomInt from '../../lib/src/randomInt.js';
+
+export default Object.freeze({
+  generate: function() {
+    const num = randomInt(60000, 200000);
+    return `user#${num}`
+  }
+});
