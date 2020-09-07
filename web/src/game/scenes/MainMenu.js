@@ -135,6 +135,8 @@ export default class MainMenu extends Scene {
     const startButton = document.getElementById('mainMenu__start');
 
     startButton.addEventListener('click', event => {
+      startButton.disabled = true;
+
       const newName = nameInput.value;
       const user = data.user;
 
@@ -144,6 +146,7 @@ export default class MainMenu extends Scene {
 
       api.updateName(user.id, user.token, newName)
         .then(result => {
+          startButton.disabled = false;
           if (result.success) {
             return this.onFinishCb(null, result.user);
           } else {
