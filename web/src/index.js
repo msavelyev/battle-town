@@ -5,17 +5,15 @@ import Scenes from './game/scenes/Scenes.js';
 import Matchmaking from './game/scenes/Matchmaking.js';
 
 window.addEventListener('load', () => {
-  const canvas = document.getElementById('canvas');
-
   const spritesImg = new Image();
   spritesImg.addEventListener('load', () => {
 
-    const overlay = document.getElementById('overlay');
+    const overlay = document.getElementById('game');
     const scenes = new Scenes([
       new Loading(overlay),
       new MainMenu(overlay),
       new Matchmaking(overlay),
-      new GameScene(canvas, spritesImg)
+      new GameScene(overlay, spritesImg)
     ]);
 
     scenes.start();

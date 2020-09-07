@@ -4,14 +4,16 @@ import Scene from './Scene.js';
 
 export default class GameScene extends Scene {
 
-  constructor(canvas, spritesImg) {
+  constructor(overlay, spritesImg) {
     super();
-    this.canvas = canvas;
     this.spritesImg = spritesImg;
   }
 
   setup() {
-    const main = new Main(this.canvas, new Sprites(this.spritesImg));
+    this.overlay.innerHTML = '<canvas id="canvas"></canvas>';
+    const canvas = document.getElementById('canvas');
+
+    const main = new Main(canvas, new Sprites(this.spritesImg));
     main.onConnect(() => {
       document.getElementById('connected').classList.remove('inactive');
       document.getElementById('disconnected').classList.add('inactive');
