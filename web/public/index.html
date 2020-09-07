@@ -22,11 +22,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100%;
         }
 
         #game {
             position: relative;
+        }
+
+        .footer {
+            color: #555;
+            font-family: Helvetica, sans-serif;
+            font-size: 80%;
+            margin-top: 20px;
+        }
+
+        .footer a {
+            color: #999;
         }
     </style>
 
@@ -34,6 +46,10 @@
 </head>
 <body>
     <div id="game"></div>
+
+    <div class="footer">
+        © 2020, contact: <a href="mailto:misha@tsbaw.com">misha@tsbaw.com</a>
+    </div>
 
     <script src="../src/index.js"></script>
 </body>
