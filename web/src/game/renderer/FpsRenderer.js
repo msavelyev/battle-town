@@ -1,9 +1,11 @@
 import Fps from '../../../../lib/src/util/Fps.js';
+import {renderText} from './text.js';
 
 export default class FpsRenderer {
 
-  constructor(ctx) {
+  constructor(ctx, position) {
     this.ctx = ctx;
+    this.position = position;
 
     this.fps = new Fps();
   }
@@ -11,17 +13,7 @@ export default class FpsRenderer {
   update() {
     this.fps.update();
 
-    const text = 'fps: ' + this.fps.fps;
-
-    this.ctx.font = '15px monospace';
-
-    this.ctx.lineWidth = 5;
-    this.ctx.strokeStyle = 'white';
-    this.ctx.strokeText(text, 5, 12);
-    this.ctx.fillStyle = 'black';
-    this.ctx.fillText(text, 5, 12);
-
-    this.ctx.lineWidth = 1;
+    renderText(this.ctx, 'fps: ' + this.fps.fps, this.position.x, this.position.y);
   }
 
 }

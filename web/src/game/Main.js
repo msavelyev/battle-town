@@ -6,6 +6,8 @@ import MessageType from '../../../lib/src/proto/MessageType.js';
 import Input from './Input.js';
 import EventType from '../../../lib/src/proto/EventType.js';
 
+const UI_WIDTH = 150;
+
 export default class Main {
 
   constructor(canvas, sprites) {
@@ -45,7 +47,7 @@ export default class Main {
   }
 
   init(conf) {
-    this.canvas.width = conf.world.width;
+    this.canvas.width = conf.world.width + UI_WIDTH;
     this.canvas.height = conf.world.height;
 
     const ctx = this.canvas.getContext('2d');

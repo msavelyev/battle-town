@@ -13,6 +13,8 @@ import NetMessage from '../../../lib/src/proto/NetMessage.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
 import TickRenderer from './renderer/TickRenderer.js';
 import increaseTick from '../../../lib/src/util/increaseTick.js';
+import Point from '../../../lib/src/Point.js';
+import {OFFSET_Y} from './renderer/text.js';
 
 export default class Game {
 
@@ -32,10 +34,15 @@ export default class Game {
       new BulletRenderer(ctx, this.world, sprites),
       new TankRenderer(ctx, this.world, sprites),
       new JungleRenderer(ctx, this.world, sprites),
-      new PingRenderer(ctx, this.client),
-      new FpsRenderer(ctx),
-      new ScoreRenderer(ctx, this.world),
-      new TickRenderer(ctx, this.world, this.client)
+      new PingRenderer(ctx, new Point(this.world.width, this.world.height - 3), this.client),
+      new FpsRenderer(ctx, new Point(this.world.width, this.world.height - 3 - OFFSET_Y)),
+      new ScoreRenderer(ctx, this.world, new Point(this.world.width, 12)),
+      new TickRenderer(
+        ctx,
+        this.world,
+        this.client,
+        new Point(this.world.width, this.world.height - 3 - OFFSET_Y * 2)
+      )
     ];
 
     this.moving = false;

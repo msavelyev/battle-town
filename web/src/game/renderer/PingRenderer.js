@@ -1,9 +1,11 @@
 import MessageType from '../../../../lib/src/proto/MessageType.js';
+import {renderText} from './text.js';
 
 export default class PingRenderer {
 
-  constructor(ctx, client) {
+  constructor(ctx, position, client) {
     this.ctx = ctx;
+    this.position = position;
     this.latency = -1;
     this.lastPing = new Date();
     this.timeout = null;
@@ -20,17 +22,7 @@ export default class PingRenderer {
   }
 
   update() {
-    const text = 'ping: ' + this.latency + 'ms';
-
-    this.ctx.font = '15px monospace';
-
-    this.ctx.lineWidth = 5;
-    this.ctx.strokeStyle = 'white';
-    this.ctx.strokeText(text, 5, 27);
-    this.ctx.fillStyle = 'black';
-    this.ctx.fillText(text, 5, 27);
-
-    this.ctx.lineWidth = 1;
+    renderText(this.ctx, 'ping: ' + this.latency + 'ms', this.position.x, this.position.y);
   }
 
   pong() {
