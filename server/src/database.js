@@ -98,7 +98,7 @@ async function leaderboard(db, id) {
     `
       SELECT
         id,
-        RANK() OVER (ORDER BY points DESC) AS rank,
+        ROW_NUMBER() OVER (ORDER BY points DESC) AS rank,
         name,
         points
       FROM users
@@ -114,7 +114,7 @@ async function leaderboard(db, id) {
       SELECT * FROM (
         SELECT
           id,
-          RANK() OVER (ORDER BY points DESC) AS rank,
+          ROW_NUMBER() OVER (ORDER BY points DESC) AS rank,
           name,
           points
         FROM users
