@@ -54,6 +54,45 @@ export async function init(filename, expressApp) {
 
     await res.json(top);
   }));
+
+  expressApp.post('/api/update', handleErrors(async (req, res) => {
+    const user = req.body;
+    const name = user.name.trim();
+    const id = user.id;
+    const token = user.token;
+
+    if (!username.validate(user.name)) {
+      return await res.status(400)
+        .json({
+          success: false,
+          msg: 'Username length should be between 2 and 32 characters'
+        });
+    }
+
+    try {
+      const updated = await database.updateUser(db, id, token, name);
+      if (updated) {
+        return await res.json({
+          success: true,
+          user: {
+            id,
+            token,
+            name
+          }
+        });
+      } else {
+        return await res.status(400).json({
+          success: false,
+          msg: 'Something went wrong'
+        });
+      }
+    } catch (e) {
+      return await res.json({
+        success: false,
+        msg: 'Username is already taken'
+      })
+    }
+  }));
 }
 
 export default Object.freeze({

@@ -10,7 +10,6 @@
     <style>
         * {
             margin: 0;
-            border: 0;
             padding: 0
         }
 
@@ -29,17 +28,22 @@
             align-items: center;
             height: 100%;
         }
+
+        #overlay {
+            position: relative;
+        }
     </style>
 
     <link rel="preload" href="sprites-new.png" as="image" id="sprites" />
 </head>
 <body>
-    <div id="disconnected">
+    <div id="disconnected" style="display: none">
         <h1>Connecting</h1>
     </div>
     <div id="connected" class="inactive">
         <canvas id="canvas"></canvas>
     </div>
+    <div id="overlay"></div>
 
     <script src="../src/index.js"></script>
 </body>

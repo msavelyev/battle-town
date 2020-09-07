@@ -4,32 +4,31 @@ import util from 'util';
 
 const fileExists = util.promisify(fs.exists);
 
-function fetchOne(db, query, params) {
-  return new Promise((resolve, reject) => {
-    db.get(query, params, (err, row) => {
-      if (err) {
-        return reject(err);
-      }
+const dbGet =
 
-      return resolve(row);
-    });
-  });
+function dbGet(db, query, params) {
+  return util.promisify(db.get.bind(db))(query, params);
 }
 
-function fetchAll(db, query, params) {
+function dbAll(db, query, params) {
+  return util.promisify(db.all.bind(db))(query, params);
+}
+
+function dbRun(db, query, params) {
   return new Promise((resolve, reject) => {
-    db.all(query, params, (err, row) => {
+    db.run(query, params, function (err) {
       if (err) {
         return reject(err);
       }
 
-      return resolve(row);
+      resolve(this.changes);
     });
   });
+
 }
 
 async function init(db) {
-  await db.run(`
+  await dbRun(db, `
     CREATE TABLE users
     (
       id     TEXT   NOT NULL PRIMARY KEY,
@@ -39,7 +38,7 @@ async function init(db) {
     );
   `);
 
-  await db.run(`
+  await dbRun(db, `
     INSERT INTO users (id, name, token, points)
     VALUES
       ('user#1', 'user#1', 'user#1', 1000),
@@ -66,7 +65,7 @@ async function open(filename) {
 }
 
 async function createUser(db, uuid, name, token) {
-  await db.run(`
+  await dbRun(db, `
     INSERT INTO users (id, name, token)
     VALUES ($id, $name, $token)
   `, {
@@ -83,7 +82,7 @@ async function createUser(db, uuid, name, token) {
 }
 
 async function findUser(db, uuid, token) {
-  return await fetchOne(
+  return await dbGet(
     db,
     'SELECT * FROM users WHERE id = $id AND token = $token',
     {
@@ -94,7 +93,7 @@ async function findUser(db, uuid, token) {
 }
 
 async function leaderboard(db, id) {
-  const top = await fetchAll(
+  const top = await dbAll(
     db,
     `
       SELECT
@@ -109,7 +108,7 @@ async function leaderboard(db, id) {
   );
 
   if (!top.find(item => item.id === id)) {
-    const you = await fetchOne(
+    const you = await dbGet(
       db,
       `
       SELECT * FROM (
@@ -130,9 +129,23 @@ async function leaderboard(db, id) {
   return top;
 }
 
+async function updateUser(db, id, token, name) {
+  const updated = await dbRun(db, `
+    UPDATE users SET name = $name
+    WHERE id = $id AND token = $token
+  `, {
+    $id: id,
+    $token: token,
+    $name: name
+  });
+
+  return updated === 1;
+}
+
 export default Object.freeze({
   open,
   createUser,
   findUser,
-  leaderboard
+  leaderboard,
+  updateUser
 });
