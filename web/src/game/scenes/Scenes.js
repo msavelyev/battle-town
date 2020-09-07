@@ -24,7 +24,7 @@ export default class Scenes {
     if (err) {
       alert(`
         Something went really wrong.
-        Please contact michael.savelyev@gmail.com if the problem persists.
+        Please contact misha@tsbaw.com if the problem persists.
         ---------------------------
         Error:
         ${err}
