@@ -12,11 +12,20 @@ export default class ScoreRenderer {
     let offset = 0;
 
     for (let [id, score] of Object.entries(this.world.score)) {
-      const text = `${id.substr(0, 8)}: ${score}`;
+      const tank = this.world.findTank(id);
+      const text = `${this.trimName(tank.name)}: ${score}`;
 
       renderText(this.ctx, text, this.position.x, this.position.y + offset);
 
       offset += OFFSET_Y;
+    }
+  }
+
+  trimName(name) {
+    if (name.length <= 13) {
+      return name;
+    } else {
+      return name.substr(0, 12) + '…';
     }
   }
 

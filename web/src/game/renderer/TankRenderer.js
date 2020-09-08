@@ -28,7 +28,7 @@ export default class TankRenderer {
 
     ctx.textAlign = 'center';
     ctx.font = '8pt Helvetica'
-    ctx.fillText(tank.id.substr(0, 8), 0, -20);
+    ctx.fillText(tank.name, 0, -20);
     ctx.textAlign = 'left';
 
     ctx.rotate(Direction.angle(tank.direction) * Math.PI / 180);

@@ -4,6 +4,7 @@ import GameScene from './game/scenes/GameScene.js';
 import Scenes from './game/scenes/Scenes.js';
 import Matchmaking from './game/scenes/Matchmaking.js';
 import Disconnected from './game/scenes/Disconnected.js';
+import userStorage from './game/userStorage.js';
 
 window.addEventListener('load', () => {
   const spritesImg = new Image();
