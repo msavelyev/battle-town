@@ -1,5 +1,5 @@
 
-const host = process.env.SERVER_HOST || window.location.origin;
+const host = process.env.SERVER_API_HOST || window.location.origin;
 
 function url(path) {
   return host + path;

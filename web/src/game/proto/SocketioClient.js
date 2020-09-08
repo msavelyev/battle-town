@@ -8,7 +8,7 @@ export default class SocketioClient extends NetClient {
   constructor() {
     super();
 
-    this.socket = io(process.env.SERVER_HOST, { autoConnect: false });
+    this.socket = io(process.env.SERVER_WS_HOST, { autoConnect: false });
     this.lastTick = -1;
   }
 
