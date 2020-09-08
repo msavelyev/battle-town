@@ -13,6 +13,9 @@ export default class ScoreRenderer {
 
     for (let [id, score] of Object.entries(this.world.score)) {
       const tank = this.world.findTank(id);
+      if (!tank) {
+        continue;
+      }
       const text = `${this.trimName(tank.name)}: ${score}`;
 
       renderText(this.ctx, text, this.position.x, this.position.y + offset);

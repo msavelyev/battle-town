@@ -32,7 +32,7 @@ export default class Game {
       new BrickRenderer(ctx, this.world, sprites),
       new WaterRenderer(ctx, this.world, sprites),
       new BulletRenderer(ctx, this.world, sprites),
-      new TankRenderer(ctx, this.world, sprites),
+      new TankRenderer(ctx, this.id, this.world, sprites),
       new JungleRenderer(ctx, this.world, sprites),
       new PingRenderer(ctx, new Point(this.world.width, this.world.height - 3), this.client),
       new FpsRenderer(ctx, new Point(this.world.width, this.world.height - 3 - OFFSET_Y)),

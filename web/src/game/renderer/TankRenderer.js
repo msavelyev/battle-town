@@ -3,8 +3,9 @@ import Direction from '../../../../lib/src/Direction.js';
 
 export default class TankRenderer {
 
-  constructor(ctx, world, sprites) {
+  constructor(ctx, id, world, sprites) {
     this.ctx = ctx;
+    this.id = id;
     this.world = world;
     this.sprites = sprites;
   }
@@ -22,7 +23,7 @@ export default class TankRenderer {
     const y = tank.position.y;
     const size = tank.size * Entity.BLOCK_SIZE;
 
-    ctx.fillStyle = tank.color;
+    ctx.fillStyle = tank.id === this.id ? 'yellow' : 'red';
     ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
     ctx.transform(1, 0, 0, 1, size / 2, size / 2);
 
