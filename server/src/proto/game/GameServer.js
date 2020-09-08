@@ -1,31 +1,32 @@
 import {v4 as uuid} from 'uuid';
 
 import * as process from 'process';
-
-import Configuration from '../../../../lib/src/Configuration.js';
-import Direction from '../../../../lib/src/Direction.js';
-import Point from '../../../../lib/src/Point.js';
 import randomColor from '../../../../lib/src/randomColor.js';
 import Tank from '../../../../lib/src/Tank.js';
 import Fps from '../../../../lib/src/util/Fps.js';
 import Player from './Player.js';
 import Room from './Room.js';
-import MessageType from '../../../../lib/src/proto/MessageType.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
-import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import database from '../../database.js';
+import NetMessage from '../../../../lib/src/proto/NetMessage.js';
+import MessageType from '../../../../lib/src/proto/MessageType.js';
+import Configuration from '../../../../lib/src/Configuration.js';
 
 export default class GameServer {
 
   constructor(server, ticker, db) {
     this.fps = new Fps();
     this.rooms = [];
-    this.players = [];
     this.server = server;
     this.ticker = ticker;
     this.db = db;
 
+    this.queue = [];
+
     this.init();
+
+    this.printFpsInterval = null;
+    this.matchmakingInterval = null;
   }
 
   init() {
@@ -33,23 +34,11 @@ export default class GameServer {
 
     this.server.start();
 
-    setInterval(this.printFps.bind(this), 1000);
+    this.printFpsInterval = setInterval(this.printFps.bind(this), 1000);
+    this.matchmakingInterval = setInterval(this.matchmake.bind(this), 1000);
   }
 
-  addPlayer(player) {
-    this.players.push(player);
-  }
-
-  removePlayer(player) {
-    this.players = this.players.filter(p => p !== player);
-  }
-
-  findRoom() {
-    const result = this.rooms.find(room => !room.isFull());
-    if (result) {
-      return result;
-    }
-
+  createRoom() {
     const id = uuid();
     const room = new Room(id, this.ticker);
     console.log('created room', id);
@@ -58,74 +47,94 @@ export default class GameServer {
     return room;
   }
 
-  removeFromRoom(room, player) {
-    room.remove(player);
-    if (room.isEmpty()) {
-      console.log('removing room', room.id);
-      room.stop();
-      this.rooms = this.rooms.filter(r => r !== room);
+  matchmake() {
+    while (this.queue.length >= 2) {
+      const players = this.queue.slice(0, 2);
+      this.queue = this.queue.slice(2);
+
+      console.log('matchmaking players', players.map(p => p.user.id));
+
+      for (let player of players) {
+        player.client.send(EventType.MATCH_FOUND);
+        player.onDisconnect();
+      }
+
+      setTimeout(this.createMatch(players), 1000);
     }
   }
 
-  findPlayer(id) {
-    return this.players.find(player => player.id === id);
+  createMatch(players) {
+    return () => {
+      const room = this.createRoom();
+      const world = room.lastWorld();
+      for (let player of players) {
+        const client = player.client;
+        const user = player.user;
+
+        room.add(player);
+
+        client.sendMessage(
+          new NetMessage(user.id, this.ticker.tick, MessageType.INIT, new Configuration(user.id, world))
+        );
+        const tank = world.placeTank(new Tank(user.id, null, randomColor(), null, false));
+        world.addTank(tank);
+
+        client.on(EventType.MESSAGE, netMessage => {
+          room.handleEvent(client, netMessage);
+        });
+
+        player.onDisconnect(() => {
+          console.log('disconnected from match', user.id);
+          room.remove(player);
+        });
+      }
+    };
   }
 
-  clientConnected(client) {
-    const id = uuid();
-    console.log('connected', id);
+  authorizePlayer(player, user) {
+    const client = player.client;
+    player.user = user;
 
-    const player = new Player(id, client);
-    this.addPlayer(player);
+    console.log('authorized', user.id);
+    client.send(EventType.AUTH_ACK);
+    this.queue.push(player);
 
-    const room = this.findRoom();
-    room.add(player);
+    player.onDisconnect(() => {
+      console.log('disconnected from queue', user.id);
+      this.queue = this.queue.filter(p => p !== player);
+    });
+  }
 
-    const world = room.lastWorld();
+  onPlayerAuth(player) {
+    const client = player.client;
 
-    let tank = new Tank(id, new Point(2, 2), randomColor(), Direction.UP, false);
-    tank = world.placeTank(tank);
-
-    client.on(EventType.AUTH, auth => {
+    return auth => {
       const userId = auth.id;
       const token = auth.token;
 
       database.findUser(this.db, userId, token)
         .then(user => {
           if (user) {
-            client.send(EventType.AUTH_ACK);
-
-            setTimeout(() => {
-              client.send(EventType.MATCH_FOUND);
-
-              setTimeout(() => {
-                const world = room.lastWorld();
-                client.sendMessage(new NetMessage(id, this.ticker.tick, MessageType.INIT, new Configuration(id, world)));
-                world.addTank(tank);
-              }, 100);
-            }, 100);
+            this.authorizePlayer(player, user);
           } else {
-            client.disconnect();
+            throw new Error('Nothing found');
           }
         })
         .catch(err => {
-          console.log('trying to find user', id, token, err);
+          console.log('Couldn\'t find user', userId, token, err);
           client.disconnect();
+        })
+        .then(() => {
+          player.onAuth();
         });
-    });
+    };
+  }
 
-    client.on(EventType.MESSAGE, netMessage => {
-      room.handleEvent(client, netMessage);
-    });
+  clientConnected(client) {
+    const player = new Player(client);
+    console.log('connected');
 
-    client.on(EventType.DISCONNECT, () => {
-      console.log('disconnected');
-
-      room.lastWorld().removeTank(id, true);
-
-      this.removePlayer(player);
-      this.removeFromRoom(room, player);
-    });
+    player.onAuth(this.onPlayerAuth(player));
   }
 
   update(event) {
@@ -135,6 +144,11 @@ export default class GameServer {
 
   printFps() {
     process.stdout.write(`FPS:${this.fps.fps}, tick:${this.ticker.tick}\r`);
+  }
+
+  stop() {
+    clearInterval(this.printFpsInterval);
+    clearInterval(this.matchmakingInterval);
   }
 
 }

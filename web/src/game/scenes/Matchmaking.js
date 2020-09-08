@@ -84,7 +84,7 @@ export default class Matchmaking extends Scene {
   }
 
   stepSettingUp() {
-    this.setStatusText('Setting match up');
+    this.setStatusText('Match found, setting it up');
 
     this.client.onMessage(MessageType.INIT, conf => {
       this.onFinishCb(null, {

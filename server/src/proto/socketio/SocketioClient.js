@@ -38,6 +38,10 @@ export default class SocketioClient extends NetClient {
     this.socket.on(eventType, cb);
   }
 
+  off(eventType, cb) {
+    this.socket.off(eventType, cb);
+  }
+
   onMessage(messageType, cb) {
     if (cb) {
       this.callbacks[messageType] = this.delayedCb(messageType, cb);
