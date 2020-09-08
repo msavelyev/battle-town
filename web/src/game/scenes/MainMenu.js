@@ -7,9 +7,13 @@ export default class MainMenu extends Scene {
   constructor(overlay) {
     super();
     this.overlay = overlay;
+
+    this.onStart = null;
   }
 
   setup(data) {
+    this.data = data;
+
     this.overlay.innerHTML = `
       <style>
         .mainMenu__container {
@@ -134,7 +138,18 @@ export default class MainMenu extends Scene {
     const nameInput = document.getElementById('mainMenu__input');
     const startButton = document.getElementById('mainMenu__start');
 
-    startButton.addEventListener('click', event => {
+    this.onStart = this.start(nameInput, startButton, data);
+
+    startButton.addEventListener('click', this.onStart);
+    window.addEventListener('keydown', this.onStart);
+  }
+
+  start(nameInput, startButton, data) {
+    return event => {
+      if (event.type === 'keydown' && event.code !== 'Enter') {
+        return;
+      }
+
       startButton.disabled = true;
 
       const newName = nameInput.value;
@@ -151,14 +166,14 @@ export default class MainMenu extends Scene {
             return this.onFinishCb(null, result.user);
           } else {
             alert(`
-              Couldn't change username:
-              ${result.msg}
-            `);
+            Couldn't change username:
+            ${result.msg}
+          `);
           }
         });
 
       event.preventDefault();
-    });
+    };
   }
 
   leaderboard(data) {
@@ -192,5 +207,9 @@ export default class MainMenu extends Scene {
 
   teardown() {
     this.overlay.innerHTML = '';
+
+    window.removeEventListener('keydown', this.onStart);
+
+    this.onStart = null;
   }
 }

@@ -10,6 +10,9 @@ export default class GameScene extends Scene {
     this.spritesImg = spritesImg;
 
     this.main = null;
+    this.onKeydown = null;
+    this.onKeyup = null;
+    this.onDisconnect = null;
   }
 
   setup(params) {
@@ -23,9 +26,13 @@ export default class GameScene extends Scene {
     sprites.init(() => {
       this.main = new Main(canvas, sprites, client);
 
-      document.addEventListener('keydown', this.main.keydown.bind(this.main));
-      document.addEventListener('keyup', this.main.keyup.bind(this.main));
-      window.addEventListener('beforeunload', this.main.disconnect.bind(this.main));
+      this.onKeydown = this.main.keydown.bind(this.main);
+      this.onKeyup = this.main.keyup.bind(this.main);
+      this.onDisconnect = this.main.disconnect.bind(this.main);
+
+      document.addEventListener('keydown', this.onKeydown);
+      document.addEventListener('keyup', this.onKeyup);
+      window.addEventListener('beforeunload', this.onDisconnect);
 
       this.main.init(conf);
       this.main.start();
@@ -35,10 +42,15 @@ export default class GameScene extends Scene {
   teardown() {
     this.overlay.innerHTML = '';
 
-    document.removeEventListener('keydown', this.main.keydown);
-    document.removeEventListener('keyup', this.main.keyup);
-    window.removeEventListener('beforeunload', this.main.disconnect);
+    document.removeEventListener('keydown', this.onKeydown);
+    document.removeEventListener('keyup', this.onKeyup);
+    window.removeEventListener('beforeunload', this.onDisconnect);
 
     this.main.stop();
+
+    this.onKeydown = null;
+    this.onKeyup = null;
+    this.onDisconnect = null;
+    this.main = null;
   }
 }

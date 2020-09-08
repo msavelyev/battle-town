@@ -2,14 +2,16 @@ import userStorage from '../userStorage.js';
 import api from '../api.js';
 import Scene from './Scene.js';
 
+const BASIC_TEXT = 'Loading';
+
 export default class Loading extends Scene {
 
   constructor(overlay) {
     super();
     this.overlay = overlay;
-    this.interval = null;
+
     this.dots = 0;
-    this.basicText = 'Loading';
+    this.interval = null;
   }
 
   setup() {
@@ -21,7 +23,7 @@ export default class Loading extends Scene {
             font-size: 300%; 
         }
       </style>
-      <h1 id="loading__text">${this.basicText}</h1>
+      <h1 id="loading__text">${BASIC_TEXT}</h1>
     `;
 
     const text = document.getElementById('loading__text');
@@ -45,13 +47,16 @@ export default class Loading extends Scene {
         this.dots = 0;
       }
 
-      text.innerText = this.basicText + '.'.repeat(this.dots);
+      text.innerText = BASIC_TEXT + '.'.repeat(this.dots);
     };
   }
 
   teardown() {
-    clearInterval(this.interval);
     this.overlay.innerHTML = '';
+
+    clearInterval(this.interval);
+    this.interval = null;
+    this.dots = 0;
   }
 
 }

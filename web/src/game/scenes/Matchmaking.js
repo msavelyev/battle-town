@@ -49,7 +49,7 @@ export default class Matchmaking extends Scene {
     `;
 
     const timer = document.getElementById('matchmaking__timer');
-    setInterval(this.updateTimer(timer), 1000);
+    this.interval = setInterval(this.updateTimer(timer), 1000);
 
     this.status = document.getElementById('matchmaking__status');
     this.stepConnect();
@@ -120,6 +120,11 @@ export default class Matchmaking extends Scene {
     this.overlay.innerHTML = '';
 
     clearInterval(this.interval);
+
+    this.interval = null;
+    this.startTime = null;
+    this.status = null;
+    this.user = null;
   }
 
 }
