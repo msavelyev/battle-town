@@ -70,7 +70,7 @@ export default class Room {
 
   add(player) {
     this.players.push(player);
-    console.log('added player', player.id, 'to room', this.id);
+    console.log('added player', player.user.id, 'to room', this.id);
   }
 
   remove(player) {
@@ -83,7 +83,7 @@ export default class Room {
     }
 
     this.players.forEach(player => {
-      player.client.sendMessage(new NetMessage(player.id, tick, name, data));
+      player.client.sendMessage(new NetMessage(player.user.id, tick, name, data));
     });
   }
 
