@@ -75,6 +75,8 @@ export default class Room {
 
   remove(player) {
     this.players = this.players.filter(p => p !== player);
+    this.lastWorld().removeTank(player.user.id, true);
+    this.broadcast(MessageType.DISCONNECTED, player.user.id);
   }
 
   broadcast(name, data, tick) {
