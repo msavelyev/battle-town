@@ -16,18 +16,22 @@ export default class SocketioClient extends NetClient {
     this.socket.on(EventType.MESSAGE, this.handleMessage.bind(this));
   }
 
-  send(netMessage) {
+  sendMessage(netMessage) {
+    this.send(EventType.MESSAGE, netMessage);
+  }
+
+  send(eventType, payload) {
     if (this.lag) {
       setTimeout(() => {
-        this.sendImmediately(netMessage);
+        this.sendImmediately(eventType, payload);
       }, 150);
     } else {
-      this.sendImmediately(netMessage);
+      this.sendImmediately(eventType, payload);
     }
   }
 
-  sendImmediately(netMessage) {
-    this.socket.emit(EventType.MESSAGE, netMessage);
+  sendImmediately(eventType, payload) {
+    this.socket.emit(eventType, payload);
   }
 
   on(eventType, cb) {

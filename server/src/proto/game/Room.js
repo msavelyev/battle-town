@@ -83,7 +83,7 @@ export default class Room {
     }
 
     this.players.forEach(player => {
-      player.client.send(new NetMessage(player.id, tick, name, data));
+      player.client.sendMessage(new NetMessage(player.id, tick, name, data));
     });
   }
 
@@ -118,7 +118,7 @@ export default class Room {
         this.queue.push(netMessage);
         break;
       case MessageType.PING:
-        client.send(new NetMessage(null, this.ticker.tick, MessageType.PING));
+        client.sendMessage(new NetMessage(null, this.ticker.tick, MessageType.PING));
         break;
       default:
         console.error('Unknown message', netMessage);

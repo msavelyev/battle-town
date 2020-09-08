@@ -96,7 +96,7 @@ export default class Game {
 
   handleEvent(netMessage) {
     if (this.world.handleEvent(netMessage)) {
-      this.client.send(netMessage);
+      this.client.sendNetMessage(netMessage);
       this.world.addUnackedMessage(netMessage);
       return true;
     }

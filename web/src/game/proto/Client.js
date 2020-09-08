@@ -37,12 +37,16 @@ export default class Client {
     }
   }
 
-  send(netMessage) {
-    this.netClient.sendMessage(netMessage);
+  sendNetMessage(netMessage) {
+    this.netClient.sendNetMessage(netMessage);
+  }
+
+  sendEvent(eventType, payload) {
+    this.netClient.sendEvent(eventType, payload);
   }
 
   ping() {
-    this.netClient.send(MessageType.PING);
+    this.netClient.sendMessage(MessageType.PING);
   }
 
 }
