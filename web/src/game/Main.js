@@ -1,7 +1,5 @@
 import Game from './Game.js';
-import Client from './proto/Client.js';
 import Ticker from '../../../lib/src/Ticker.js';
-import SocketioClient from './proto/SocketioClient.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
 import Input from './Input.js';
 import EventType from '../../../lib/src/proto/EventType.js';
@@ -10,9 +8,8 @@ const UI_WIDTH = 150;
 
 export default class Main {
 
-  constructor(canvas, sprites) {
-    this.client = new Client(new SocketioClient());
-    this.client.onMessage(MessageType.INIT, this.init.bind(this));
+  constructor(canvas, sprites, client) {
+    this.client = client;
 
     this.canvas = canvas;
     this.sprites = sprites;
@@ -25,28 +22,9 @@ export default class Main {
     this.client.connect();
   }
 
-  onConnect(cb) {
-    this.client.on(EventType.CONNECT, cb);
-  }
-
-  onDisconnect(cb) {
-    this.client.on(EventType.DISCONNECT, () => {
-      cb();
-
-      this.client.onMessage(MessageType.PING);
-
-      if (this.game) {
-        this.game.stop();
-      }
-      this.game = null;
-      if (this.ticker) {
-        this.ticker.stop();
-      }
-      this.ticker = null;
-    });
-  }
-
   init(conf) {
+    this.client.on(EventType.DISCONNECT, this.stop.bind(this));
+
     this.canvas.width = conf.world.width + UI_WIDTH;
     this.canvas.height = conf.world.height;
 
@@ -77,6 +55,19 @@ export default class Main {
 
   disconnect() {
     this.client.disconnect();
+  }
+
+  stop() {
+    this.client.onMessage(MessageType.PING);
+
+    if (this.game) {
+      this.game.stop();
+    }
+    this.game = null;
+    if (this.ticker) {
+      this.ticker.stop();
+    }
+    this.ticker = null;
   }
 
 }

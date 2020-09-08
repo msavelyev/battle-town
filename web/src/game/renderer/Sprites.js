@@ -1,12 +1,31 @@
 
 export default class Sprites {
   constructor(img) {
-    createImageBitmap(img, 0, 32, 32, 32).then(img => {this.tank = img});
-    createImageBitmap(img, 80, 16, 16, 16).then(img => {this.brick = img});
-    createImageBitmap(img, 80, 0, 16, 16).then(img => {this.stone = img});
-    createImageBitmap(img, 96, 0, 16, 16).then(img => {this.jungle = img});
-    createImageBitmap(img, 0, 16, 16, 16).then(img => {this.water1 = img});
-    createImageBitmap(img, 16, 16, 16, 16).then(img => {this.water2 = img});
-    createImageBitmap(img, 32, 16, 8, 8).then(img => {this.bullet = img});
+    this.img = img;
+    this.imagesToLoad = 0;
+  }
+
+  init(cb) {
+    this.createSprite(0, 32, 32, 32, 'tank', cb);
+    this.createSprite(80, 16, 16, 16, 'brick', cb);
+    this.createSprite(80, 0, 16, 16, 'stone', cb);
+    this.createSprite(96, 0, 16, 16, 'jungle', cb);
+    this.createSprite(0, 16, 16, 16, 'water1', cb);
+    this.createSprite(16, 16, 16, 16, 'water2', cb);
+    this.createSprite(32, 16, 8, 8, 'bullet', cb);
+  }
+
+  createSprite(sx, sy, sw, sh, name, cb) {
+    this.imagesToLoad++;
+
+    createImageBitmap(this.img, sx, sy, sw, sh)
+      .then(img => {
+        this.imagesToLoad--;
+        this[name] = img;
+
+        if (this.imagesToLoad === 0) {
+          cb();
+        }
+      });
   }
 }

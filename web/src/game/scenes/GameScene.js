@@ -6,38 +6,39 @@ export default class GameScene extends Scene {
 
   constructor(overlay, spritesImg) {
     super();
+    this.overlay = overlay;
     this.spritesImg = spritesImg;
+
+    this.main = null;
   }
 
-  setup() {
+  setup(params) {
+    const client = params.client;
+    const conf = params.conf;
+
     this.overlay.innerHTML = '<canvas id="canvas"></canvas>';
     const canvas = document.getElementById('canvas');
 
-    const main = new Main(canvas, new Sprites(this.spritesImg));
-    main.onConnect(() => {
-      document.getElementById('connected').classList.remove('inactive');
-      document.getElementById('disconnected').classList.add('inactive');
-    });
-    main.onDisconnect(() => {
-      document.getElementById('connected').classList.add('inactive');
-      document.getElementById('disconnected').classList.remove('inactive');
-    });
+    const sprites = new Sprites(this.spritesImg);
+    sprites.init(() => {
+      this.main = new Main(canvas, sprites, client);
 
-    document.addEventListener('keydown', event => {
-      main.keydown(event);
-    });
+      document.addEventListener('keydown', this.main.keydown.bind(this.main));
+      document.addEventListener('keyup', this.main.keyup.bind(this.main));
+      window.addEventListener('beforeunload', this.main.disconnect.bind(this.main));
 
-    document.addEventListener('keyup', event => {
-      main.keyup(event);
+      this.main.init(conf);
+      this.main.start();
     });
-
-    window.addEventListener('beforeunload', () => {
-      main.disconnect();
-    });
-
-    main.start();
   }
 
   teardown() {
+    this.overlay.innerHTML = '';
+
+    document.removeEventListener('keydown', this.main.keydown);
+    document.removeEventListener('keyup', this.main.keyup);
+    window.removeEventListener('beforeunload', this.main.disconnect);
+
+    this.main.stop();
   }
 }
