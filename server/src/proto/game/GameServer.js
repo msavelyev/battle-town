@@ -16,12 +16,13 @@ import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 
 export default class GameServer {
 
-  constructor(server, ticker) {
+  constructor(server, ticker, db) {
     this.fps = new Fps();
     this.rooms = [];
     this.players = [];
     this.server = server;
     this.ticker = ticker;
+    this.db = db;
 
     this.init();
   }

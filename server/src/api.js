@@ -15,10 +15,8 @@ function handleErrors(fn) {
   };
 }
 
-export async function init(filename, expressApp) {
+export async function init(db, expressApp) {
   expressApp.use(express.json());
-
-  const db = await database.open(filename);
 
   expressApp.use(async (err, req, res, next) => {
     console.log('huh?');

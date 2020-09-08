@@ -6,6 +6,7 @@ import { performance } from 'perf_hooks';
 import SocketioServer from './proto/socketio/SocketioServer.js';
 import Ticker from '../../lib/src/Ticker.js';
 import api from './api.js';
+import database from './database.js';
 
 const app = express();
 const server = http.createServer(app);
@@ -18,10 +19,11 @@ async function main() {
     throw new Error('DB_PATH env variable must be specified');
   }
 
-  await api.init(dbPath, app);
+  const db = await database.open(dbPath);
+  await api.init(db, app);
 
   const ticker = new Ticker(setInterval, performance.now);
-  const gameServer = new GameServer(new SocketioServer(server, ticker), ticker);
+  const gameServer = new GameServer(new SocketioServer(server, ticker), ticker, db);
   ticker.start(gameServer);
 
   const port = process.env.PORT || 8080;
