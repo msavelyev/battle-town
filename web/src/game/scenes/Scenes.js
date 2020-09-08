@@ -15,6 +15,10 @@ export default class Scenes {
   }
 
   setupScene(data) {
+    if (this.sceneIdx >= this.scenes.length) {
+      this.sceneIdx = 0;
+    }
+
     this.scene = this.scenes[this.sceneIdx];
     this.scene.onFinish(this.onFinish.bind(this));
     console.log('setting up scene', this.scene.constructor.name);
