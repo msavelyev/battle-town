@@ -15,6 +15,7 @@ export default class Input {
 
     switch (event.code) {
       case 'Space':
+      case 'KeyK':
         this.game.shoot();
         break;
     }
@@ -35,12 +36,16 @@ export default class Input {
   keyToDirection(keyCode) {
     switch (keyCode) {
       case 'ArrowUp':
+      case 'KeyW':
         return Direction.UP;
       case 'ArrowDown':
+      case 'KeyS':
         return Direction.DOWN;
       case 'ArrowLeft':
+      case 'KeyA':
         return Direction.LEFT;
       case 'ArrowRight':
+      case 'KeyD':
         return Direction.RIGHT;
     }
 
