@@ -16,7 +16,10 @@ window.addEventListener('load', () => {
       new GameScene(overlay, spritesImg)
     ]);
 
-    scenes.start();
+    scenes.start(
+      Loading,
+      {}
+    );
   });
   spritesImg.src = document.getElementById('sprites').href;
 });
