@@ -50,50 +50,51 @@ async function init(db) {
   `);
 }
 
-async function open(filename) {
-  const alreadyCreated = await fileExists(filename);
+export default {
+  open: async function open(filename) {
+    const alreadyCreated = await fileExists(filename);
 
-  const db = new sqlite3.Database(filename);
+    const db = new sqlite3.Database(filename);
 
-  if (!alreadyCreated) {
-    await init(db);
-  }
+    if (!alreadyCreated) {
+      await init(db);
+    }
 
-  return db;
-}
+    return db;
+  },
 
-async function createUser(db, uuid, name, token) {
-  await dbRun(db, `
+  createUser: async function createUser(db, uuid, name, token) {
+    await dbRun(db, `
     INSERT INTO users (id, name, token)
     VALUES ($id, $name, $token)
   `, {
-    $id: uuid,
-    $name: name,
-    $token: token
-  });
-
-  return {
-    id: uuid,
-    name: name,
-    token: token
-  };
-}
-
-async function findUser(db, uuid, token) {
-  return await dbGet(
-    db,
-    'SELECT * FROM users WHERE id = $id AND token = $token',
-    {
       $id: uuid,
+      $name: name,
       $token: token
-    }
-  );
-}
+    });
 
-async function leaderboard(db, id) {
-  const top = await dbAll(
-    db,
-    `
+    return {
+      id: uuid,
+      name: name,
+      token: token
+    };
+  },
+
+  findUser: async function findUser(db, uuid, token) {
+    return await dbGet(
+      db,
+      'SELECT * FROM users WHERE id = $id AND token = $token',
+      {
+        $id: uuid,
+        $token: token
+      }
+    );
+  },
+
+  leaderboard: async function leaderboard(db, id) {
+    const top = await dbAll(
+      db,
+      `
       SELECT
         id,
         ROW_NUMBER() OVER (ORDER BY points DESC) AS rank,
@@ -103,12 +104,12 @@ async function leaderboard(db, id) {
       ORDER BY points DESC
       LIMIT 5
     `
-  );
+    );
 
-  if (!top.find(item => item.id === id)) {
-    const you = await dbGet(
-      db,
-      `
+    if (!top.find(item => item.id === id)) {
+      const you = await dbGet(
+        db,
+        `
       SELECT * FROM (
         SELECT
           id,
@@ -118,32 +119,25 @@ async function leaderboard(db, id) {
         FROM users
       ) WHERE id = $id
     `,
-      { $id: id }
-    );
+        { $id: id }
+      );
 
-    top.push(you);
-  }
+      top.push(you);
+    }
 
-  return top;
-}
+    return top;
+  },
 
-async function updateUser(db, id, token, name) {
-  const updated = await dbRun(db, `
+  updateUser: async function updateUser(db, id, token, name) {
+    const updated = await dbRun(db, `
     UPDATE users SET name = $name
     WHERE id = $id AND token = $token
   `, {
-    $id: id,
-    $token: token,
-    $name: name
-  });
+      $id: id,
+      $token: token,
+      $name: name
+    });
 
-  return updated === 1;
-}
-
-export default Object.freeze({
-  open,
-  createUser,
-  findUser,
-  leaderboard,
-  updateUser
-});
+    return updated === 1;
+  }
+};
