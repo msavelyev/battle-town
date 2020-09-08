@@ -63,6 +63,15 @@ export default class GameServer {
     }
   }
 
+  removeFromRoom(room, player) {
+    room.remove(player);
+    if (room.isEmpty()) {
+      console.log('removing room', room.id);
+      room.stop();
+      this.rooms = this.rooms.filter(r => r !== room);
+    }
+  }
+
   createMatch(players) {
     return () => {
       const room = this.createRoom();
@@ -85,7 +94,7 @@ export default class GameServer {
 
         player.onDisconnect(() => {
           console.log('disconnected from match', user.id);
-          room.remove(player);
+          this.removeFromRoom(room, player);
         });
       }
     };
