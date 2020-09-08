@@ -37,6 +37,10 @@ export default class Scenes {
         ${err}
       `);
       console.log(err);
+
+      this.sceneIdx = 0;
+      this.start();
+
       return;
     }
 
