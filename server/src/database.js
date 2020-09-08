@@ -4,8 +4,6 @@ import util from 'util';
 
 const fileExists = util.promisify(fs.exists);
 
-const dbGet =
-
 function dbGet(db, query, params) {
   return util.promisify(db.get.bind(db))(query, params);
 }
