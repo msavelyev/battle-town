@@ -76,7 +76,7 @@ export default class GameServer {
         client.sendMessage(
           new NetMessage(user.id, this.ticker.tick, MessageType.INIT, new Configuration(user.id, world))
         );
-        const tank = world.placeTank(new Tank(user.id, null, randomColor(), null, false));
+        const tank = world.placeTank(new Tank(user.id, null, randomColor(), null));
         world.addTank(tank);
 
         client.on(EventType.MESSAGE, netMessage => {
