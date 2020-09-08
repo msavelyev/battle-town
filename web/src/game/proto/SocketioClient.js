@@ -35,8 +35,8 @@ export default class SocketioClient extends NetClient {
     this.sendEvent(EventType.MESSAGE, netMessage);
   }
 
-  sendMessage(netMessage) {
-    this.socket.emit(EventType.MESSAGE, netMessage);
+  sendEvent(eventType, payload) {
+    this.socket.emit(eventType, payload);
   }
 
   connect() {

@@ -13,6 +13,7 @@ import Room from './Room.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
+import database from '../../database.js';
 
 export default class GameServer {
 
@@ -84,9 +85,34 @@ export default class GameServer {
 
     let tank = new Tank(id, new Point(2, 2), randomColor(), Direction.UP, false);
     tank = world.placeTank(tank);
-    client.send(new NetMessage(id, this.ticker.tick, MessageType.INIT, new Configuration(id, world)));
 
-    world.addTank(tank);
+    client.on(EventType.AUTH, auth => {
+      const userId = auth.id;
+      const token = auth.token;
+
+      database.findUser(this.db, userId, token)
+        .then(user => {
+          if (user) {
+            client.send(EventType.AUTH_ACK);
+
+            setTimeout(() => {
+              client.send(EventType.MATCH_FOUND);
+
+              setTimeout(() => {
+                const world = room.lastWorld();
+                client.sendMessage(new NetMessage(id, this.ticker.tick, MessageType.INIT, new Configuration(id, world)));
+                world.addTank(tank);
+              }, 100);
+            }, 100);
+          } else {
+            client.disconnect();
+          }
+        })
+        .catch(err => {
+          console.log('trying to find user', id, token, err);
+          client.disconnect();
+        });
+    });
 
     client.on(EventType.MESSAGE, netMessage => {
       room.handleEvent(client, netMessage);
