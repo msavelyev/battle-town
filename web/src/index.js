@@ -6,6 +6,10 @@ import Matchmaking from './game/scenes/Matchmaking.js';
 import Disconnected from './game/scenes/Disconnected.js';
 import userStorage from './game/userStorage.js';
 
+import dotenv from '../../lib/src/util/dotenv.js';
+
+dotenv();
+
 window.addEventListener('load', () => {
   const spritesImg = new Image();
   spritesImg.addEventListener('load', () => {

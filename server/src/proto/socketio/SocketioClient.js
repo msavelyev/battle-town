@@ -2,6 +2,7 @@ import process from 'process';
 
 import NetClient from '../base/NetClient.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
+import randomInt from '../../../../lib/src/randomInt.js';
 
 export default class SocketioClient extends NetClient {
 
@@ -9,7 +10,7 @@ export default class SocketioClient extends NetClient {
     super();
     this.socket = socket;
     this.ticker = ticker;
-    this.lag = process.env.WOBC_LAG === 'true';
+    this.lag = process.env.LAG;
 
     this.callbacks = {};
 
@@ -28,7 +29,7 @@ export default class SocketioClient extends NetClient {
     if (this.lag) {
       setTimeout(() => {
         this.sendImmediately(eventType, payload);
-      }, 150);
+      }, this.lagValue());
     } else {
       this.sendImmediately(eventType, payload);
     }
@@ -55,11 +56,12 @@ export default class SocketioClient extends NetClient {
   }
 
   delayedCb(name, cb) {
+    const that = this;
     return function() {
-      if (this.lag) {
+      if (that.lag) {
         setTimeout(() => {
           cb.apply(null, arguments);
-        }, 150);
+        }, that.lagValue());
       } else {
         cb.apply(null, arguments);
       }
@@ -71,6 +73,18 @@ export default class SocketioClient extends NetClient {
     if (this.callbacks[messageType]) {
       this.callbacks[messageType](netMessage);
     }
+  }
+
+  lagValue() {
+    if (!process.env.LAG) {
+      return null;
+    }
+
+    if (process.env.LAG === 'RANDOM') {
+      return randomInt(50, 150);
+    }
+
+    return parseInt(process.env.LAG);
   }
 
 }

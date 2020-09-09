@@ -1,17 +1,16 @@
-const Bundler = require('parcel-bundler');
-const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+import Bundler from 'parcel-bundler';
+import express from 'express';
+import hpm from 'http-proxy-middleware';
 
-const path = require('path');
-
+import path from 'path';
 
 const app = express();
 
-app.use(createProxyMiddleware('/api', {
+app.use(hpm.createProxyMiddleware('/api', {
   target: 'http://localhost:8080'
 }));
 
-const bundle = path.join(__dirname, '../../web/public/index.html');
+const bundle = path.resolve('../web/public/index.html');
 console.log(bundle);
 const bundler = new Bundler(bundle);
 app.use(bundler.middleware());

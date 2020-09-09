@@ -2,8 +2,10 @@ import Block from '../../lib/src/Block.js';
 import BlockType from '../../lib/src/BlockType.js';
 import Point from '../../lib/src/Point.js';
 import randomInt from '../../lib/src/randomInt.js';
+import process from 'process';
+import isTrue from '../../lib/src/util/isTrue.js';
 
-const level = `
+const DEBUG_LEVEL = `
 1111111111111111111111111
 1000000000000000000000001
 1050050000000000000000001
@@ -24,7 +26,7 @@ const level = `
 1111111111111111111111111
 `;
 
-const levels = [
+const LEVELS = [
   `
     1111111111111111111111111
     1010000000202020002020151
@@ -47,17 +49,25 @@ const levels = [
   `
 ];
 
+function getLevel(levelId) {
+  if (isTrue(process.env.USE_DEBUG_LEVEL)) {
+    return DEBUG_LEVEL;
+  }
+
+  return LEVELS[levelId];
+}
+
 const BLOCKS_PER_CELL = 2;
 
 export default Object.freeze({
   choose: () => {
-    return randomInt(0, levels.length - 1)
+    return randomInt(0, LEVELS.length - 1)
   },
 
   generate: levelId => {
     const blocks = [];
 
-    const level = levels[levelId];
+    const level = getLevel(levelId);
 
     level.trim().split('\n').forEach((row, y) => {
       row.trim().split('').forEach((cell, x) => {

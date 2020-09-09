@@ -7,6 +7,9 @@ import SocketioServer from './proto/socketio/SocketioServer.js';
 import Ticker from '../../lib/src/Ticker.js';
 import api from './api.js';
 import database from './database.js';
+import dotenv from '../../lib/src/util/dotenv.js';
+
+dotenv();
 
 const app = express();
 const server = http.createServer(app);
