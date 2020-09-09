@@ -45,37 +45,43 @@ const levels = [
     1510202000202020000000101
     1111111111111111111111111
   `
-]
+];
 
 const BLOCKS_PER_CELL = 2;
 
-export default function initLevel() {
-  const blocks = [];
+export default Object.freeze({
+  choose: () => {
+    return randomInt(0, levels.length - 1)
+  },
 
-  const level = levels[randomInt(0, levels.length - 1)];
+  generate: levelId => {
+    const blocks = [];
 
-  level.trim().split('\n').forEach((row, y) => {
-    row.trim().split('').forEach((cell, x) => {
-      const blockType = parseInt(cell);
+    const level = levels[levelId];
 
-      if (blockType === BlockType.EMPTY) {
-        return;
-      }
+    level.trim().split('\n').forEach((row, y) => {
+      row.trim().split('').forEach((cell, x) => {
+        const blockType = parseInt(cell);
 
-      if (blockType === BlockType.SPAWN) {
-        const point = new Point(x * BLOCKS_PER_CELL, y * BLOCKS_PER_CELL);
-        blocks.push(new Block(point, blockType));
-        return;
-      }
-
-      for (let dx = 0; dx < BLOCKS_PER_CELL; dx++) {
-        for (let dy = 0; dy < BLOCKS_PER_CELL; dy++) {
-          const point = new Point(x * BLOCKS_PER_CELL + dx, y * BLOCKS_PER_CELL + dy);
-          blocks.push(new Block(point, blockType));
+        if (blockType === BlockType.EMPTY) {
+          return;
         }
-      }
-    });
-  });
 
-  return blocks;
-}
+        if (blockType === BlockType.SPAWN) {
+          const point = new Point(x * BLOCKS_PER_CELL, y * BLOCKS_PER_CELL);
+          blocks.push(new Block(point, blockType));
+          return;
+        }
+
+        for (let dx = 0; dx < BLOCKS_PER_CELL; dx++) {
+          for (let dy = 0; dy < BLOCKS_PER_CELL; dy++) {
+            const point = new Point(x * BLOCKS_PER_CELL + dx, y * BLOCKS_PER_CELL + dy);
+            blocks.push(new Block(point, blockType));
+          }
+        }
+      });
+    });
+
+    return blocks;
+  },
+});

@@ -16,6 +16,7 @@ import Point from '../../../lib/src/Point.js';
 import {OFFSET_Y} from './renderer/text.js';
 import Match from '../../../lib/src/Match.js';
 import World from '../../../lib/src/World.js';
+import MatchStateRenderer from './renderer/MatchStateRenderer.js';
 
 export default class Game {
 
@@ -50,7 +51,8 @@ export default class Game {
         this.match,
         this.client,
         new Point(world.width, world.height - 3 - OFFSET_Y * 2)
-      )
+      ),
+      new MatchStateRenderer(ctx, this.match, new Point(world.width / 2, world.height / 2))
     ];
 
     this.moving = false;

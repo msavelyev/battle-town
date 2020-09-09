@@ -1,5 +1,5 @@
 import {OFFSET_Y, renderText} from './text.js';
-import World from '../../../../lib/src/World.js';
+import Match from '../../../../lib/src/Match.js';
 
 export default class ScoreRenderer {
 
@@ -13,11 +13,8 @@ export default class ScoreRenderer {
     let offset = 0;
 
     for (let [id, score] of Object.entries(this.match.score)) {
-      const tank = World.findTank(this.match.world, id);
-      if (!tank) {
-        continue;
-      }
-      const text = `${this.trimName(tank.name)}: ${score}`;
+      const user = Match.findUser(this.match, id);
+      const text = `${this.trimName(user.name)}: ${score}`;
 
       renderText(this.ctx, text, this.position.x, this.position.y + offset);
 

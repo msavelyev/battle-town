@@ -31,4 +31,11 @@ export default class Player {
     }
   }
 
+  static user(player) {
+    return {
+      id: player.user.id,
+      name: player.user.name
+    };
+  }
+
 }

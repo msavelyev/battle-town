@@ -1,10 +1,11 @@
 import World from '../../../../lib/src/World.js';
-import initLevel from '../../level.js';
+import level from '../../level.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import {FRAME_TIME} from '../../../../lib/src/Ticker.js';
 import compareTick from '../../../../lib/src/util/compareTick.js';
 import Match from '../../../../lib/src/Match.js';
+import Player from './Player.js';
 
 const WIDTH = 800;
 const HEIGHT = 576;
@@ -22,12 +23,9 @@ export default class Room {
     this.matches = [
       new Match(
         id,
-        [],
-        new World(id, WIDTH, HEIGHT, initLevel(), [], []),
-        {},
-        -1,
-        null,
-        {}
+        new World(id, WIDTH, HEIGHT),
+        ticker.tick,
+        level.choose()
       )
     ];
     this.events = [];
@@ -80,6 +78,7 @@ export default class Room {
   add(player) {
     this.players.push(player);
     console.log('added player', player.user.id, 'to room', this.id);
+    Match.addUser(this.lastMatch(), Player.user(player));
   }
 
   remove(player) {

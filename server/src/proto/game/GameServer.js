@@ -1,8 +1,6 @@
 import {v4 as uuid} from 'uuid';
 
 import * as process from 'process';
-import randomColor from '../../../../lib/src/randomColor.js';
-import Tank from '../../../../lib/src/Tank.js';
 import Fps from '../../../../lib/src/util/Fps.js';
 import Player from './Player.js';
 import Room from './Room.js';
@@ -11,7 +9,6 @@ import database from '../../database.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import Configuration from '../../../../lib/src/Configuration.js';
-import Match from '../../../../lib/src/Match.js';
 import World from '../../../../lib/src/World.js';
 
 export default class GameServer {
@@ -87,8 +84,6 @@ export default class GameServer {
         client.sendMessage(
           new NetMessage(user.id, this.ticker.tick, MessageType.INIT, new Configuration(user.id, match))
         );
-        const tank = World.placeTank(match.world, new Tank(user.id, user.name, null, randomColor(), null));
-        Match.addTank(match, tank);
 
         client.on(EventType.MESSAGE, netMessage => {
           room.handleEvent(client, netMessage);
@@ -99,6 +94,8 @@ export default class GameServer {
           this.removeFromRoom(room, player);
         });
       }
+
+      World.resetTanks(match.world, match);
     };
   }
 
