@@ -15,12 +15,13 @@ import increaseTick from '../../../lib/src/util/increaseTick.js';
 import Point from '../../../lib/src/Point.js';
 import {OFFSET_Y} from './renderer/text.js';
 import Match from '../../../lib/src/Match.js';
+import World from '../../../lib/src/World.js';
 
 export default class Game {
 
   constructor(ctx, client, sprites, conf) {
     this.ctx = ctx;
-    this.match = Match.create(conf.match);
+    this.match = conf.match;
 
     const world = this.match.world;
     world.authoritative = false;
@@ -30,7 +31,11 @@ export default class Game {
     this.id = conf.id;
 
     this.ticks = [
-      this.match,
+      {
+        update: event => {
+          Match.update(this.match, event)
+        }
+      },
       new StoneRenderer(ctx, world, sprites),
       new BrickRenderer(ctx, world, sprites),
       new WaterRenderer(ctx, world, sprites),
@@ -88,7 +93,7 @@ export default class Game {
   }
 
   shoot() {
-    const tank = this.match.world.findTank(this.id);
+    const tank = World.findTank(this.match.world, this.id);
     this.handleEvent(new NetMessage(
       this.id,
       this.match.tick,
@@ -98,16 +103,16 @@ export default class Game {
   }
 
   handleEvent(netMessage) {
-    if (this.match.handleEvent(netMessage)) {
+    if (Match.handleEvent(this.match, netMessage)) {
       this.client.sendNetMessage(netMessage);
-      this.match.addUnackedMessage(netMessage);
+      Match.addUnackedMessage(this.match, netMessage);
       return true;
     }
     return false;
   }
 
   onSync(data) {
-    this.match.sync(this.id, data);
+    Match.sync(this.match, this.id, data);
   }
 
   stop() {

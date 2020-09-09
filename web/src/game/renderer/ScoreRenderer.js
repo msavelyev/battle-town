@@ -1,4 +1,5 @@
 import {OFFSET_Y, renderText} from './text.js';
+import World from '../../../../lib/src/World.js';
 
 export default class ScoreRenderer {
 
@@ -12,7 +13,7 @@ export default class ScoreRenderer {
     let offset = 0;
 
     for (let [id, score] of Object.entries(this.match.score)) {
-      const tank = this.match.world.findTank(id);
+      const tank = World.findTank(this.match.world, id);
       if (!tank) {
         continue;
       }

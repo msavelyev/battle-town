@@ -43,8 +43,8 @@ export default class Room {
   }
 
   update(event) {
-    const copy = this.lastMatch().copy();
-    copy.update(event);
+    const copy = Match.copy(this.lastMatch());
+    Match.update(copy, event);
     this.addMatch(copy);
 
     let minTick = this.ticker.tick;
@@ -53,7 +53,7 @@ export default class Room {
         case MessageType.SHOOT:
         case MessageType.MOVE:
           netMessage.tick = this.ticker.tick;
-          copy.handleEvent(netMessage);
+          Match.handleEvent(copy, netMessage);
           break;
         default:
           minTick = Math.min(minTick, netMessage.tick);
@@ -84,7 +84,7 @@ export default class Room {
 
   remove(player) {
     this.players = this.players.filter(p => p !== player);
-    this.lastMatch().removeTank(player.user.id, true);
+    Match.removeTank(this.lastMatch(), player.user.id, true);
     this.broadcast(MessageType.DISCONNECTED, player.user.id);
   }
 
@@ -148,11 +148,11 @@ export default class Room {
 
       const currentEvent = currentMatch.event;
       const events = this.findEventsForTick(currentEvent.tick);
-      const newMatch = prevMatch.copy();
+      const newMatch = Match.copy(prevMatch);
       for (let netMessage of events) {
-        newMatch.handleEvent(netMessage);
+        Match.handleEvent(newMatch, netMessage);
       }
-      newMatch.update(currentEvent);
+      Match.update(newMatch, currentEvent);
       this.matches[i] = newMatch;
 
       prevMatch = newMatch;
