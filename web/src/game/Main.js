@@ -8,7 +8,7 @@ const UI_WIDTH = 150;
 
 export default class Main {
 
-  constructor(canvas, sprites, client) {
+  constructor(canvas, sprites, client, onDisconnect) {
     this.client = client;
 
     this.canvas = canvas;
@@ -16,6 +16,9 @@ export default class Main {
 
     this.game = null;
     this.ticker = null;
+    this.onDisconnect = onDisconnect;
+
+    this.stopped = false;
   }
 
   start() {
@@ -58,6 +61,12 @@ export default class Main {
   }
 
   stop() {
+    if (this.stopped) {
+      return;
+    }
+
+    this.stopped = true;
+
     this.client.onMessage(MessageType.PING);
 
     if (this.game) {
@@ -68,6 +77,8 @@ export default class Main {
       this.ticker.stop();
     }
     this.ticker = null;
+
+    this.onDisconnect();
   }
 
 }

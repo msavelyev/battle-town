@@ -24,7 +24,7 @@ export default class GameScene extends Scene {
 
     const sprites = new Sprites(this.spritesImg);
     sprites.init(() => {
-      this.main = new Main(canvas, sprites, client);
+      this.main = new Main(canvas, sprites, client, this.onFinishCb);
 
       this.onKeydown = this.main.keydown.bind(this.main);
       this.onKeyup = this.main.keyup.bind(this.main);

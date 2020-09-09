@@ -43,11 +43,15 @@ export default class Room {
   }
 
   update(event) {
+    if (this.finished) {
+      return;
+    }
+
     const copy = Match.copy(this.lastMatch());
     Match.update(copy, event);
     if (Match.finished(copy)) {
+      console.log('room is finished', this.id);
       this.finished = true;
-      return;
     }
 
     this.addMatch(copy);

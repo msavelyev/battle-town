@@ -9,8 +9,8 @@ export default class Matchmaking extends Scene {
   constructor(overlay) {
     super();
     this.overlay = overlay;
-    this.client = new Client(new SocketioClient());
 
+    this.client = null;
     this.startTime = null;
     this.interval = null;
     this.status = null;
@@ -18,6 +18,7 @@ export default class Matchmaking extends Scene {
   }
 
   setup(user) {
+    this.client = new Client(new SocketioClient());
     this.startTime = this.now();
     this.user = user;
 
