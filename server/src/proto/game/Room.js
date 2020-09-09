@@ -34,6 +34,8 @@ export default class Room {
     this.tickTimer = setInterval(() => {
       this.broadcast(MessageType.TICK, this.lastMatch());
     }, FRAME_TIME);
+
+    this.finished = false;
   }
 
   lastMatch() {
@@ -43,6 +45,11 @@ export default class Room {
   update(event) {
     const copy = Match.copy(this.lastMatch());
     Match.update(copy, event);
+    if (Match.finished(copy)) {
+      this.finished = true;
+      return;
+    }
+
     this.addMatch(copy);
 
     let minTick = this.ticker.tick;
@@ -78,7 +85,7 @@ export default class Room {
   add(player) {
     this.players.push(player);
     console.log('added player', player.user.id, 'to room', this.id);
-    Match.addUser(this.lastMatch(), Player.user(player));
+    Match.addUser(this.lastMatch(), Player.shortUser(player));
   }
 
   remove(player) {
@@ -115,6 +122,10 @@ export default class Room {
 
   stop() {
     clearInterval(this.tickTimer);
+    for (let player of this.players) {
+      player.client.disconnect();
+    }
+
   }
 
   handleEvent(client, netMessage) {

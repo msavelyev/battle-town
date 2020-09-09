@@ -146,7 +146,12 @@ export default class GameServer {
   }
 
   update(event) {
-    this.rooms.forEach(room => room.update(event));
+    for (let room of this.rooms) {
+      room.update(event);
+      if (room.finished) {
+        room.stop();
+      }
+    }
     this.fps.update(event);
   }
 

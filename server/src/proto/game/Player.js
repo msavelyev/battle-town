@@ -31,7 +31,7 @@ export default class Player {
     }
   }
 
-  static user(player) {
+  static shortUser(player) {
     return {
       id: player.user.id,
       name: player.user.name

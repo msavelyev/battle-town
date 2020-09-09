@@ -1,5 +1,7 @@
 import {renderText} from './text.js';
-import Ticker from '../../../../lib/src/Ticker.js';
+import Ticker, {FPS} from '../../../../lib/src/Ticker.js';
+import MatchState from '../../../../lib/src/MatchState.js';
+import Match from '../../../../lib/src/Match.js';
 
 export default class MatchStateRenderer {
 
@@ -10,18 +12,48 @@ export default class MatchStateRenderer {
   }
 
   update() {
-    if (!this.match.nextStateOnTick) {
+    const text = this.createText();
+
+    if (!text) {
       return;
     }
-
-    const countdown = Ticker.countdown(this.match.tick, this.match.nextStateOnTick);
-    const text = `${this.match.state}: ${countdown}`;
 
     renderText(this.ctx, text, this.position.x, this.position.y, {
       size: 40,
       center: true,
       stroke: true
     });
+  }
+
+  createText() {
+    const match = this.match;
+    const state = match.state;
+    const tick = match.tick;
+    const stateSinceTick = match.stateSinceTick;
+    const stateTicks = tick - stateSinceTick;
+    const nextStateOnTick = match.nextStateOnTick;
+    const spotlight = Match.findUser(match, match.stateSpotlight);
+
+    const countdown = Ticker.countdown(tick, nextStateOnTick);
+
+    switch (state) {
+      case MatchState.PREPARE:
+        return `Get ready ${'.'.repeat(countdown)}`;
+      case MatchState.READY:
+        return `${countdown}`;
+      case MatchState.PLAY:
+        if (stateTicks > FPS) {
+          return null;
+        } else {
+          return 'GO';
+        }
+      case MatchState.SCORE:
+        return `${spotlight.name} scored`;
+      case MatchState.FINISHED:
+        return `${spotlight.name} won`;
+      default:
+        return `${state}: ${countdown}`;
+    }
   }
 
 }
