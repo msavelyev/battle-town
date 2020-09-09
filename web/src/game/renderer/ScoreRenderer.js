@@ -2,17 +2,17 @@ import {OFFSET_Y, renderText} from './text.js';
 
 export default class ScoreRenderer {
 
-  constructor(ctx, world, position) {
+  constructor(ctx, match, position) {
     this.ctx = ctx;
-    this.world = world;
+    this.match = match;
     this.position = position;
   }
 
   update() {
     let offset = 0;
 
-    for (let [id, score] of Object.entries(this.world.score)) {
-      const tank = this.world.findTank(id);
+    for (let [id, score] of Object.entries(this.match.score)) {
+      const tank = this.match.world.findTank(id);
       if (!tank) {
         continue;
       }

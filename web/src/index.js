@@ -19,10 +19,13 @@ window.addEventListener('load', () => {
       new Disconnected(overlay)
     ]);
 
-    scenes.start(
-      Loading,
-      {}
-    );
+    userStorage.get()
+      .then(user => {
+        scenes.start(
+          Matchmaking,
+          user
+        );
+      });
   });
   spritesImg.src = document.getElementById('sprites').href;
 });

@@ -25,8 +25,8 @@ export default class Main {
   init(conf) {
     this.client.on(EventType.DISCONNECT, this.stop.bind(this));
 
-    this.canvas.width = conf.world.width + UI_WIDTH;
-    this.canvas.height = conf.world.height;
+    this.canvas.width = conf.match.world.width + UI_WIDTH;
+    this.canvas.height = conf.match.world.height;
 
     const ctx = this.canvas.getContext('2d');
 

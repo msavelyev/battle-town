@@ -1,5 +1,4 @@
 import TankMove from '../../../lib/src/event/TankMove.js';
-import World from '../../../lib/src/World.js';
 import BrickRenderer from './renderer/blocks/BrickRenderer.js';
 import JungleRenderer from './renderer/blocks/JungleRenderer.js';
 import StoneRenderer from './renderer/blocks/StoneRenderer.js';
@@ -15,33 +14,37 @@ import TickRenderer from './renderer/TickRenderer.js';
 import increaseTick from '../../../lib/src/util/increaseTick.js';
 import Point from '../../../lib/src/Point.js';
 import {OFFSET_Y} from './renderer/text.js';
+import Match from '../../../lib/src/Match.js';
 
 export default class Game {
 
   constructor(ctx, client, sprites, conf) {
     this.ctx = ctx;
-    this.world = World.create(conf.world);
-    this.world.authoritative = false;
+    this.match = Match.create(conf.match);
+
+    const world = this.match.world;
+    world.authoritative = false;
+
     this.client = client;
 
     this.id = conf.id;
 
     this.ticks = [
-      this.world,
-      new StoneRenderer(ctx, this.world, sprites),
-      new BrickRenderer(ctx, this.world, sprites),
-      new WaterRenderer(ctx, this.world, sprites),
-      new BulletRenderer(ctx, this.world, sprites),
-      new TankRenderer(ctx, this.id, this.world, sprites),
-      new JungleRenderer(ctx, this.world, sprites),
-      new PingRenderer(ctx, new Point(this.world.width, this.world.height - 3), this.client),
-      new FpsRenderer(ctx, new Point(this.world.width, this.world.height - 3 - OFFSET_Y)),
-      new ScoreRenderer(ctx, this.world, new Point(this.world.width, 12)),
+      this.match,
+      new StoneRenderer(ctx, world, sprites),
+      new BrickRenderer(ctx, world, sprites),
+      new WaterRenderer(ctx, world, sprites),
+      new BulletRenderer(ctx, world, sprites),
+      new TankRenderer(ctx, this.id, world, sprites),
+      new JungleRenderer(ctx, world, sprites),
+      new PingRenderer(ctx, new Point(world.width, world.height - 3), this.client),
+      new FpsRenderer(ctx, new Point(world.width, world.height - 3 - OFFSET_Y)),
+      new ScoreRenderer(ctx, this.match, new Point(world.width, 12)),
       new TickRenderer(
         ctx,
-        this.world,
+        this.match,
         this.client,
-        new Point(this.world.width, this.world.height - 3 - OFFSET_Y * 2)
+        new Point(world.width, world.height - 3 - OFFSET_Y * 2)
       )
     ];
 
@@ -61,7 +64,7 @@ export default class Game {
       const move = new TankMove(increaseTick(this.moveId, val => this.moveId = val), this.direction);
       this.handleEvent(new NetMessage(
         this.id,
-        this.world.tick,
+        this.match.tick,
         MessageType.MOVE,
         move
       ));
@@ -85,26 +88,26 @@ export default class Game {
   }
 
   shoot() {
-    const tank = this.world.findTank(this.id);
+    const tank = this.match.world.findTank(this.id);
     this.handleEvent(new NetMessage(
       this.id,
-      this.world.tick,
+      this.match.tick,
       MessageType.SHOOT,
       new TankMove(increaseTick(this.moveId, val => this.moveId = val), tank.direction)
     ));
   }
 
   handleEvent(netMessage) {
-    if (this.world.handleEvent(netMessage)) {
+    if (this.match.handleEvent(netMessage)) {
       this.client.sendNetMessage(netMessage);
-      this.world.addUnackedMessage(netMessage);
+      this.match.addUnackedMessage(netMessage);
       return true;
     }
     return false;
   }
 
   onSync(data) {
-    this.world.sync(this.id, data);
+    this.match.sync(this.id, data);
   }
 
   stop() {

@@ -75,7 +75,7 @@ export default class GameServer {
   createMatch(players) {
     return () => {
       const room = this.createRoom();
-      const world = room.lastWorld();
+      const match = room.lastMatch();
       for (let player of players) {
         const client = player.client;
         const user = player.user;
@@ -83,10 +83,10 @@ export default class GameServer {
         room.add(player);
 
         client.sendMessage(
-          new NetMessage(user.id, this.ticker.tick, MessageType.INIT, new Configuration(user.id, world))
+          new NetMessage(user.id, this.ticker.tick, MessageType.INIT, new Configuration(user.id, match))
         );
-        const tank = world.placeTank(new Tank(user.id, user.name, null, randomColor(), null));
-        world.addTank(tank);
+        const tank = match.world.placeTank(new Tank(user.id, user.name, null, randomColor(), null));
+        match.addTank(tank);
 
         client.on(EventType.MESSAGE, netMessage => {
           room.handleEvent(client, netMessage);

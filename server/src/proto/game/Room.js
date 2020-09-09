@@ -4,6 +4,7 @@ import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import {FRAME_TIME} from '../../../../lib/src/Ticker.js';
 import compareTick from '../../../../lib/src/util/compareTick.js';
+import Match from '../../../../lib/src/Match.js';
 
 const WIDTH = 800;
 const HEIGHT = 576;
@@ -18,25 +19,33 @@ export default class Room {
 
     this.players = [];
 
-    this.worlds = [
-      new World(id, WIDTH, HEIGHT, initLevel(), [], [], {}, -1, null, {})
+    this.matches = [
+      new Match(
+        id,
+        [],
+        new World(id, WIDTH, HEIGHT, initLevel(), [], []),
+        {},
+        -1,
+        null,
+        {}
+      )
     ];
     this.events = [];
     this.queue = [];
 
     this.tickTimer = setInterval(() => {
-      this.broadcast(MessageType.TICK, this.lastWorld());
+      this.broadcast(MessageType.TICK, this.lastMatch());
     }, FRAME_TIME);
   }
 
-  lastWorld() {
-    return this.worlds[this.worlds.length - 1];
+  lastMatch() {
+    return this.matches[this.matches.length - 1];
   }
 
   update(event) {
-    const copy = this.lastWorld().copy();
+    const copy = this.lastMatch().copy();
     copy.update(event);
-    this.addWorld(copy);
+    this.addMatch(copy);
 
     let minTick = this.ticker.tick;
     for (let netMessage of this.queue) {
@@ -54,7 +63,7 @@ export default class Room {
     }
 
     if (minTick < this.ticker.tick) {
-      this.recalculateWorlds(minTick);
+      this.recalculateMatch(minTick);
     }
 
     this.queue = [];
@@ -75,7 +84,7 @@ export default class Room {
 
   remove(player) {
     this.players = this.players.filter(p => p !== player);
-    this.lastWorld().removeTank(player.user.id, true);
+    this.lastMatch().removeTank(player.user.id, true);
     this.broadcast(MessageType.DISCONNECTED, player.user.id);
   }
 
@@ -93,8 +102,8 @@ export default class Room {
     this.events = this._addTicked(netMessage, this.events);
   }
 
-  addWorld(world) {
-    this.worlds = this._addTicked(world, this.worlds);
+  addMatch(match) {
+    this.matches = this._addTicked(match, this.matches);
   }
 
   _addTicked(what, where) {
@@ -107,10 +116,6 @@ export default class Room {
 
   stop() {
     clearInterval(this.tickTimer);
-  }
-
-  findWorld(tick) {
-    return this.worlds.find(world => world.tick === tick);
   }
 
   handleEvent(client, netMessage) {
@@ -127,30 +132,30 @@ export default class Room {
     }
   }
 
-  recalculateWorlds(tick) {
-    let prevWorld = null;
+  recalculateMatch(tick) {
+    let prevMatch = null;
 
-    if (compareTick(this.worlds[0].tick, tick) >= 0) {
+    if (compareTick(this.matches[0].tick, tick) >= 0) {
       return false;
     }
 
-    for (let i = 0; i < this.worlds.length; i++) {
-      const currentWorld = this.worlds[i];
-      if (compareTick(currentWorld.tick, tick) < 0) {
-        prevWorld = currentWorld;
+    for (let i = 0; i < this.matches.length; i++) {
+      const currentMatch = this.matches[i];
+      if (compareTick(currentMatch.tick, tick) < 0) {
+        prevMatch = currentMatch;
         continue;
       }
 
-      const currentEvent = currentWorld.event;
+      const currentEvent = currentMatch.event;
       const events = this.findEventsForTick(currentEvent.tick);
-      const newWorld = prevWorld.copy();
+      const newMatch = prevMatch.copy();
       for (let netMessage of events) {
-        newWorld.handleEvent(netMessage);
+        newMatch.handleEvent(netMessage);
       }
-      newWorld.update(currentEvent);
-      this.worlds[i] = newWorld;
+      newMatch.update(currentEvent);
+      this.matches[i] = newMatch;
 
-      prevWorld = newWorld;
+      prevMatch = newMatch;
     }
 
     return true;
