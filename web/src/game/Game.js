@@ -96,6 +96,9 @@ export default class Game {
 
   shoot() {
     const tank = World.findTank(this.match.world, this.id);
+    if (!tank) {
+      return;
+    }
     this.handleEvent(new NetMessage(
       this.id,
       this.match.tick,
