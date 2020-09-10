@@ -1,5 +1,4 @@
 import Entity from '../../../../lib/src/Entity.js';
-import {OFFSET_Y, renderText} from './text.js';
 
 export default class ExplosionsRenderer {
 
@@ -10,13 +9,6 @@ export default class ExplosionsRenderer {
   }
 
   update(event) {
-    renderText(
-      this.ctx,
-      `explosions: ${this.world.explosions.length}`,
-      this.world.width,
-      this.world.height - 3 - OFFSET_Y * 3
-    );
-
     for (let explosion of this.world.explosions) {
       const image = this.pickImage(explosion, event);
 
@@ -38,7 +30,6 @@ export default class ExplosionsRenderer {
     const startTick = explosion.tick;
 
     const frame = Math.ceil((tick - startTick) / 10);
-    console.log('tick', tick, 'startTick', startTick, 'frame', frame);
     switch (frame) {
       case 1:
         return this.sprites.explosion1;

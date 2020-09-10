@@ -10,7 +10,6 @@ import FpsRenderer from './renderer/FpsRenderer.js';
 import ScoreRenderer from './renderer/ScoreRenderer.js';
 import NetMessage from '../../../lib/src/proto/NetMessage.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
-import TickRenderer from './renderer/TickRenderer.js';
 import increaseTick from '../../../lib/src/util/increaseTick.js';
 import Point from '../../../lib/src/Point.js';
 import {OFFSET_Y} from './renderer/text.js';
@@ -47,12 +46,12 @@ export default class Game {
       new PingRenderer(ctx, new Point(world.width, world.height - 3), this.client),
       new FpsRenderer(ctx, new Point(world.width, world.height - 3 - OFFSET_Y)),
       new ScoreRenderer(ctx, this.match, new Point(world.width, 12)),
-      new TickRenderer(
-        ctx,
-        this.match,
-        this.client,
-        new Point(world.width, world.height - 3 - OFFSET_Y * 2)
-      ),
+      // new TickRenderer(
+      //   ctx,
+      //   this.match,
+      //   this.client,
+      //   new Point(world.width, world.height - 3 - OFFSET_Y * 2)
+      // ),
       new MatchStateRenderer(ctx, this.match, new Point(world.width / 2, world.height / 2)),
       new ExplosionsRenderer(ctx, world, sprites)
     ];
