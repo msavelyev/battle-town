@@ -2,13 +2,14 @@ import io from 'socket.io-client';
 import NetClient from './NetClient.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
+import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 
 export default class SocketioClient extends NetClient {
 
   constructor() {
     super();
 
-    this.socket = io(process.env.SERVER_WS_HOST, { autoConnect: false });
+    this.socket = io(SETTINGS.SERVER_WS_HOST, { autoConnect: false });
     this.lastTick = -1;
   }
 

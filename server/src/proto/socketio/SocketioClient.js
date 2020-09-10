@@ -1,8 +1,7 @@
-import process from 'process';
-
 import NetClient from '../base/NetClient.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import randomInt from '../../../../lib/src/randomInt.js';
+import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 
 export default class SocketioClient extends NetClient {
 
@@ -10,7 +9,7 @@ export default class SocketioClient extends NetClient {
     super();
     this.socket = socket;
     this.ticker = ticker;
-    this.lag = process.env.LAG;
+    this.lag = SETTINGS.LAG;
 
     this.callbacks = {};
 
@@ -76,15 +75,15 @@ export default class SocketioClient extends NetClient {
   }
 
   lagValue() {
-    if (!process.env.LAG) {
+    if (!this.lag) {
       return null;
     }
 
-    if (process.env.LAG === 'RANDOM') {
+    if (this.lag === 'RANDOM') {
       return randomInt(50, 150);
     }
 
-    return parseInt(process.env.LAG);
+    return SETTINGS.LAG;
   }
 
 }

@@ -2,8 +2,7 @@ import Block from '../../lib/src/Block.js';
 import BlockType from '../../lib/src/BlockType.js';
 import Point from '../../lib/src/Point.js';
 import randomInt from '../../lib/src/randomInt.js';
-import process from 'process';
-import isTrue from '../../lib/src/util/isTrue.js';
+import {SETTINGS} from '../../lib/src/util/dotenv.js';
 
 const DEBUG_LEVEL = `
 1111111111111111111111111
@@ -50,7 +49,7 @@ const LEVELS = [
 ];
 
 function getLevel(levelId) {
-  if (isTrue(process.env.USE_DEBUG_LEVEL)) {
+  if (SETTINGS.USE_DEBUG_LEVEL) {
     return DEBUG_LEVEL;
   }
 

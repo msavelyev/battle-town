@@ -1,5 +1,6 @@
+import {SETTINGS} from '../../../lib/src/util/dotenv.js';
 
-const host = process.env.SERVER_API_HOST || window.location.origin;
+const host = SETTINGS.SERVER_API_HOST || window.location.origin;
 
 function url(path) {
   return host + path;

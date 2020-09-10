@@ -6,7 +6,7 @@ import Matchmaking from './game/scenes/Matchmaking.js';
 import Disconnected from './game/scenes/Disconnected.js';
 import userStorage from './game/userStorage.js';
 
-import dotenv from '../../lib/src/util/dotenv.js';
+import dotenv, {SETTINGS} from '../../lib/src/util/dotenv.js';
 
 dotenv();
 
@@ -23,13 +23,14 @@ window.addEventListener('load', () => {
       new Disconnected(overlay)
     ]);
 
-    userStorage.get()
-      .then(user => {
-        scenes.start(
-          Matchmaking,
-          user
-        );
-      });
+    if (SETTINGS.START_WITH_MATCHMAKING) {
+      userStorage.get()
+        .then(user => {
+          scenes.start(Matchmaking, user);
+        });
+    } else {
+      scenes.start(Loading, {});
+    }
   });
   spritesImg.src = document.getElementById('sprites').href;
 });
