@@ -13,6 +13,9 @@ export default class Sprites {
     this.createSprite(0, 16, 16, 16, 'water1', cb);
     this.createSprite(16, 16, 16, 16, 'water2', cb);
     this.createSprite(32, 16, 8, 8, 'bullet', cb);
+    this.createSprite(0, 64, 32, 32, 'explosion1', cb);
+    this.createSprite(32, 64, 32, 32, 'explosion2', cb);
+    this.createSprite(64, 64, 32, 32, 'explosion3', cb);
   }
 
   createSprite(sx, sy, sw, sh, name, cb) {

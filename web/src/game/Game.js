@@ -17,6 +17,7 @@ import {OFFSET_Y} from './renderer/text.js';
 import Match from '../../../lib/src/Match.js';
 import World from '../../../lib/src/World.js';
 import MatchStateRenderer from './renderer/MatchStateRenderer.js';
+import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
 
 export default class Game {
 
@@ -52,7 +53,8 @@ export default class Game {
         this.client,
         new Point(world.width, world.height - 3 - OFFSET_Y * 2)
       ),
-      new MatchStateRenderer(ctx, this.match, new Point(world.width / 2, world.height / 2))
+      new MatchStateRenderer(ctx, this.match, new Point(world.width / 2, world.height / 2)),
+      new ExplosionsRenderer(ctx, world, sprites)
     ];
 
     this.moving = false;
@@ -61,6 +63,8 @@ export default class Game {
   }
 
   update(event) {
+    event.tick = this.match.tick;
+
     this.ctx.fillStyle = 'black';
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
