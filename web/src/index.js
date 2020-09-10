@@ -7,10 +7,15 @@ import Disconnected from './game/scenes/Disconnected.js';
 import userStorage from './game/userStorage.js';
 
 import dotenv, {SETTINGS} from '../../lib/src/util/dotenv.js';
+import analytics from '../../lib/src/util/analytics.js';
+
+analytics.init();
 
 dotenv();
 
 window.addEventListener('load', () => {
+  analytics.log('LOADED');
+
   const spritesImg = new Image();
   spritesImg.addEventListener('load', () => {
 

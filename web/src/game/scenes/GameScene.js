@@ -1,6 +1,7 @@
 import Main from '../Main.js';
 import Sprites from '../renderer/Sprites.js';
 import Scene from './Scene.js';
+import analytics from '../../../../lib/src/util/analytics.js';
 
 export default class GameScene extends Scene {
 
@@ -16,6 +17,8 @@ export default class GameScene extends Scene {
   }
 
   setup(params) {
+    analytics.log('GAME_SCENE_SETUP');
+
     const client = params.client;
     const conf = params.conf;
 

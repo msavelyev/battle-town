@@ -1,6 +1,7 @@
 import userStorage from '../userStorage.js';
 import api from '../api.js';
 import Scene from './Scene.js';
+import analytics from '../../../../lib/src/util/analytics.js';
 
 const BASIC_TEXT = 'Loading';
 
@@ -15,6 +16,8 @@ export default class Loading extends Scene {
   }
 
   setup() {
+    analytics.log('LOADING_SETUP');
+
     this.overlay.innerHTML = `
       <style>
         h1 {
@@ -30,6 +33,10 @@ export default class Loading extends Scene {
     this.interval = setInterval(this.updateText(text), 500);
 
     userStorage.get()
+      .then(user => {
+        analytics.setUserId(user.id);
+        return user;
+      })
       .then(user => {
         return api.leaderboard(user.id)
           .then(top => {

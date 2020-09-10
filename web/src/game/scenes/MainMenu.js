@@ -1,6 +1,7 @@
 import menuBg from '../../../public/menu-bg.png';
 import api from '../api.js';
 import Scene from './Scene.js';
+import analytics from '../../../../lib/src/util/analytics.js';
 
 export default class MainMenu extends Scene {
 
@@ -12,6 +13,8 @@ export default class MainMenu extends Scene {
   }
 
   setup(data) {
+    analytics.log('MAIN_MENU_SETUP');
+
     this.data = data;
 
     this.overlay.innerHTML = `
@@ -149,6 +152,8 @@ export default class MainMenu extends Scene {
       if (event.type === 'keydown' && event.code !== 'Enter') {
         return;
       }
+
+      analytics.log('MAIN_MENU_START');
 
       startButton.disabled = true;
 

@@ -3,6 +3,7 @@ import Client from '../proto/Client.js';
 import SocketioClient from '../proto/SocketioClient.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
+import analytics from '../../../../lib/src/util/analytics.js';
 
 export default class Matchmaking extends Scene {
 
@@ -18,6 +19,8 @@ export default class Matchmaking extends Scene {
   }
 
   setup(user) {
+    analytics.log('MATCHMAKING_SETUP');
+
     this.client = new Client(new SocketioClient());
     this.startTime = this.now();
     this.user = user;

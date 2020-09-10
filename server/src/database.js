@@ -1,6 +1,8 @@
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
 import util from 'util';
+import randomInt from '../../lib/src/randomInt.js';
+import username from './username.js';
 
 const fileExists = util.promisify(fs.exists);
 
@@ -36,18 +38,17 @@ async function init(db) {
     );
   `);
 
-  await dbRun(db, `
-    INSERT INTO users (id, name, token, points)
-    VALUES
-      ('user#1', 'user#1', 'user#1', 1000),
-      ('user#2', 'user#2', 'user#2', 970),
-      ('user#3', 'user#3', 'user#3', 960),
-      ('user#4', 'user#4', 'user#4', 950),
-      ('user#5', 'user#5', 'user#5', 940),
-      ('user#6', 'user#6', 'user#6', 930),
-      ('user#7', 'user#7', 'user#7', 920),
-      ('user#8', 'user#8', 'user#8', 910);
-  `);
+  for (let i = 0; i < 5; i++) {
+    const name = username.generate();
+
+    await dbRun(db, `
+      INSERT INTO users (id, name, token, points)
+      VALUES ($user, $user, $user, $points)
+    `, {
+      $user: name,
+      $points: randomInt(5, 29)
+    })
+  }
 }
 
 export default {
