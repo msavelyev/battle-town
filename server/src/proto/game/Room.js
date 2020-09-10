@@ -93,8 +93,14 @@ export default class Room {
   }
 
   remove(player) {
+    console.log('players', this.players.length, 'removing one', player.user.id);
     this.players = this.players.filter(p => p !== player);
-    Match.removeTank(this.lastMatch(), player.user.id, true);
+    const match = this.lastMatch();
+    Match.removeTank(match, player.user.id, true);
+    if (!this.finished) {
+      Match.setWinner(match, this.players[0].user.id, match.tick);
+    }
+
     this.broadcast(MessageType.DISCONNECTED, player.user.id);
   }
 
