@@ -65,9 +65,9 @@ export default {
 
   createUser: async function createUser(db, uuid, name, token) {
     await dbRun(db, `
-    INSERT INTO users (id, name, token)
-    VALUES ($id, $name, $token)
-  `, {
+      INSERT INTO users (id, name, token)
+      VALUES ($id, $name, $token)
+    `, {
       $id: uuid,
       $name: name,
       $token: token
@@ -95,30 +95,30 @@ export default {
     const top = await dbAll(
       db,
       `
-      SELECT
-        id,
-        ROW_NUMBER() OVER (ORDER BY points DESC) AS rank,
-        name,
-        points
-      FROM users
-      ORDER BY points DESC
-      LIMIT 5
-    `
-    );
-
-    if (!top.find(item => item.id === id)) {
-      const you = await dbGet(
-        db,
-        `
-      SELECT * FROM (
         SELECT
           id,
           ROW_NUMBER() OVER (ORDER BY points DESC) AS rank,
           name,
           points
         FROM users
-      ) WHERE id = $id
-    `,
+        ORDER BY points DESC
+        LIMIT 5
+      `
+    );
+
+    if (!top.find(item => item.id === id)) {
+      const you = await dbGet(
+        db,
+        `
+        SELECT * FROM (
+          SELECT
+            id,
+            ROW_NUMBER() OVER (ORDER BY points DESC) AS rank,
+            name,
+            points
+          FROM users
+        ) WHERE id = $id
+      `,
         { $id: id }
       );
 
@@ -130,14 +130,25 @@ export default {
 
   updateUser: async function updateUser(db, id, token, name) {
     const updated = await dbRun(db, `
-    UPDATE users SET name = $name
-    WHERE id = $id AND token = $token
-  `, {
+      UPDATE users SET name = $name
+      WHERE id = $id AND token = $token
+    `, {
       $id: id,
       $token: token,
       $name: name
     });
 
     return updated === 1;
-  }
+  },
+
+  addPoints: async function (db, id, points) {
+    await dbRun(db, `
+      UPDATE users SET points = points + $delta
+      WHERE id = $id
+    `, {
+      $id: id,
+      $delta: points
+    });
+  },
+
 };

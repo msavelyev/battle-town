@@ -10,6 +10,7 @@ import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import Configuration from '../../../../lib/src/Configuration.js';
 import World from '../../../../lib/src/World.js';
+import Match from '../../../../lib/src/Match.js';
 
 export default class GameServer {
 
@@ -149,6 +150,7 @@ export default class GameServer {
     for (let room of this.rooms) {
       room.update(event);
       if (room.finished) {
+        this.assignPoints(room.lastMatch());
         room.stop();
       }
     }
@@ -162,6 +164,17 @@ export default class GameServer {
   stop() {
     clearInterval(this.printFpsInterval);
     clearInterval(this.matchmakingInterval);
+  }
+
+  assignPoints(match) {
+    const winner = Match.winner(match).id;
+    for (let user of match.users) {
+      const points = user.id === winner ? 3 : 1;
+      database.addPoints(this.db, user.id, points)
+        .catch(err => {
+          console.err(`Adding ${points} to user ${user.id}`, err);
+        });
+    }
   }
 
 }
