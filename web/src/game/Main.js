@@ -26,6 +26,7 @@ export default class Main {
   }
 
   init(conf) {
+    this.client.on(EventType.DISCONNECT);
     this.client.on(EventType.DISCONNECT, this.stop.bind(this));
 
     this.canvas.width = conf.match.world.width + UI_WIDTH;

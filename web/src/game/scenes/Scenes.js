@@ -1,3 +1,4 @@
+import Loading from './Loading.js';
 
 export default class Scenes {
 
@@ -6,6 +7,10 @@ export default class Scenes {
     this.sceneIdx = 0;
     this.scene = null;
 
+  }
+
+  startDefault() {
+    this.start(Loading, {});
   }
 
   start(sceneName, data) {
@@ -38,8 +43,7 @@ export default class Scenes {
       `);
       console.log(err);
 
-      this.sceneIdx = 0;
-      this.start();
+      this.startDefault();
 
       return;
     }

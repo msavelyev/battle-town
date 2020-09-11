@@ -104,6 +104,11 @@ export default class GameServer {
     const client = player.client;
     player.user = user;
 
+    if (this.queue.find(p => p.user.id === user.id)) {
+      player.client.disconnect();
+      throw new Error('Already queued');
+    }
+
     console.log('authorized', user.id);
     client.send(EventType.AUTH_ACK);
     this.queue.push(player);
@@ -126,11 +131,12 @@ export default class GameServer {
           if (user) {
             this.authorizePlayer(player, user);
           } else {
-            throw new Error('Nothing found');
+            console.log();
+            throw new Error('Couldn\'t find user');
           }
         })
         .catch(err => {
-          console.log('Couldn\'t find user', userId, token, err);
+          console.log('Couldn\'t authorize', userId, token, err);
           client.disconnect();
         })
         .then(() => {

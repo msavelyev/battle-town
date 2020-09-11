@@ -22,6 +22,9 @@ export default class Matchmaking extends Scene {
     analytics.log('MATCHMAKING_SETUP');
 
     this.client = new Client(new SocketioClient());
+    this.client.on(EventType.DISCONNECT, () => {
+      this.onFinishCb('Server disconnected');
+    });
     this.startTime = this.now();
     this.user = user;
 

@@ -34,7 +34,7 @@ window.addEventListener('load', () => {
           scenes.start(Matchmaking, user);
         });
     } else {
-      scenes.start(Loading, {});
+      scenes.startDefault();
     }
   });
   spritesImg.src = document.getElementById('sprites').href;
