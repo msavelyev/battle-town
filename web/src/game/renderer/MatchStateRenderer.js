@@ -19,9 +19,10 @@ export default class MatchStateRenderer {
     }
 
     renderText(this.ctx, text, this.position.x, this.position.y, {
-      size: 40,
+      size: 60,
       center: true,
-      stroke: true
+      stroke: true,
+      bg: 'rgba(0, 0, 0, 0.8)'
     });
   }
 

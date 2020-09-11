@@ -13,6 +13,21 @@ export function renderText(ctx, text, x, y, options) {
     ctx.textBaseline = 'middle';
   }
 
+  if (options.bg) {
+    const measure = ctx.measureText(text);
+
+    const width = measure.width + 10;
+    const height = options.size + 10;
+
+    ctx.fillStyle = options.bg;
+    ctx.fillRect(
+      x - width / 2,
+      y - height / 2,
+      width,
+      height
+    );
+  }
+
   if (options.stroke) {
     ctx.strokeStyle = 'white';
     ctx.strokeText(text, x, y);
