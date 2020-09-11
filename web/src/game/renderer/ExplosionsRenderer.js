@@ -1,4 +1,5 @@
 import Entity from '../../../../lib/src/Entity.js';
+import Sprites from './Sprites.js';
 
 export default class ExplosionsRenderer {
 
@@ -16,11 +17,10 @@ export default class ExplosionsRenderer {
         continue;
       }
 
-      const size = explosion.size * Entity.BLOCK_SIZE;
       const x = explosion.position.x;
       const y = explosion.position.y;
       this.ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
-      this.ctx.drawImage(image, 0, 0, size, size, 0, 0, size, size);
+      Sprites.draw(this.ctx, image, 0, 0);
       this.ctx.resetTransform();
     }
   }

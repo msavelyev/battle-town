@@ -1,5 +1,6 @@
 import Entity from '../../../../lib/src/Entity.js';
 import Direction from '../../../../lib/src/Direction.js';
+import Sprites from './Sprites.js';
 
 export default class TankRenderer {
 
@@ -36,7 +37,7 @@ export default class TankRenderer {
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
     ctx.beginPath();
 
-    ctx.drawImage(this.sprites.tank, 0, 0, 32, 32, 0, 0, size, size);
+    Sprites.draw(ctx, this.sprites.tank, 0, 0);
 
     const tmp = ctx.globalCompositeOperation;
     ctx.globalCompositeOperation = 'multiply';

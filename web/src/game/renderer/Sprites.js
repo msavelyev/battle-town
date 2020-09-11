@@ -1,34 +1,23 @@
+function s(img, x, y, w, h) {
+  return { img, x, y, w, h };
+}
 
 export default class Sprites {
   constructor(img) {
-    this.img = img;
-    this.imagesToLoad = 0;
+    this.tank = s(img, 0, 32, 32, 32);
+    this.brick = s(img, 80, 16, 16, 16);
+    this.stone = s(img, 80, 0, 16, 16);
+    this.jungle = s(img, 96, 0, 16, 16);
+    this.water1 = s(img, 0, 16, 16, 16);
+    this.water2 = s(img, 16, 16, 16, 16);
+    this.bullet = s(img, 32, 16, 8, 8);
+    this.explosion1 = s(img, 0, 64, 32, 32);
+    this.explosion2 = s(img, 32, 64, 32, 32);
+    this.explosion3 = s(img, 64, 64, 32, 32);
   }
 
-  init(cb) {
-    this.createSprite(0, 32, 32, 32, 'tank', cb);
-    this.createSprite(80, 16, 16, 16, 'brick', cb);
-    this.createSprite(80, 0, 16, 16, 'stone', cb);
-    this.createSprite(96, 0, 16, 16, 'jungle', cb);
-    this.createSprite(0, 16, 16, 16, 'water1', cb);
-    this.createSprite(16, 16, 16, 16, 'water2', cb);
-    this.createSprite(32, 16, 8, 8, 'bullet', cb);
-    this.createSprite(0, 64, 32, 32, 'explosion1', cb);
-    this.createSprite(32, 64, 32, 32, 'explosion2', cb);
-    this.createSprite(64, 64, 32, 32, 'explosion3', cb);
+  static draw(ctx, conf, x, y) {
+    ctx.drawImage(conf.img, conf.x, conf.y, conf.w, conf.h, x, y, conf.w, conf.h);
   }
 
-  createSprite(sx, sy, sw, sh, name, cb) {
-    this.imagesToLoad++;
-
-    createImageBitmap(this.img, sx, sy, sw, sh)
-      .then(img => {
-        this.imagesToLoad--;
-        this[name] = img;
-
-        if (this.imagesToLoad === 0) {
-          cb();
-        }
-      });
-  }
 }

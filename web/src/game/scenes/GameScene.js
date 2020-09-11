@@ -26,20 +26,18 @@ export default class GameScene extends Scene {
     const canvas = document.getElementById('canvas');
 
     const sprites = new Sprites(this.spritesImg);
-    sprites.init(() => {
-      this.main = new Main(canvas, sprites, client, this.onFinishCb);
+    this.main = new Main(canvas, sprites, client, this.onFinishCb);
 
-      this.onKeydown = this.main.keydown.bind(this.main);
-      this.onKeyup = this.main.keyup.bind(this.main);
-      this.onDisconnect = this.main.disconnect.bind(this.main);
+    this.onKeydown = this.main.keydown.bind(this.main);
+    this.onKeyup = this.main.keyup.bind(this.main);
+    this.onDisconnect = this.main.disconnect.bind(this.main);
 
-      document.addEventListener('keydown', this.onKeydown);
-      document.addEventListener('keyup', this.onKeyup);
-      window.addEventListener('beforeunload', this.onDisconnect);
+    document.addEventListener('keydown', this.onKeydown);
+    document.addEventListener('keyup', this.onKeyup);
+    window.addEventListener('beforeunload', this.onDisconnect);
 
-      this.main.init(conf);
-      this.main.start();
-    });
+    this.main.init(conf);
+    this.main.start();
   }
 
   teardown() {

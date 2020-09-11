@@ -1,4 +1,5 @@
 import Entity from '../../../../../lib/src/Entity.js';
+import Sprites from '../Sprites.js';
 
 export default class BlockRenderer {
 
@@ -20,7 +21,7 @@ export default class BlockRenderer {
   drawBlock(ctx, block, event) {
     const size = block.size * Entity.BLOCK_SIZE;
     ctx.setTransform(1, 0, 0, 1, block.position.x * size, block.position.y * size);
-    ctx.drawImage(this.image, 0, 0, size, size, 0, 0, size, size);
+    Sprites.draw(ctx, this.image, 0, 0);
     ctx.resetTransform();
   }
 
