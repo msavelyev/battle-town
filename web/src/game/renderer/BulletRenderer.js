@@ -15,9 +15,9 @@ export default class BulletRenderer {
   }
 
   drawBullet(ctx, bullet) {
-    const x = bullet.position.x;
-    const y = bullet.position.y;
-    const size = bullet.size * Entity.BLOCK_SIZE;
+    const x = bullet.entity.position.x;
+    const y = bullet.entity.position.y;
+    const size = bullet.entity.size * Entity.BLOCK_SIZE;
     const img = this.sprites.bullet;
 
     ctx.fillStyle = 'white';

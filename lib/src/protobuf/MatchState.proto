@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+enum MatchState {
+
+  PREPARE = 0;
+  READY = 1;
+  PLAY = 2;
+  SCORE = 3;
+  FINISHED = 4;
+
+}

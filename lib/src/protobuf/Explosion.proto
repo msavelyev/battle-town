@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+import "protobuf/Entity.proto";
+
+message Explosion {
+
+  Entity entity = 1;
+  int32 tick = 2;
+
+}

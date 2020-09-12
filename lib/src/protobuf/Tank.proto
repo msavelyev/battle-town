@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "protobuf/Entity.proto";
+import "protobuf/Direction.proto";
+
+message Tank {
+
+  Entity entity = 1;
+  string name = 2;
+  Direction direction = 3;
+
+}

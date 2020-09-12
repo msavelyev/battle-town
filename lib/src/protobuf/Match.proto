@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "protobuf/MatchState.proto";
+import "protobuf/User.proto";
+import "protobuf/World.proto";
+
+message Match {
+
+  MatchState state = 1;
+  repeated User users = 2;
+  World world = 3;
+  map<string, int32> score = 4;
+  int32 tick = 5;
+  map<string, int32> ack = 6;
+  int32 levelId = 7;
+  int32 stateSinceTick = 8;
+  int32 nextStateOnTick = 9;
+  string stateSpotlight = 10;
+
+}

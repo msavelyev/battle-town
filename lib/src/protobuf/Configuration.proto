@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+import "protobuf/Match.proto";
+
+message Configuration {
+
+  string id = 1;
+  Match match = 2;
+
+}

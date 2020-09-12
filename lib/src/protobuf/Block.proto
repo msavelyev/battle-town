@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "protobuf/Entity.proto";
+import "protobuf/BlockType.proto";
+
+message Block {
+
+  Entity entity = 1;
+  BlockType type = 2;
+
+}

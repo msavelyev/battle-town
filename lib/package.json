@@ -1,4 +1,11 @@
 {
   "type": "module",
-  "dependencies": {}
+  "dependencies": {
+    "protobufjs": "~6.9.0"
+  },
+  "scripts": {
+    "compileProtobuf": "pbjs src/protobuf/*.proto --target static-module --out src/protobuf/Data.js --wrap es6",
+    "cleanupPbjs": "sed -i '' -E 's#import \\* as \\$protobuf from \"protobufjs/minimal\";#import $protobuf from \"protobufjs/minimal.js\";#' src/protobuf/Data.js",
+    "compile": "npm run compileProtobuf && npm run cleanupPbjs"
+  }
 }

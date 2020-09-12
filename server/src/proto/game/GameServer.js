@@ -83,7 +83,7 @@ export default class GameServer {
         room.add(player);
 
         client.sendMessage(
-          new NetMessage(user.id, this.ticker.tick, MessageType.INIT, new Configuration(user.id, match))
+          new NetMessage(user.id, this.ticker.tick, MessageType.INIT, Configuration.n(user.id, match))
         );
 
         client.on(EventType.MESSAGE, netMessage => {
