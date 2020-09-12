@@ -1,4 +1,4 @@
-import Entity from '../../../../lib/src/Entity.js';
+import Entity from '../../../../lib/src/data/Entity.js';
 import Sprites from './Sprites.js';
 
 export default class ExplosionsRenderer {

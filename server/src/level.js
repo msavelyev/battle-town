@@ -1,6 +1,6 @@
-import Block from '../../lib/src/Block.js';
-import BlockType from '../../lib/src/BlockType.js';
-import Point from '../../lib/src/Point.js';
+import Block from '../../lib/src/data/Block.js';
+import BlockType from '../../lib/src/data/BlockType.js';
+import Point from '../../lib/src/data/Point.js';
 import randomInt from '../../lib/src/util/randomInt.js';
 import {SETTINGS} from '../../lib/src/util/dotenv.js';
 

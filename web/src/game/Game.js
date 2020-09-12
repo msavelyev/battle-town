@@ -11,10 +11,10 @@ import ScoreRenderer from './renderer/ScoreRenderer.js';
 import NetMessage from '../../../lib/src/proto/NetMessage.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
 import increaseTick from '../../../lib/src/util/increaseTick.js';
-import Point from '../../../lib/src/Point.js';
+import Point from '../../../lib/src/data/Point.js';
 import {OFFSET_Y} from './renderer/text.js';
-import Match from '../../../lib/src/Match.js';
-import World from '../../../lib/src/World.js';
+import Match from '../../../lib/src/data/Match.js';
+import World from '../../../lib/src/data/World.js';
 import MatchStateRenderer from './renderer/MatchStateRenderer.js';
 import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
 

@@ -1,10 +1,10 @@
-import World from '../../../../lib/src/World.js';
+import World from '../../../../lib/src/data/World.js';
 import level from '../../level.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import {FRAME_TIME} from '../../../../lib/src/Ticker.js';
 import compareTick from '../../../../lib/src/util/compareTick.js';
-import Match from '../../../../lib/src/Match.js';
+import Match from '../../../../lib/src/data/Match.js';
 import Player from './Player.js';
 
 const WIDTH = 800;

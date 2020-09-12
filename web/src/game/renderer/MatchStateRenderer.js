@@ -1,7 +1,7 @@
 import {renderText} from './text.js';
 import Ticker, {FPS} from '../../../../lib/src/Ticker.js';
-import MatchState from '../../../../lib/src/MatchState.js';
-import Match from '../../../../lib/src/Match.js';
+import MatchState from '../../../../lib/src/data/MatchState.js';
+import Match from '../../../../lib/src/data/Match.js';
 
 export default class MatchStateRenderer {
 

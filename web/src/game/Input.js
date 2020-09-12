@@ -1,4 +1,4 @@
-import Direction from '../../../lib/src/Direction.js';
+import Direction from '../../../lib/src/data/Direction.js';
 
 export default class Input {
 

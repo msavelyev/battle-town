@@ -1,5 +1,5 @@
 import {OFFSET_Y, renderText} from './text.js';
-import Match from '../../../../lib/src/Match.js';
+import Match from '../../../../lib/src/data/Match.js';
 
 export default class ScoreRenderer {
 

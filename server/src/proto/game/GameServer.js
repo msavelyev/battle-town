@@ -8,9 +8,9 @@ import EventType from '../../../../lib/src/proto/EventType.js';
 import database from '../../database.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
-import Configuration from '../../../../lib/src/Configuration.js';
-import World from '../../../../lib/src/World.js';
-import Match from '../../../../lib/src/Match.js';
+import Configuration from '../../../../lib/src/data/Configuration.js';
+import World from '../../../../lib/src/data/World.js';
+import Match from '../../../../lib/src/data/Match.js';
 
 export default class GameServer {
 

@@ -1,5 +1,5 @@
-import Entity from '../../../../lib/src/Entity.js';
-import Direction from '../../../../lib/src/Direction.js';
+import Entity from '../../../../lib/src/data/Entity.js';
+import Direction from '../../../../lib/src/data/Direction.js';
 import Sprites from './Sprites.js';
 
 export default class TankRenderer {
