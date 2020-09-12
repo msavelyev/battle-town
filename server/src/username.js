@@ -1,4 +1,4 @@
-import randomInt from '../../lib/src/randomInt.js';
+import randomInt from '../../lib/src/util/randomInt.js';
 
 export default Object.freeze({
   generate: function() {

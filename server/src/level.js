@@ -1,7 +1,7 @@
 import Block from '../../lib/src/Block.js';
 import BlockType from '../../lib/src/BlockType.js';
 import Point from '../../lib/src/Point.js';
-import randomInt from '../../lib/src/randomInt.js';
+import randomInt from '../../lib/src/util/randomInt.js';
 import {SETTINGS} from '../../lib/src/util/dotenv.js';
 
 const DEBUG_LEVEL = `
