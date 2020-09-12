@@ -20,11 +20,11 @@ export default class TankRenderer {
   }
 
   drawTank(ctx, tank) {
-    const x = tank.entity.position.x;
-    const y = tank.entity.position.y;
-    const size = tank.entity.size * Entity.BLOCK_SIZE;
+    const x = tank.position.x;
+    const y = tank.position.y;
+    const size = tank.size * Entity.BLOCK_SIZE;
 
-    ctx.fillStyle = tank.entity.id === this.id ? 'yellow' : 'red';
+    ctx.fillStyle = tank.id === this.id ? 'yellow' : 'red';
     ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
     ctx.transform(1, 0, 0, 1, size / 2, size / 2);
 

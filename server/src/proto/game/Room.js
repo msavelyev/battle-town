@@ -21,9 +21,9 @@ export default class Room {
     this.players = [];
 
     this.matches = [
-      Match.n(
+      new Match(
         id,
-        World.n(id, WIDTH, HEIGHT),
+        new World(id, WIDTH, HEIGHT),
         ticker.tick,
         level.choose()
       )
@@ -32,7 +32,7 @@ export default class Room {
     this.queue = [];
 
     this.tickTimer = setInterval(() => {
-      this.broadcast(MessageType.TICK, Match.encode(this.lastMatch()).finish());
+      this.broadcast(MessageType.TICK, this.lastMatch());
     }, FRAME_TIME);
 
     this.finished = false;

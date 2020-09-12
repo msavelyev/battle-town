@@ -17,8 +17,8 @@ export default class ExplosionsRenderer {
         continue;
       }
 
-      const x = explosion.entity.position.x;
-      const y = explosion.entity.position.y;
+      const x = explosion.position.x;
+      const y = explosion.position.y;
       this.ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
       Sprites.draw(this.ctx, image, 0, 0);
       this.ctx.resetTransform();

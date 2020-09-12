@@ -17,14 +17,12 @@ import Match from '../../../lib/src/data/Match.js';
 import World from '../../../lib/src/data/World.js';
 import MatchStateRenderer from './renderer/MatchStateRenderer.js';
 import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
-import UnackedInputRenderer from './renderer/UnackedInputRenderer.js';
 
 export default class Game {
 
   constructor(ctx, client, sprites, conf) {
     this.ctx = ctx;
-    this.match = Match.create(conf.match);
-    this.match.unackedMessages = [];
+    this.match = conf.match;
 
     const world = this.match.world;
     world.authoritative = false;
@@ -45,17 +43,16 @@ export default class Game {
       new BulletRenderer(ctx, world, sprites),
       new TankRenderer(ctx, this.id, world, sprites),
       new JungleRenderer(ctx, world, sprites),
-      new PingRenderer(ctx, Point.n(world.width, world.height - 3), this.client),
-      new FpsRenderer(ctx, Point.n(world.width, world.height - 3 - OFFSET_Y)),
-      new ScoreRenderer(ctx, this.match, Point.n(world.width, 12)),
+      new PingRenderer(ctx, new Point(world.width, world.height - 3), this.client),
+      new FpsRenderer(ctx, new Point(world.width, world.height - 3 - OFFSET_Y)),
+      new ScoreRenderer(ctx, this.match, new Point(world.width, 12)),
       // new TickRenderer(
       //   ctx,
       //   this.match,
       //   this.client,
       //   new Point(world.width, world.height - 3 - OFFSET_Y * 2)
       // ),
-      new UnackedInputRenderer(ctx, this.match, Point.n(world.width, world.height - 3 - OFFSET_Y * 2)),
-      new MatchStateRenderer(ctx, this.match, Point.n(world.width / 2, world.height / 2)),
+      new MatchStateRenderer(ctx, this.match, new Point(world.width / 2, world.height / 2)),
       new ExplosionsRenderer(ctx, world, sprites)
     ];
 
@@ -123,7 +120,7 @@ export default class Game {
   }
 
   onSync(data) {
-    Match.sync(this.match, this.id, Match.decode(Buffer.from(data)));
+    Match.sync(this.match, this.id, data);
   }
 
   stop() {
