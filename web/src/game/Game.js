@@ -32,11 +32,6 @@ export default class Game {
     this.id = conf.id;
 
     this.ticks = [
-      {
-        update: event => {
-          Match.update(this.match, event)
-        }
-      },
       new StoneRenderer(ctx, world, sprites),
       new BrickRenderer(ctx, world, sprites),
       new WaterRenderer(ctx, world, sprites),
