@@ -76,7 +76,10 @@ export default class Room {
     const match = this.match;
     Match.removeTank(match, player.user.id, true);
     if (!this.finished) {
-      Match.setWinner(match, this.players[0].user.id, match.tick);
+      const player = this.players[0];
+      if (player) {
+        Match.setWinner(match, player.user.id, match.tick);
+      }
     }
 
     this.broadcast(MessageType.DISCONNECTED, player.user.id);
