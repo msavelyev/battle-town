@@ -18,7 +18,7 @@ export default class Disconnected extends Scene {
         }
       </style>
       <div class="disconnected__container">
-        <h1>Disconnected</h1>      
+        <h1>Match finished. Redirecting to main menu.</h1>
       </div>
     `;
 
