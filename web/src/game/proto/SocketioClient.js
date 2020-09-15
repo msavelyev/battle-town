@@ -3,6 +3,7 @@ import NetClient from './NetClient.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
+import NetUsage from './NetUsage.js';
 
 export default class SocketioClient extends NetClient {
 
@@ -11,11 +12,14 @@ export default class SocketioClient extends NetClient {
 
     this.socket = io(SETTINGS.SERVER_WS_HOST, { autoConnect: false });
     this.lastTick = -1;
+    this.usage = new NetUsage();
   }
 
   on(name, cb) {
     if (cb) {
       this.socket.on(name, msg => {
+        this.usage.read(msg);
+
         if (msg) {
           this.lastTick = msg.tick;
           cb(msg);
@@ -37,6 +41,7 @@ export default class SocketioClient extends NetClient {
   }
 
   sendEvent(eventType, payload) {
+    this.usage.write(payload);
     this.socket.emit(eventType, payload);
   }
 

@@ -4,6 +4,7 @@ import JungleRenderer from './renderer/blocks/JungleRenderer.js';
 import StoneRenderer from './renderer/blocks/StoneRenderer.js';
 import WaterRenderer from './renderer/blocks/WaterRenderer.js';
 import BulletRenderer from './renderer/BulletRenderer.js';
+import NetUsageRenderer from './renderer/NetUsageRenderer.js';
 import PingRenderer from './renderer/PingRenderer.js';
 import TankRenderer from './renderer/TankRenderer.js';
 import FpsRenderer from './renderer/FpsRenderer.js';
@@ -51,7 +52,8 @@ export default class Game {
       ),
       new UnackedInputRenderer(ctx, this.match, new Point(world.width, world.height - 3 - OFFSET_Y * 3)),
       new MatchStateRenderer(ctx, this.match, new Point(world.width / 2, world.height / 2)),
-      new ExplosionsRenderer(ctx, world, sprites)
+      new ExplosionsRenderer(ctx, world, sprites),
+      new NetUsageRenderer(ctx, this.client, new Point(world.width, world.height - 3 - OFFSET_Y * 5))
     ];
 
     this.moving = false;
