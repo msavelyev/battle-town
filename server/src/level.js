@@ -68,6 +68,10 @@ export default Object.freeze({
 
     const level = getLevel(levelId);
 
+    let blockId = 0;
+
+    const getBlockId = () => blockId++;
+
     level.trim().split('\n').forEach((row, y) => {
       row.trim().split('').forEach((cell, x) => {
         const blockType = parseInt(cell);
@@ -78,14 +82,14 @@ export default Object.freeze({
 
         if (blockType === BlockType.SPAWN) {
           const point = new Point(x * BLOCKS_PER_CELL, y * BLOCKS_PER_CELL);
-          blocks.push(new Block(point, blockType));
+          blocks.push(new Block(getBlockId(), point, blockType));
           return;
         }
 
         for (let dx = 0; dx < BLOCKS_PER_CELL; dx++) {
           for (let dy = 0; dy < BLOCKS_PER_CELL; dy++) {
             const point = new Point(x * BLOCKS_PER_CELL + dx, y * BLOCKS_PER_CELL + dy);
-            blocks.push(new Block(point, blockType));
+            blocks.push(new Block(getBlockId(), point, blockType));
           }
         }
       });
