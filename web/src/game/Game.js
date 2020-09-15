@@ -17,6 +17,8 @@ import Match from '../../../lib/src/data/Match.js';
 import World from '../../../lib/src/data/World.js';
 import MatchStateRenderer from './renderer/MatchStateRenderer.js';
 import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
+import TickRenderer from './renderer/TickRenderer.js';
+import UnackedInputRenderer from './renderer/UnackedInputRenderer.js';
 
 export default class Game {
 
@@ -41,12 +43,13 @@ export default class Game {
       new PingRenderer(ctx, new Point(world.width, world.height - 3), this.client),
       new FpsRenderer(ctx, new Point(world.width, world.height - 3 - OFFSET_Y)),
       new ScoreRenderer(ctx, this.match, new Point(world.width, 12)),
-      // new TickRenderer(
-      //   ctx,
-      //   this.match,
-      //   this.client,
-      //   new Point(world.width, world.height - 3 - OFFSET_Y * 2)
-      // ),
+      new TickRenderer(
+        ctx,
+        this.match,
+        this.client,
+        new Point(world.width, world.height - 3 - OFFSET_Y * 2)
+      ),
+      new UnackedInputRenderer(ctx, this.match, new Point(world.width, world.height - 3 - OFFSET_Y * 3)),
       new MatchStateRenderer(ctx, this.match, new Point(world.width / 2, world.height / 2)),
       new ExplosionsRenderer(ctx, world, sprites)
     ];
