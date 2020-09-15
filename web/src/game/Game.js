@@ -80,7 +80,9 @@ export default class Game {
       ));
     }
 
-    this.ticks.forEach(tick => tick.update(event));
+    for (let tick of this.ticks) {
+      tick.update(event);
+    }
   }
 
   startMoving(direction) {
