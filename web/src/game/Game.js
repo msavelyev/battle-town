@@ -119,8 +119,8 @@ export default class Game {
     return false;
   }
 
-  onSync(data) {
-    Match.sync(this.match, this.id, data);
+  onSync(tickData) {
+    Match.sync(this.match, this.id, tickData);
   }
 
   stop() {

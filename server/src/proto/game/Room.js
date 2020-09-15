@@ -1,16 +1,13 @@
+import Match from '../../../../lib/src/data/Match.js';
+import TickData from '../../../../lib/src/data/TickData.js';
 import World from '../../../../lib/src/data/World.js';
-import level from '../../level.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
-import {FRAME_TIME} from '../../../../lib/src/Ticker.js';
-import compareTick from '../../../../lib/src/util/compareTick.js';
-import Match from '../../../../lib/src/data/Match.js';
+import level from '../../level.js';
 import Player from './Player.js';
 
 const WIDTH = 800;
 const HEIGHT = 576;
-const MAX_PLAYERS_IN_ROOM = 2;
-const TICKS_TO_KEEP = 60;
 
 export default class Room {
 
@@ -20,26 +17,15 @@ export default class Room {
 
     this.players = [];
 
-    this.matches = [
-      new Match(
-        id,
-        new World(id, WIDTH, HEIGHT),
-        ticker.tick,
-        level.choose()
-      )
-    ];
-    this.events = [];
+    this.match = new Match(
+      id,
+      new World(id, WIDTH, HEIGHT),
+      ticker.tick,
+      level.choose()
+    );
     this.queue = [];
 
-    this.tickTimer = setInterval(() => {
-      this.broadcast(MessageType.TICK, this.lastMatch());
-    }, FRAME_TIME);
-
     this.finished = false;
-  }
-
-  lastMatch() {
-    return this.matches[this.matches.length - 1];
   }
 
   update(event) {
@@ -47,39 +33,31 @@ export default class Room {
       return;
     }
 
-    const copy = Match.copy(this.lastMatch());
-    Match.update(copy, event);
-    if (Match.finished(copy)) {
+    const updates = Match.update(this.match, event);
+    if (Match.finished(this.match)) {
       console.log('room is finished', this.id);
       this.finished = true;
     }
 
-    this.addMatch(copy);
-
-    let minTick = this.ticker.tick;
     for (let netMessage of this.queue) {
       switch (netMessage.type){
         case MessageType.SHOOT:
         case MessageType.MOVE:
-          netMessage.tick = this.ticker.tick;
-          Match.handleEvent(copy, netMessage);
-          break;
-        default:
-          minTick = Math.min(minTick, netMessage.tick);
+          const result = Match.handleEvent(this.match, netMessage);
+          if (result) {
+            updates.push(result);
+          }
           break;
       }
-      this.addEvent(netMessage);
-    }
-
-    if (minTick < this.ticker.tick) {
-      this.recalculateMatch(minTick);
     }
 
     this.queue = [];
-  }
 
-  isFull() {
-    return this.players.length >= MAX_PLAYERS_IN_ROOM;
+    this.broadcast(MessageType.TICK, new TickData(
+      event.tick,
+      updates,
+      JSON.parse(JSON.stringify(this.match.ack)),
+    ));
   }
 
   isEmpty() {
@@ -89,13 +67,13 @@ export default class Room {
   add(player) {
     this.players.push(player);
     console.log('added player', player.user.id, 'to room', this.id);
-    Match.addUser(this.lastMatch(), Player.shortUser(player));
+    Match.addUser(this.match, Player.shortUser(player));
   }
 
   remove(player) {
     console.log('players', this.players.length, 'removing one', player.user.id);
     this.players = this.players.filter(p => p !== player);
-    const match = this.lastMatch();
+    const match = this.match;
     Match.removeTank(match, player.user.id, true);
     if (!this.finished) {
       Match.setWinner(match, this.players[0].user.id, match.tick);
@@ -114,24 +92,7 @@ export default class Room {
     });
   }
 
-  addEvent(netMessage) {
-    this.events = this._addTicked(netMessage, this.events);
-  }
-
-  addMatch(match) {
-    this.matches = this._addTicked(match, this.matches);
-  }
-
-  _addTicked(what, where) {
-    where.push(what);
-    where.sort((a, b) => a.tick - b.tick);
-
-    const maxTick = this.ticker.tick;
-    return where.filter(item => compareTick(item.tick, (maxTick - TICKS_TO_KEEP)) >= 0);
-  }
-
   stop() {
-    clearInterval(this.tickTimer);
     for (let player of this.players) {
       player.client.disconnect();
     }
@@ -150,39 +111,6 @@ export default class Room {
       default:
         console.error('Unknown message', netMessage);
     }
-  }
-
-  recalculateMatch(tick) {
-    let prevMatch = null;
-
-    if (compareTick(this.matches[0].tick, tick) >= 0) {
-      return false;
-    }
-
-    for (let i = 0; i < this.matches.length; i++) {
-      const currentMatch = this.matches[i];
-      if (compareTick(currentMatch.tick, tick) < 0) {
-        prevMatch = currentMatch;
-        continue;
-      }
-
-      const currentEvent = currentMatch.event;
-      const events = this.findEventsForTick(currentEvent.tick);
-      const newMatch = Match.copy(prevMatch);
-      for (let netMessage of events) {
-        Match.handleEvent(newMatch, netMessage);
-      }
-      Match.update(newMatch, currentEvent);
-      this.matches[i] = newMatch;
-
-      prevMatch = newMatch;
-    }
-
-    return true;
-  }
-
-  findEventsForTick(tick) {
-    return this.events.filter(event => event.tick === tick);
   }
 
 }

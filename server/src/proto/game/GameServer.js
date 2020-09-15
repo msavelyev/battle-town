@@ -75,16 +75,12 @@ export default class GameServer {
   createMatch(players) {
     return () => {
       const room = this.createRoom();
-      const match = room.lastMatch();
+      const match = room.match;
       for (let player of players) {
         const client = player.client;
         const user = player.user;
 
         room.add(player);
-
-        client.sendMessage(
-          new NetMessage(user.id, this.ticker.tick, MessageType.INIT, new Configuration(user.id, match))
-        );
 
         client.on(EventType.MESSAGE, netMessage => {
           room.handleEvent(client, netMessage);
@@ -97,6 +93,15 @@ export default class GameServer {
       }
 
       World.resetTanks(match.world, match);
+
+      for (let player of players) {
+        const client = player.client;
+        const user = player.user;
+
+        client.sendMessage(
+          new NetMessage(user.id, this.ticker.tick, MessageType.INIT, new Configuration(user.id, match))
+        );
+      }
     };
   }
 
@@ -156,7 +161,7 @@ export default class GameServer {
     for (let room of this.rooms) {
       room.update(event);
       if (room.finished) {
-        this.assignPoints(room.lastMatch());
+        this.assignPoints(room.match);
         room.stop();
       }
     }
