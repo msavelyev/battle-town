@@ -20,8 +20,7 @@ export default class Room {
     this.match = new Match(
       id,
       new World(id, WIDTH, HEIGHT),
-      ticker.tick,
-      level.choose()
+      ticker.tick
     );
     this.queue = [];
 
