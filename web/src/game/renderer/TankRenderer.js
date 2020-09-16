@@ -37,7 +37,7 @@ export default class TankRenderer {
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
     ctx.beginPath();
 
-    Sprites.draw(ctx, this.sprites.tank, 0, 0);
+    Sprites.draw(ctx, this.sprites.tank, 0, 0, size, size);
 
     const tmp = ctx.globalCompositeOperation;
     ctx.globalCompositeOperation = 'multiply';

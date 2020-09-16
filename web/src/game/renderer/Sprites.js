@@ -16,8 +16,8 @@ export default class Sprites {
     this.explosion3 = s(img, 64, 64, 32, 32);
   }
 
-  static draw(ctx, conf, x, y) {
-    ctx.drawImage(conf.img, conf.x, conf.y, conf.w, conf.h, x, y, conf.w, conf.h);
+  static draw(ctx, conf, x, y, w, h) {
+    ctx.drawImage(conf.img, conf.x, conf.y, conf.w, conf.h, x, y, w, h);
   }
 
 }
