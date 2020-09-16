@@ -13,6 +13,10 @@ export default class GameScene extends Scene {
     this.main = null;
     this.onKeydown = null;
     this.onKeyup = null;
+    this.onTouchStart = null;
+    this.onTouchMove = null;
+    this.onTouchEnd = null;
+    this.onTouchCancel = null;
     this.onDisconnect = null;
   }
 
@@ -28,15 +32,26 @@ export default class GameScene extends Scene {
     const sprites = new Sprites(this.spritesImg);
     this.main = new Main(canvas, sprites, client, this.onFinishCb);
 
-    this.onKeydown = this.main.keydown.bind(this.main);
-    this.onKeyup = this.main.keyup.bind(this.main);
     this.onDisconnect = this.main.disconnect.bind(this.main);
-
-    document.addEventListener('keydown', this.onKeydown);
-    document.addEventListener('keyup', this.onKeyup);
     window.addEventListener('beforeunload', this.onDisconnect);
 
     this.main.init(conf);
+
+    const input = this.main.input;
+    this.onKeydown = input.keydown.bind(input);
+    this.onKeyup = input.keyup.bind(input);
+    this.onTouchStart = input.touchstart.bind(input);
+    this.onTouchMove = input.touchmove.bind(input);
+    this.onTouchEnd = input.touchend.bind(input);
+    this.onTouchCancel = input.touchcancel.bind(input);
+
+    document.addEventListener('keydown', this.onKeydown);
+    document.addEventListener('keyup', this.onKeyup);
+    document.addEventListener('touchstart', this.onTouchStart);
+    document.addEventListener('touchmove', this.onTouchMove);
+    document.addEventListener('touchend', this.onTouchEnd);
+    document.addEventListener('touchcancel', this.onTouchCancel);
+
     this.main.start();
   }
 
@@ -45,12 +60,20 @@ export default class GameScene extends Scene {
 
     document.removeEventListener('keydown', this.onKeydown);
     document.removeEventListener('keyup', this.onKeyup);
+    document.removeEventListener('touchstart', this.onTouchStart);
+    document.removeEventListener('touchmove', this.onTouchMove);
+    document.removeEventListener('touchend', this.onTouchEnd);
+    document.removeEventListener('touchcancel', this.onTouchCancel);
     window.removeEventListener('beforeunload', this.onDisconnect);
 
     this.main.stop();
 
     this.onKeydown = null;
     this.onKeyup = null;
+    this.onTouchStart = null;
+    this.onTouchMove = null;
+    this.onTouchEnd = null;
+    this.onTouchCancel = null;
     this.onDisconnect = null;
     this.main = null;
   }

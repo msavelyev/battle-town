@@ -45,18 +45,6 @@ export default class Main {
     this.ticker.start(this.game);
   }
 
-  keydown(event) {
-    if (this.input) {
-      this.input.keydown(event);
-    }
-  }
-
-  keyup(event) {
-    if (this.input) {
-      this.input.keyup(event);
-    }
-  }
-
   disconnect() {
     this.client.disconnect();
   }
