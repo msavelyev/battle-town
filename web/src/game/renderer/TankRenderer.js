@@ -1,5 +1,6 @@
 import Entity from '../../../../lib/src/data/Entity.js';
 import Direction from '../../../../lib/src/data/Direction.js';
+import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Sprites from './Sprites.js';
 
 export default class TankRenderer {
@@ -33,7 +34,7 @@ export default class TankRenderer {
     ctx.fillText(tank.name, 0, -20);
     ctx.textAlign = 'left';
 
-    ctx.rotate(Direction.angle(tank.direction) * Math.PI / 180);
+    ctx.rotate(Direction.toRad(tank.direction));
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
     ctx.beginPath();
 
@@ -43,6 +44,16 @@ export default class TankRenderer {
     ctx.globalCompositeOperation = 'multiply';
     ctx.fillRect(0, 0, size, size);
     ctx.globalCompositeOperation = tmp;
+
+    if (SETTINGS.DEBUG_RENDER) {
+      ctx.strokeStyle = 'cyan';
+      ctx.strokeRect(
+        0,
+        0,
+        size,
+        size
+      );
+    }
 
     ctx.resetTransform();
   }

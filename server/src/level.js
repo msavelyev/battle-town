@@ -126,14 +126,24 @@ export default Object.freeze({
 
         if (blockType === BlockType.SPAWN) {
           const point = new Point(x * BLOCKS_PER_CELL, y * BLOCKS_PER_CELL);
-          blocks.push(new Block(getBlockId(), point, blockType));
+          blocks.push(new Block(getBlockId(), point, blockType, 1));
+          return;
+        }
+
+        if (blockType === BlockType.BRICK) {
+          for (let dx = 0; dx < BLOCKS_PER_CELL * 2; dx++) {
+            for (let dy = 0; dy < BLOCKS_PER_CELL * 2; dy++) {
+              const point = new Point(x * BLOCKS_PER_CELL + dx * 0.5, y * BLOCKS_PER_CELL + dy * 0.5);
+              blocks.push(new Block(getBlockId(), point, blockType, 0.5));
+            }
+          }
           return;
         }
 
         for (let dx = 0; dx < BLOCKS_PER_CELL; dx++) {
           for (let dy = 0; dy < BLOCKS_PER_CELL; dy++) {
             const point = new Point(x * BLOCKS_PER_CELL + dx, y * BLOCKS_PER_CELL + dy);
-            blocks.push(new Block(getBlockId(), point, blockType));
+            blocks.push(new Block(getBlockId(), point, blockType, 1));
           }
         }
       });
