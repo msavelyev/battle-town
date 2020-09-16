@@ -20,7 +20,7 @@ export default class BlockRenderer {
 
   drawBlock(ctx, block, event) {
     const size = block.size * Entity.BLOCK_SIZE;
-    ctx.setTransform(1, 0, 0, 1, block.position.x * size, block.position.y * size);
+    ctx.setTransform(1, 0, 0, 1, block.position.x * Entity.BLOCK_SIZE, block.position.y * Entity.BLOCK_SIZE);
     Sprites.draw(ctx, this.image, 0, 0, size, size);
     ctx.resetTransform();
   }

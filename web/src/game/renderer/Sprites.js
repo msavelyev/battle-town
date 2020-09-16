@@ -6,6 +6,10 @@ export default class Sprites {
   constructor(img) {
     this.tank = s(img, 0, 32, 32, 32);
     this.brick = s(img, 80, 16, 16, 16);
+    this.brick_tl = s(img, 80, 16, 8, 8);
+    this.brick_tr = s(img, 88, 16, 8, 8);
+    this.brick_bl = s(img, 80, 24, 8, 8);
+    this.brick_br = s(img, 88, 24, 8, 8);
     this.stone = s(img, 80, 0, 16, 16);
     this.jungle = s(img, 96, 0, 16, 16);
     this.water1 = s(img, 0, 16, 16, 16);

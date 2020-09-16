@@ -100,6 +100,18 @@ function getLevel(levelId) {
   return LEVELS[SETTINGS.USE_LEVEL];
 }
 
+function brickSubtype(dx, dy) {
+  if (dx % 2 === 0 && dy % 2 === 0) {
+    return BlockType.BRICK_TL;
+  } else if (dx % 2 !== 0 && dy % 2 === 0) {
+    return BlockType.BRICK_TR;
+  } else if (dx % 2 === 0 && dy % 2 !== 0) {
+    return BlockType.BRICK_BL;
+  } else if (dx % 2 !== 0 && dy % 2 !== 0) {
+    return BlockType.BRICK_BR;
+  }
+}
+
 const BLOCKS_PER_CELL = 2;
 
 export default Object.freeze({
@@ -134,7 +146,7 @@ export default Object.freeze({
           for (let dx = 0; dx < BLOCKS_PER_CELL * 2; dx++) {
             for (let dy = 0; dy < BLOCKS_PER_CELL * 2; dy++) {
               const point = new Point(x * BLOCKS_PER_CELL + dx * 0.5, y * BLOCKS_PER_CELL + dy * 0.5);
-              blocks.push(new Block(getBlockId(), point, blockType, 0.5));
+              blocks.push(new Block(getBlockId(), point, brickSubtype(dx, dy), 0.5));
             }
           }
           return;
