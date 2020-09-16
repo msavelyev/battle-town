@@ -3,7 +3,7 @@ import TickData from '../../../../lib/src/data/TickData.js';
 import World from '../../../../lib/src/data/World.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
-import level from '../../level.js';
+import log from '../../../../lib/src/util/log.js';
 import Player from './Player.js';
 
 const WIDTH = 800;
@@ -34,7 +34,7 @@ export default class Room {
 
     const updates = Match.update(this.match, event);
     if (Match.finished(this.match)) {
-      console.log('room is finished', this.id);
+      log.info('room is finished', this.id);
       this.finished = true;
     }
 
@@ -65,12 +65,12 @@ export default class Room {
 
   add(player) {
     this.players.push(player);
-    console.log('added player', player.user.id, 'to room', this.id);
+    log.info('added player', player.user.id, 'to room', this.id);
     Match.addUser(this.match, Player.shortUser(player));
   }
 
   remove(player) {
-    console.log('players', this.players.length, 'removing one', player.user.id);
+    log.info('players', this.players.length, 'removing one', player.user.id);
     this.players = this.players.filter(p => p !== player);
     const match = this.match;
     Match.removeTank(match, player.user.id, true);

@@ -1,4 +1,5 @@
 import {v4 as uuid} from 'uuid';
+import log from '../../lib/src/util/log.js';
 import database from './database.js';
 import username from './username.js';
 
@@ -9,7 +10,7 @@ function handleErrors(fn) {
     try {
       await fn(req, res);
     } catch (err) {
-      console.log(err);
+      log.error(err);
       await res.status(500).json(err);
     }
   };
@@ -19,9 +20,8 @@ export async function init(db, expressApp) {
   expressApp.use(express.json());
 
   expressApp.use(async (err, req, res, next) => {
-    console.log('huh?');
     if (err) {
-      console.log(err);
+      log.error(err);
       await res.status(500).json(err);
       return;
     }
@@ -31,7 +31,7 @@ export async function init(db, expressApp) {
 
   expressApp.get('/api/new', handleErrors(async (req, res) => {
     const user = await database.createUser(db, uuid(), username.generate(), uuid());
-    console.log('created', user);
+    log.info('created', user);
     await res.json(user);
   }));
 

@@ -1,5 +1,6 @@
 import express from 'express';
 import * as http from 'http'
+import log from '../../lib/src/util/log.js';
 import GameServer from './proto/game/GameServer.js';
 import * as process from 'process';
 import { performance } from 'perf_hooks';
@@ -31,7 +32,7 @@ async function main() {
 
   const port = process.env.PORT || 8080;
   server.listen(port, () => {
-    console.log(`listening on ${port}`);
+    log.info(`listening on ${port}`);
   });
 }
 

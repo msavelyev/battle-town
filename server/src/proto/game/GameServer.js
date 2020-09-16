@@ -2,6 +2,7 @@ import {v4 as uuid} from 'uuid';
 
 import * as process from 'process';
 import Fps from '../../../../lib/src/util/Fps.js';
+import log from '../../../../lib/src/util/log.js';
 import Player from './Player.js';
 import Room from './Room.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
@@ -41,7 +42,7 @@ export default class GameServer {
   createRoom() {
     const id = uuid();
     const room = new Room(id, this.ticker);
-    console.log('created room', id);
+    log.info('created room', id);
     this.rooms.push(room);
 
     return room;
@@ -52,7 +53,7 @@ export default class GameServer {
       const players = this.queue.slice(0, 2);
       this.queue = this.queue.slice(2);
 
-      console.log('matchmaking players', players.map(p => p.user.id));
+      log.info('matchmaking players', players.map(p => p.user.id));
 
       for (let player of players) {
         player.client.send(EventType.MATCH_FOUND);
@@ -66,7 +67,7 @@ export default class GameServer {
   removeFromRoom(room, player) {
     room.remove(player);
     if (room.isEmpty()) {
-      console.log('removing room', room.id);
+      log.info('removing room', room.id);
       room.stop();
       this.rooms = this.rooms.filter(r => r !== room);
     }
@@ -87,7 +88,7 @@ export default class GameServer {
         });
 
         player.onDisconnect(() => {
-          console.log('disconnected from match', user.id);
+          log.info('disconnected from match', user.id);
           this.removeFromRoom(room, player);
         });
       }
@@ -114,12 +115,12 @@ export default class GameServer {
       throw new Error('Already queued');
     }
 
-    console.log('authorized', user.id);
+    log.info('authorized', user.id);
     client.send(EventType.AUTH_ACK);
     this.queue.push(player);
 
     player.onDisconnect(() => {
-      console.log('disconnected from queue', user.id);
+      log.info('disconnected from queue', user.id);
       this.queue = this.queue.filter(p => p !== player);
     });
   }
@@ -136,12 +137,11 @@ export default class GameServer {
           if (user) {
             this.authorizePlayer(player, user);
           } else {
-            console.log();
             throw new Error('Couldn\'t find user');
           }
         })
         .catch(err => {
-          console.log('Couldn\'t authorize', userId, token, err);
+          log.error('Couldn\'t authorize', userId, token, err);
           client.disconnect();
         })
         .then(() => {
@@ -152,7 +152,7 @@ export default class GameServer {
 
   clientConnected(client) {
     const player = new Player(client);
-    console.log('connected');
+    log.info('connected');
 
     player.onAuth(this.onPlayerAuth(player));
   }

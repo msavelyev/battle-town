@@ -1,3 +1,4 @@
+import log from '../../../../lib/src/util/log.js';
 import Loading from './Loading.js';
 
 export default class Scenes {
@@ -26,7 +27,7 @@ export default class Scenes {
 
     this.scene = this.scenes[this.sceneIdx];
     this.scene.onFinish(this.onFinish.bind(this));
-    console.log('setting up scene', this.scene.constructor.name);
+    log.info('setting up scene', this.scene.constructor.name);
     this.scene.setup(data);
   }
 
@@ -41,7 +42,7 @@ export default class Scenes {
         Error:
         ${err}
       `);
-      console.log(err);
+      log.error(err);
 
       this.startDefault();
 
