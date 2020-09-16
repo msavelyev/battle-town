@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="height=650, user-scalable=yes">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Battle Village</title>
 
@@ -39,19 +38,59 @@
             color: #555;
             font-family: Helvetica, sans-serif;
             font-size: 80%;
-            margin-top: 20px;
+            height: 30px;
+            display: flex;
+            align-items: center;
         }
 
         .footer a {
             color: #999;
+        }
+
+        .container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        #portrait {
+            color: white;
+            font-size: 130%;
+            text-align: center;
+            font-family: Helvetica, sans-serif;
+            line-height: 30px;
+        }
+
+        @media screen and (orientation:portrait) {
+            #portrait {
+                display: block;
+            }
+            #game {
+                display: none;
+            }
+        }
+
+        @media screen and (orientation:landscape) {
+            #portrait {
+                display: none;
+            }
+            #game {
+                display: block;
+            }
         }
     </style>
 
     <link rel="preload" href="sprites-new.png" as="image" id="sprites" />
 </head>
 <body>
-    <div id="game"></div>
-
+    <div class="container">
+        <div id="portrait">
+            <div>This game works best in landscape mode.</div>
+            <div>Rotate your screen horizontally to play.</div>
+            <img src="imgs/landscape.svg" style="width: 150px; height: 150px;" />
+        </div>
+        <div id="game"></div>
+    </div>
     <div class="footer">
         © 2020, contact: <a href="mailto:misha@tsbaw.com">misha@tsbaw.com</a>
     </div>
