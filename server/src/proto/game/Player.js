@@ -1,4 +1,5 @@
 import EventType from '../../../../lib/src/proto/EventType.js';
+import BotClient from '../base/BotClient.js';
 
 export default class Player {
 
@@ -36,6 +37,15 @@ export default class Player {
       id: player.user.id,
       name: player.user.name
     };
+  }
+
+  static bot() {
+    const player = new Player(new BotClient());
+    player.user = {
+      id: 'bot',
+      name: 'I am a bot'
+    }
+    return player;
   }
 
 }

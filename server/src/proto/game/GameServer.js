@@ -1,6 +1,7 @@
 import {v4 as uuid} from 'uuid';
 
 import * as process from 'process';
+import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Fps from '../../../../lib/src/util/Fps.js';
 import log from '../../../../lib/src/util/log.js';
 import Player from './Player.js';
@@ -123,6 +124,10 @@ export default class GameServer {
       log.info('disconnected from queue', user.id);
       this.queue = this.queue.filter(p => p !== player);
     });
+
+    if (SETTINGS.ALLOW_SINGLE) {
+      this.queue.push(Player.bot());
+    }
   }
 
   onPlayerAuth(player) {
