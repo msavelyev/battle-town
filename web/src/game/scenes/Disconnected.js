@@ -15,6 +15,10 @@ export default class Disconnected extends Scene {
         .disconnected__container {
             color: white;
             font-family: Helvetica, sans-serif;
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
         }
       </style>
       <div class="disconnected__container">
