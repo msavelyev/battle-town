@@ -60,7 +60,15 @@ export default class Room {
   }
 
   isEmpty() {
-    return this.players.length === 0;
+    if (this.players.length === 0) {
+      return true;
+    }
+
+    if (this.players.length === 1 && this.players[0].user.id === 'bot') {
+      return true;
+    }
+
+    return false;
   }
 
   add(player) {
