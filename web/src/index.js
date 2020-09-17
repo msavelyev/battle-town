@@ -46,9 +46,9 @@ window.addEventListener('load', () => {
       new Loading(overlay),
       new MainMenu(overlay),
       new Matchmaking(overlay),
-      new GameScene(overlay, spritesImg, size),
+      new GameScene(overlay, spritesImg),
       new Disconnected(overlay)
-    ]);
+    ], size);
 
     if (SETTINGS.START_WITH_MATCHMAKING) {
       userStorage.get()

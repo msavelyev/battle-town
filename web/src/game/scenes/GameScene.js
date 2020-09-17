@@ -5,12 +5,12 @@ import analytics from '../../../../lib/src/util/analytics.js';
 
 export default class GameScene extends Scene {
 
-  constructor(overlay, spritesImg, size) {
+  constructor(overlay, spritesImg) {
     super();
     this.overlay = overlay;
     this.spritesImg = spritesImg;
-    this.size = size
 
+    this.size = null
     this.main = null;
     this.onKeydown = null;
     this.onKeyup = null;
@@ -21,11 +21,12 @@ export default class GameScene extends Scene {
     this.onDisconnect = null;
   }
 
-  setup(params) {
+  setup(params, size) {
     analytics.log('GAME_SCENE_SETUP');
 
     const client = params.client;
     const conf = params.conf;
+    this.size = size;
 
     this.overlay.innerHTML = '<canvas id="canvas" style="flex: 1;"></canvas>';
     const canvas = document.getElementById('canvas');

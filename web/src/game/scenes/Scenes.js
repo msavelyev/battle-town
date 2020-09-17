@@ -3,11 +3,11 @@ import Loading from './Loading.js';
 
 export default class Scenes {
 
-  constructor(scenes) {
+  constructor(scenes, size) {
     this.scenes = scenes;
     this.sceneIdx = 0;
     this.scene = null;
-
+    this.size = size;
   }
 
   startDefault() {
@@ -28,7 +28,7 @@ export default class Scenes {
     this.scene = this.scenes[this.sceneIdx];
     this.scene.onFinish(this.onFinish.bind(this));
     log.info('setting up scene', this.scene.constructor.name);
-    this.scene.setup(data);
+    this.scene.setup(data, this.size);
   }
 
   onFinish(err, result) {
@@ -54,6 +54,7 @@ export default class Scenes {
   }
 
   resize(size) {
+    this.size = size;
     if (this.scene) {
       this.scene.resize(size);
     }
