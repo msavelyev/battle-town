@@ -40,7 +40,7 @@ export default class MatchStateRenderer {
 
     switch (state) {
       case MatchState.PREPARE:
-        return `Get ready ${'.'.repeat(countdown)}`;
+        return `Prepare to fight`;
       case MatchState.READY:
         return `${countdown}`;
       case MatchState.PLAY:
