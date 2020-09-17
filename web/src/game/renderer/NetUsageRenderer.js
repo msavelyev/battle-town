@@ -1,4 +1,4 @@
-import {OFFSET_Y, renderText} from './text.js';
+import {renderText} from './text.js';
 
 const LITERALS = [
   'b',
@@ -8,16 +8,18 @@ const LITERALS = [
 
 export default class NetUsageRenderer {
 
-  constructor(ctx, client, position) {
+  constructor(ctx, client, position, size) {
     this.ctx = ctx;
     this.client = client;
     this.position = position;
+    this.size = size;
   }
 
   update() {
     const usage = this.client.netClient.usage;
-    renderText(this.ctx, 'in: ' + this.format(usage.last.read), this.position.x, this.position.y);
-    renderText(this.ctx, 'out: ' + this.format(usage.last.write), this.position.x, this.position.y + OFFSET_Y);
+    const pos = this.position(this.size);
+    renderText(this.ctx, 'in: ' + this.format(usage.last.read), pos.x, pos.y, this.size.unit);
+    renderText(this.ctx, 'out: ' + this.format(usage.last.write), pos.x, pos.y + this.size.unit, this.size.unit);
   }
 
   format(value) {

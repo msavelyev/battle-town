@@ -1,13 +1,13 @@
-import Entity from '../../../../../lib/src/data/Entity.js';
 import Sprites from '../Sprites.js';
 
 export default class BlockRenderer {
 
-  constructor(ctx, world, type, image) {
+  constructor(ctx, world, type, image, size) {
     this.ctx = ctx;
     this.world = world;
     this.type = type;
     this.image = image;
+    this.size = size;
   }
 
   update(event) {
@@ -19,8 +19,8 @@ export default class BlockRenderer {
   }
 
   drawBlock(ctx, block, event) {
-    const size = block.size * Entity.BLOCK_SIZE;
-    ctx.setTransform(1, 0, 0, 1, block.position.x * Entity.BLOCK_SIZE, block.position.y * Entity.BLOCK_SIZE);
+    const size = block.size * this.size.unit;
+    ctx.setTransform(1, 0, 0, 1, block.position.x * this.size.unit, block.position.y * this.size.unit);
     Sprites.draw(ctx, this.image, 0, 0, size, size);
     ctx.resetTransform();
   }

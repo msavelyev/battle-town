@@ -13,6 +13,26 @@ analytics.init();
 
 dotenv();
 
+function resizeOverlay(overlay) {
+  const maxWidth = document.body.offsetWidth;
+  const maxHeight = document.body.offsetHeight * 0.96;
+
+  const newWidth = Math.floor(Math.min(maxWidth, maxHeight * 1.69));
+  const newHeight = Math.floor(Math.min(maxHeight, maxWidth / 1.69));
+
+  overlay.style.width = `${newWidth}px`;
+  overlay.style.height = `${newHeight}px`;
+
+  const scale = window.devicePixelRatio;
+  return {
+    screenWidth: newWidth,
+    screenHeight: newHeight,
+    pixelWidth: newWidth * scale,
+    pixelHeight: newHeight * scale,
+    scale,
+  };
+}
+
 window.addEventListener('load', () => {
   analytics.log('LOADED');
 
@@ -20,11 +40,13 @@ window.addEventListener('load', () => {
   spritesImg.addEventListener('load', () => {
 
     const overlay = document.getElementById('game');
+    const size = resizeOverlay(overlay);
+
     const scenes = new Scenes([
       new Loading(overlay),
       new MainMenu(overlay),
       new Matchmaking(overlay),
-      new GameScene(overlay, spritesImg),
+      new GameScene(overlay, spritesImg, size),
       new Disconnected(overlay)
     ]);
 
@@ -36,6 +58,11 @@ window.addEventListener('load', () => {
     } else {
       scenes.startDefault();
     }
+
+    window.onresize = () => {
+      const size = resizeOverlay(overlay);
+      scenes.resize(size);
+    };
   });
   spritesImg.src = document.getElementById('sprites').href;
 });

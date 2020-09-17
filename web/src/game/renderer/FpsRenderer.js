@@ -3,9 +3,10 @@ import {renderText} from './text.js';
 
 export default class FpsRenderer {
 
-  constructor(ctx, position) {
+  constructor(ctx, position, size) {
     this.ctx = ctx;
     this.position = position;
+    this.size = size;
 
     this.fps = new Fps();
   }
@@ -13,7 +14,8 @@ export default class FpsRenderer {
   update() {
     this.fps.update();
 
-    renderText(this.ctx, 'fps: ' + this.fps.fps, this.position.x, this.position.y);
+    const pos = this.position(this.size);
+    renderText(this.ctx, 'fps: ' + this.fps.fps, pos.x, pos.y, this.size.unit);
   }
 
 }

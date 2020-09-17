@@ -13,4 +13,8 @@ export default class Scene {
     throw new Error('Scene teardown() should be overridden');
   }
 
+  resize() {
+
+  }
+
 }

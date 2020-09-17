@@ -18,8 +18,8 @@ function findImage(sprites, subtype) {
 
 export default class BrickRenderer extends BlockRenderer {
 
-  constructor(ctx, world, sprites) {
-    super(ctx, world, BlockType.BRICK, sprites.brick);
+  constructor(ctx, world, sprites, size) {
+    super(ctx, world, BlockType.BRICK, sprites.brick, size);
     this.sprites = sprites;
   }
 

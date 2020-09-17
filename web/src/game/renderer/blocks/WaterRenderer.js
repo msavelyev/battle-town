@@ -3,8 +3,8 @@ import BlockRenderer from './BlockRenderer.js';
 
 export default class WaterRenderer extends BlockRenderer {
 
-  constructor(ctx, world, sprites) {
-    super(ctx, world, BlockType.WATER, sprites.water1);
+  constructor(ctx, world, sprites, size) {
+    super(ctx, world, BlockType.WATER, sprites.water1, size);
     this.sprites = sprites;
   }
 

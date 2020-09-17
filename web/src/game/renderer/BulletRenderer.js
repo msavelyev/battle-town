@@ -1,14 +1,15 @@
-import Entity from '../../../../lib/src/data/Entity.js';
+import Bullet from '../../../../lib/src/data/Bullet.js';
 import Direction from '../../../../lib/src/data/Direction.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Sprites from './Sprites.js';
 
 export default class BulletRenderer {
 
-  constructor(ctx, world, sprites) {
+  constructor(ctx, world, sprites, size) {
     this.ctx = ctx;
     this.world = world;
     this.sprites = sprites;
+    this.size = size;
   }
 
   update() {
@@ -18,22 +19,23 @@ export default class BulletRenderer {
   drawBullet(ctx, bullet) {
     const x = bullet.position.x;
     const y = bullet.position.y;
-    const width = bullet.width * Entity.BLOCK_SIZE;
-    const height = bullet.height * Entity.BLOCK_SIZE
+    const width = bullet.width * this.size.unit;
+    const height = bullet.height * this.size.unit
     const img = this.sprites.bullet;
+    const size = Bullet.size() / 2 * this.size.unit;
 
     ctx.fillStyle = 'white';
-    ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
+    ctx.setTransform(1, 0, 0, 1, x * this.size.unit, y * this.size.unit);
     ctx.transform(1, 0, 0, 1, width / 2, height / 2);
     ctx.rotate(Direction.toRad(bullet.direction));
     ctx.transform(1, 0, 0, 1, - width / 2, - height / 2);
     Sprites.draw(
       ctx,
       img,
-      Math.ceil((width - img.w) / 2),
-      Math.ceil((height - img.h) / 2),
-      Math.min(width, height),
-      Math.min(width, height)
+      Math.ceil((width - size) / 2),
+      Math.ceil((height - size) / 2),
+      size,
+      size
     );
 
     if (SETTINGS.DEBUG_RENDER) {

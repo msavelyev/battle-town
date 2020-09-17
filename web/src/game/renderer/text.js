@@ -1,8 +1,6 @@
 
-export function renderText(ctx, text, x, y, options) {
+export function renderText(ctx, text, x, y, fontSize, options) {
   options = options || {};
-
-  const fontSize = options.size || 15;
 
   ctx.font = `${fontSize}px monospace`;
 
@@ -17,7 +15,7 @@ export function renderText(ctx, text, x, y, options) {
     const measure = ctx.measureText(text);
 
     const width = measure.width + 10;
-    const height = options.size + 10;
+    const height = fontSize + 10;
 
     ctx.fillStyle = options.bg;
     ctx.fillRect(
@@ -40,5 +38,3 @@ export function renderText(ctx, text, x, y, options) {
 
   ctx.lineWidth = 1;
 }
-
-export const OFFSET_Y = 15;

@@ -53,4 +53,10 @@ export default class Scenes {
     this.setupScene(result);
   }
 
+  resize(size) {
+    if (this.scene) {
+      this.scene.resize(size);
+    }
+  }
+
 }

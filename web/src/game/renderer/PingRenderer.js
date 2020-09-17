@@ -3,12 +3,13 @@ import {renderText} from './text.js';
 
 export default class PingRenderer {
 
-  constructor(ctx, position, client) {
+  constructor(ctx, position, client, size) {
     this.ctx = ctx;
     this.position = position;
     this.latency = -1;
     this.lastPing = new Date();
     this.timeout = null;
+    this.size = size;
 
     this.client = client;
     this.client.onMessage(MessageType.PING, this.pong.bind(this));
@@ -22,7 +23,8 @@ export default class PingRenderer {
   }
 
   update() {
-    renderText(this.ctx, 'ping: ' + this.latency + 'ms', this.position.x, this.position.y);
+    const pos = this.position(this.size);
+    renderText(this.ctx, 'ping: ' + this.latency + 'ms', pos.x, pos.y, this.size.unit);
   }
 
   pong() {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="height=650, user-scalable=yes">
+    <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Battle Village</title>
 
@@ -14,6 +14,7 @@
 
         html {
             height: 100%;
+            touch-action: none;
         }
 
         body {
@@ -23,22 +24,23 @@
             align-items: center;
             flex-direction: column;
             height: 100%;
+
+            -moz-user-select: none;
+            -webkit-user-select: none;
         }
 
         #game {
             position: relative;
-            width: 950px;
-            height: 600px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            justify-content: stretch;
+            align-items: stretch;
         }
 
         .footer {
             color: #555;
             font-family: Helvetica, sans-serif;
-            font-size: 80%;
-            height: 30px;
+            font-size: 2.5vh;
+            height: 4vh;
             display: flex;
             align-items: center;
         }
@@ -55,10 +57,10 @@
 
         #portrait {
             color: white;
-            font-size: 130%;
+            /*font-size: 2vh;*/
             text-align: center;
             font-family: Helvetica, sans-serif;
-            line-height: 30px;
+            /*line-height: 15px;*/
         }
 
         @media screen and (orientation:portrait) {
@@ -75,12 +77,12 @@
                 display: none;
             }
             #game {
-                display: block;
+                display: flex;
             }
         }
     </style>
 
-    <link rel="preload" href="sprites-new.png" as="image" id="sprites" />
+    <link rel="preload" href="sprites-new-big.png" as="image" id="sprites" />
 </head>
 <body>
     <div class="container">
@@ -92,7 +94,8 @@
         <div id="game"></div>
     </div>
     <div class="footer">
-        © 2020, contact: <a href="mailto:misha@tsbaw.com">misha@tsbaw.com</a>
+        © 2020, contact:&nbsp;
+        <a href="mailto:misha@tsbaw.com">misha@tsbaw.com</a>
     </div>
 
     <script src="../src/index.js"></script>

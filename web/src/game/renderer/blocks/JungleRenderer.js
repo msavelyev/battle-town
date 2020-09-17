@@ -3,8 +3,8 @@ import BlockRenderer from './BlockRenderer.js';
 
 export default class JungleRenderer extends BlockRenderer {
 
-  constructor(ctx, world, sprites) {
-    super(ctx, world, BlockType.JUNGLE, sprites.jungle);
+  constructor(ctx, world, sprites, size) {
+    super(ctx, world, BlockType.JUNGLE, sprites.jungle, size);
   }
 
 }

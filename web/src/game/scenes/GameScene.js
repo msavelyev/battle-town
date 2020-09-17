@@ -5,10 +5,11 @@ import analytics from '../../../../lib/src/util/analytics.js';
 
 export default class GameScene extends Scene {
 
-  constructor(overlay, spritesImg) {
+  constructor(overlay, spritesImg, size) {
     super();
     this.overlay = overlay;
     this.spritesImg = spritesImg;
+    this.size = size
 
     this.main = null;
     this.onKeydown = null;
@@ -26,11 +27,11 @@ export default class GameScene extends Scene {
     const client = params.client;
     const conf = params.conf;
 
-    this.overlay.innerHTML = '<canvas id="canvas"></canvas>';
+    this.overlay.innerHTML = '<canvas id="canvas" style="flex: 1;"></canvas>';
     const canvas = document.getElementById('canvas');
 
     const sprites = new Sprites(this.spritesImg);
-    this.main = new Main(canvas, sprites, client, this.onFinishCb);
+    this.main = new Main(canvas, sprites, client, this.size, this.onFinishCb);
 
     this.onDisconnect = this.main.disconnect.bind(this.main);
     window.addEventListener('beforeunload', this.onDisconnect);
@@ -76,5 +77,9 @@ export default class GameScene extends Scene {
     this.onTouchCancel = null;
     this.onDisconnect = null;
     this.main = null;
+  }
+
+  resize(size) {
+    this.main.resize(size);
   }
 }

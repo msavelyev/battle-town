@@ -1,32 +1,32 @@
+import Match from '../../../lib/src/data/Match.js';
+import Point from '../../../lib/src/data/Point.js';
+import World from '../../../lib/src/data/World.js';
 import TankMove from '../../../lib/src/event/TankMove.js';
+import MessageType from '../../../lib/src/proto/MessageType.js';
+import NetMessage from '../../../lib/src/proto/NetMessage.js';
 import {SETTINGS} from '../../../lib/src/util/dotenv.js';
+import increaseTick from '../../../lib/src/util/increaseTick.js';
 import BrickRenderer from './renderer/blocks/BrickRenderer.js';
 import JungleRenderer from './renderer/blocks/JungleRenderer.js';
 import StoneRenderer from './renderer/blocks/StoneRenderer.js';
 import WaterRenderer from './renderer/blocks/WaterRenderer.js';
 import BulletRenderer from './renderer/BulletRenderer.js';
+import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
+import FpsRenderer from './renderer/FpsRenderer.js';
+import MatchStateRenderer from './renderer/MatchStateRenderer.js';
 import NetUsageRenderer from './renderer/NetUsageRenderer.js';
 import PingRenderer from './renderer/PingRenderer.js';
-import TankRenderer from './renderer/TankRenderer.js';
-import FpsRenderer from './renderer/FpsRenderer.js';
 import ScoreRenderer from './renderer/ScoreRenderer.js';
-import NetMessage from '../../../lib/src/proto/NetMessage.js';
-import MessageType from '../../../lib/src/proto/MessageType.js';
-import increaseTick from '../../../lib/src/util/increaseTick.js';
-import Point from '../../../lib/src/data/Point.js';
-import {OFFSET_Y} from './renderer/text.js';
-import Match from '../../../lib/src/data/Match.js';
-import World from '../../../lib/src/data/World.js';
-import MatchStateRenderer from './renderer/MatchStateRenderer.js';
-import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
+import TankRenderer from './renderer/TankRenderer.js';
 import TickRenderer from './renderer/TickRenderer.js';
 import UnackedInputRenderer from './renderer/UnackedInputRenderer.js';
 
 export default class Game {
 
-  constructor(ctx, client, sprites, conf) {
+  constructor(ctx, client, sprites, conf, size) {
     this.ctx = ctx;
     this.match = conf.match;
+    this.size = size;
 
     const world = this.match.world;
     world.authoritative = false;
@@ -36,17 +36,36 @@ export default class Game {
     this.id = conf.id;
 
     this.ticks = [
-      new StoneRenderer(ctx, world, sprites),
-      new BrickRenderer(ctx, world, sprites),
-      new WaterRenderer(ctx, world, sprites),
-      new BulletRenderer(ctx, world, sprites),
-      new TankRenderer(ctx, this.id, world, sprites),
-      new JungleRenderer(ctx, world, sprites),
-      new PingRenderer(ctx, new Point(world.width, world.height - 3), this.client),
-      new FpsRenderer(ctx, new Point(world.width, world.height - 3 - OFFSET_Y)),
-      new ScoreRenderer(ctx, this.match, new Point(world.width, 12)),
-      new MatchStateRenderer(ctx, this.match, new Point(world.width / 2, world.height / 2)),
-      new ExplosionsRenderer(ctx, world, sprites)
+      new StoneRenderer(ctx, world, sprites, this.size),
+      new BrickRenderer(ctx, world, sprites, this.size),
+      new WaterRenderer(ctx, world, sprites, this.size),
+      new BulletRenderer(ctx, world, sprites, this.size),
+      new TankRenderer(ctx, this.id, world, sprites, this.size),
+      new JungleRenderer(ctx, world, sprites, this.size),
+      new PingRenderer(
+        ctx,
+        s => new Point(s.uiX + s.unit / 4, s.pixelHeight - s.unit),
+        this.client,
+        this.size
+      ),
+      new FpsRenderer(
+        ctx,
+        s => new Point(s.uiX + s.unit / 4, s.pixelHeight - s.unit * 2),
+        this.size
+      ),
+      new ScoreRenderer(
+        ctx,
+        this.match,
+        s => new Point(s.uiX + s.unit / 4, s.unit),
+        this.size
+      ),
+      new MatchStateRenderer(
+        ctx,
+        this.match,
+        s => new Point(s.pixelWidth / 2, s.pixelHeight / 2),
+        this.size
+      ),
+      new ExplosionsRenderer(ctx, world, sprites, this.size)
     ];
 
     if (SETTINGS.DEBUG_INFO) {
@@ -54,13 +73,20 @@ export default class Game {
         ctx,
         this.match,
         this.client,
-        new Point(world.width, world.height - 3 - OFFSET_Y * 2)
+        s => new Point(s.uiX + s.unit / 4, s.pixelHeight - s.unit * 3),
+        this.size
       ));
       this.ticks.push(new UnackedInputRenderer(
-        ctx, this.match, new Point(world.width, world.height - 3 - OFFSET_Y * 3)
+        ctx,
+        this.match,
+        s => new Point(s.uiX + s.unit / 4, s.pixelHeight - s.unit * 4),
+        this.size
       ));
       this.ticks.push(new NetUsageRenderer(
-        ctx, this.client, new Point(world.width, world.height - 3 - OFFSET_Y * 5)
+        ctx,
+        this.client,
+        s => new Point(s.uiX + s.unit / 4, s.pixelHeight - s.unit * 6),
+        this.size
       ));
     }
 
@@ -134,6 +160,12 @@ export default class Game {
   }
 
   stop() {
+  }
+
+  resize(size) {
+    for (let key of Object.keys(size)) {
+      this.size[key] = size[key];
+    }
   }
 
 }

@@ -36,15 +36,24 @@ export default class Matchmaking extends Scene {
             flex-direction: column;
             font-family: Helvetica, sans-serif;
             text-align: center;
+            align-items: center;
+            flex-grow: 1;
+            justify-content: center;
+        }
+        
+        h1 {
+            font-size: 5vh;
         }
         
         h2 {
-            margin-top: 10px;
-            margin-bottom: 20px;
+            margin-top: 2vh;
+            margin-bottom: 3vh;
+            font-size: 3.5vh;
         }
         
         #matchmaking__status {
             color: #333;
+            font-size: 2vh;
         }
         
       </style>

@@ -20,13 +20,22 @@ export default class Loading extends Scene {
 
     this.overlay.innerHTML = `
       <style>
+        .loading__container {
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
         h1 {
             color: white;
             font-family: Helvetica, sans-serif;
-            font-size: 300%; 
+            font-size: 7vh;
+            text-align: center;
         }
       </style>
-      <h1 id="loading__text">${BASIC_TEXT}</h1>
+      <div class="loading__container">
+        <h1 id="loading__text">${BASIC_TEXT}</h1>
+      </div>
     `;
 
     const text = document.getElementById('loading__text');

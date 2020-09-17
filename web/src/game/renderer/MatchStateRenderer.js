@@ -5,10 +5,11 @@ import Match from '../../../../lib/src/data/Match.js';
 
 export default class MatchStateRenderer {
 
-  constructor(ctx, match, position) {
+  constructor(ctx, match, position, size) {
     this.ctx = ctx;
     this.match = match;
     this.position = position;
+    this.size = size;
   }
 
   update() {
@@ -18,8 +19,8 @@ export default class MatchStateRenderer {
       return;
     }
 
-    renderText(this.ctx, text, this.position.x, this.position.y, {
-      size: 60,
+    const pos = this.position(this.size);
+    renderText(this.ctx, text, pos.x, pos.y, this.size.unit * 4, {
       center: true,
       stroke: true,
       bg: 'rgba(0, 0, 0, 0.8)'

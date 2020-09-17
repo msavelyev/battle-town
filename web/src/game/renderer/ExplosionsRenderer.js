@@ -1,13 +1,13 @@
-import Entity from '../../../../lib/src/data/Entity.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Sprites from './Sprites.js';
 
 export default class ExplosionsRenderer {
 
-  constructor(ctx, world, sprites) {
+  constructor(ctx, world, sprites, size) {
     this.ctx = ctx;
     this.world = world;
     this.sprites = sprites;
+    this.size = size;
   }
 
   update(event) {
@@ -20,8 +20,8 @@ export default class ExplosionsRenderer {
 
       const x = explosion.position.x;
       const y = explosion.position.y;
-      const size = explosion.size * Entity.BLOCK_SIZE;
-      this.ctx.setTransform(1, 0, 0, 1, x * Entity.BLOCK_SIZE, y * Entity.BLOCK_SIZE);
+      const size = explosion.size * this.size.unit;
+      this.ctx.setTransform(1, 0, 0, 1, x * this.size.unit, y * this.size.unit);
       Sprites.draw(this.ctx, image, 0, 0, size, size);
 
       if (SETTINGS.DEBUG_RENDER) {

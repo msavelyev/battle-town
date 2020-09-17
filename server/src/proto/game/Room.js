@@ -6,9 +6,6 @@ import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import log from '../../../../lib/src/util/log.js';
 import Player from './Player.js';
 
-const WIDTH = 800;
-const HEIGHT = 576;
-
 export default class Room {
 
   constructor(id, ticker) {
@@ -19,7 +16,7 @@ export default class Room {
 
     this.match = new Match(
       id,
-      new World(id, WIDTH, HEIGHT),
+      new World(id),
       ticker.tick
     );
     this.queue = [];

@@ -25,6 +25,9 @@ const DEBUG_LEVEL = `
 1111111111111111111111111
 `;
 
+const WIDTH = 50;
+const HEIGHT = 36;
+
 const LEVELS = [
   `
     1111111111111111111111111
@@ -113,6 +116,8 @@ function brickSubtype(dx, dy) {
 }
 
 const BLOCKS_PER_CELL = 2;
+const BLOCK_SIZE = 1;
+const BRICK_SIZE = BLOCK_SIZE / 2;
 
 export default Object.freeze({
   choose: () => {
@@ -137,16 +142,19 @@ export default Object.freeze({
         }
 
         if (blockType === BlockType.SPAWN) {
-          const point = new Point(x * BLOCKS_PER_CELL, y * BLOCKS_PER_CELL);
-          blocks.push(new Block(getBlockId(), point, blockType, 1));
+          const point = new Point(x * BLOCKS_PER_CELL * BLOCK_SIZE, y * BLOCKS_PER_CELL * BLOCK_SIZE);
+          blocks.push(new Block(getBlockId(), point, blockType, BLOCK_SIZE));
           return;
         }
 
         if (blockType === BlockType.BRICK) {
           for (let dx = 0; dx < BLOCKS_PER_CELL * 2; dx++) {
             for (let dy = 0; dy < BLOCKS_PER_CELL * 2; dy++) {
-              const point = new Point(x * BLOCKS_PER_CELL + dx * 0.5, y * BLOCKS_PER_CELL + dy * 0.5);
-              blocks.push(new Block(getBlockId(), point, brickSubtype(dx, dy), 0.5));
+              const point = new Point(
+                x * BLOCKS_PER_CELL * BLOCK_SIZE + dx * BRICK_SIZE,
+                y * BLOCKS_PER_CELL * BLOCK_SIZE + dy * BRICK_SIZE
+              );
+              blocks.push(new Block(getBlockId(), point, brickSubtype(dx, dy), BRICK_SIZE));
             }
           }
           return;
@@ -154,8 +162,11 @@ export default Object.freeze({
 
         for (let dx = 0; dx < BLOCKS_PER_CELL; dx++) {
           for (let dy = 0; dy < BLOCKS_PER_CELL; dy++) {
-            const point = new Point(x * BLOCKS_PER_CELL + dx, y * BLOCKS_PER_CELL + dy);
-            blocks.push(new Block(getBlockId(), point, blockType, 1));
+            const point = new Point(
+              x * BLOCKS_PER_CELL * BLOCK_SIZE + dx,
+              y * BLOCKS_PER_CELL * BLOCK_SIZE + dy
+            );
+            blocks.push(new Block(getBlockId(), point, blockType, BLOCK_SIZE));
           }
         }
       });
@@ -163,4 +174,7 @@ export default Object.freeze({
 
     return blocks;
   },
+
+  WIDTH,
+  HEIGHT,
 });

@@ -2,22 +2,24 @@ function s(img, x, y, w, h) {
   return { img, x, y, w, h };
 }
 
+const UNIT_SIZE = 32;
+
 export default class Sprites {
   constructor(img) {
-    this.tank = s(img, 0, 32, 32, 32);
-    this.brick = s(img, 80, 16, 16, 16);
-    this.brick_tl = s(img, 80, 16, 8, 8);
-    this.brick_tr = s(img, 88, 16, 8, 8);
-    this.brick_bl = s(img, 80, 24, 8, 8);
-    this.brick_br = s(img, 88, 24, 8, 8);
-    this.stone = s(img, 80, 0, 16, 16);
-    this.jungle = s(img, 96, 0, 16, 16);
-    this.water1 = s(img, 0, 16, 16, 16);
-    this.water2 = s(img, 16, 16, 16, 16);
-    this.bullet = s(img, 32, 16, 8, 8);
-    this.explosion1 = s(img, 0, 64, 32, 32);
-    this.explosion2 = s(img, 32, 64, 32, 32);
-    this.explosion3 = s(img, 64, 64, 32, 32);
+    this.tank = s(img, 0, UNIT_SIZE * 2, UNIT_SIZE * 2, UNIT_SIZE * 2);
+    this.brick = s(img, UNIT_SIZE, 0, UNIT_SIZE, UNIT_SIZE);
+    this.brick_tl = s(img, UNIT_SIZE, 0, UNIT_SIZE / 2, UNIT_SIZE / 2);
+    this.brick_tr = s(img, UNIT_SIZE + UNIT_SIZE / 2, 0, UNIT_SIZE / 2, UNIT_SIZE / 2);
+    this.brick_bl = s(img, UNIT_SIZE, UNIT_SIZE / 2, UNIT_SIZE / 2, UNIT_SIZE / 2);
+    this.brick_br = s(img, UNIT_SIZE + UNIT_SIZE / 2, UNIT_SIZE / 2, UNIT_SIZE / 2, UNIT_SIZE / 2);
+    this.stone = s(img, UNIT_SIZE * 5, 0, UNIT_SIZE, UNIT_SIZE);
+    this.jungle = s(img, UNIT_SIZE * 6, 0, UNIT_SIZE, UNIT_SIZE);
+    this.water1 = s(img, 0, UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
+    this.water2 = s(img, UNIT_SIZE, UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
+    this.bullet = s(img, UNIT_SIZE * 2, UNIT_SIZE, UNIT_SIZE / 2, UNIT_SIZE / 2);
+    this.explosion1 = s(img, 0, UNIT_SIZE * 4, UNIT_SIZE * 2, UNIT_SIZE * 2);
+    this.explosion2 = s(img, UNIT_SIZE * 2, UNIT_SIZE * 4, UNIT_SIZE * 2, UNIT_SIZE * 2);
+    this.explosion3 = s(img, UNIT_SIZE * 4, UNIT_SIZE * 4, UNIT_SIZE * 2, UNIT_SIZE * 2);
   }
 
   static draw(ctx, conf, x, y, w, h) {

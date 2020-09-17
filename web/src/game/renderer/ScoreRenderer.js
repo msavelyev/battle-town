@@ -1,24 +1,26 @@
-import {OFFSET_Y, renderText} from './text.js';
 import Match from '../../../../lib/src/data/Match.js';
+import {renderText} from './text.js';
 
 export default class ScoreRenderer {
 
-  constructor(ctx, match, position) {
+  constructor(ctx, match, position, size) {
     this.ctx = ctx;
     this.match = match;
     this.position = position;
+    this.size = size;
   }
 
   update() {
     let offset = 0;
 
+    const pos = this.position(this.size);
     for (let [id, score] of Object.entries(this.match.score)) {
       const user = Match.findUser(this.match, id);
       const text = `${this.trimName(user.name)}: ${score}`;
 
-      renderText(this.ctx, text, this.position.x, this.position.y + offset);
+      renderText(this.ctx, text, pos.x, pos.y + offset, this.size.unit);
 
-      offset += OFFSET_Y;
+      offset += this.size.unit;
     }
   }
 

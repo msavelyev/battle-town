@@ -24,21 +24,23 @@ export default class MainMenu extends Scene {
             flex-direction: column;
             font-family: Helvetica, serif;
             color: white;
-            width: 950px;
-            height: 600px;
+            flex: 1;
+            /*width: 475px;*/
+            /*height: 300px;*/
             justify-content: center;
             background:
-             linear-gradient(
-              rgba(0, 0, 0, 0.7), 
-              rgba(0, 0, 0, 0.7)
-            ),
-             url('${menuBg}') no-repeat;
+              linear-gradient(
+               rgba(0, 0, 0, 0.7), 
+               rgba(0, 0, 0, 0.7)
+              ),
+              url('${menuBg}') no-repeat;
+            background-size: cover;
         }
         
         #mainMenu__start {
-            margin-top: 10px;
-            padding: 5px 30px;
-            font-size: 20pt;
+            margin-top: 2vh;
+            padding: 0.5vh 2vh;
+            font-size: 5vh;
         }
         
         .mainMenu__row {
@@ -47,14 +49,14 @@ export default class MainMenu extends Scene {
         }
         
         #mainMenu__input {
-            font-size: 15pt;
-            padding: 5px;
+            font-size: 3vh;
+            padding: 0.7vh;
         }
         
         .mainMenu__label {
             color: white;
-            margin-right: 10px;
-            font-size: 15pt;
+            margin-right: 2vh;
+            font-size: 3vh;
             align-items: center;
             display: flex;
         }      
@@ -64,41 +66,42 @@ export default class MainMenu extends Scene {
         }
         
         h1 {
-            font-size: 300%;
-            margin-top: 15px;
+            font-size: 11vh;
+            margin-top: 2vh;
         }
         
         h4 {
             text-align: center;
-            font-size: 140%;
-            margin-bottom: 10px;
+            font-size: 4vh;
+            margin-bottom: 2vh;
         }
         
         .mainMenu__spacer {
-            height: 150px;
+            height: 15vh;
         }
         
         .mainMenu__leaderboard {
             position: absolute;
-            width: 230px;
+            width: 20vw;
             top: 0;
             right: 0;
             
             color: white;
             font-family: Helvetica, sans-serif;
+            font-size: 2.5vh;
             
             display: flex;
             flex-direction: column;
             
             background: rgba(90, 90, 90, 0.5);
-            border-radius: 5px;
-            padding: 10px;
-            margin: 5px;        
+            border-radius: 1vh;
+            padding: 2vh;
+            margin: 1vh;        
         }
         
         .mainMenu__leaderboard-item {
             display: flex;
-            margin: 3px;
+            margin: 0.7vh;
         }
         
         .mainMenu__leaderboard-you {
