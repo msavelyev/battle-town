@@ -1,4 +1,5 @@
 import * as process from 'process';
+import EventType from '../../../../lib/src/proto/EventType.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Fps from '../../../../lib/src/util/Fps.js';
 import log from '../../../../lib/src/util/log.js';
@@ -45,7 +46,7 @@ export default class GameServer {
           if (user) {
             player.user = user;
             log.info('authorized', user.id);
-            this.gameMode.authorizePlayer(player, user);
+            this.gameMode.authorizePlayer(player);
           } else {
             throw new Error('Couldn\'t find user');
           }
@@ -55,6 +56,7 @@ export default class GameServer {
           client.disconnect();
         })
         .then(() => {
+          client.send(EventType.AUTH_ACK);
           player.onAuth();
         });
     };

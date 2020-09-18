@@ -98,15 +98,13 @@ export default class PVPGameMode extends GameMode {
     }
   }
 
-  authorizePlayer(player, user) {
-    const client = player.client;
+  authorizePlayer(player) {
+    const user = player.user;
 
     if (this.queue.find(p => p.user.id === user.id)) {
-      player.client.disconnect();
       throw new Error('Already queued');
     }
 
-    client.send(EventType.AUTH_ACK);
     this.queue.push(player);
 
     player.onDisconnect(() => {

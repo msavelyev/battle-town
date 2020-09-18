@@ -13,7 +13,7 @@ export default class GameMode {
     throw new Error('not implemented yet');
   }
 
-  authorizePlayer(player, user) {
+  authorizePlayer(player) {
     throw new Error('not implemented yet');
   }
 
