@@ -1,7 +1,9 @@
 import * as process from 'process';
+import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Fps from '../../../../lib/src/util/Fps.js';
 import log from '../../../../lib/src/util/log.js';
 import database from '../../database.js';
+import FFAGameMode from './FFAGameMode.js';
 import Player from './Player.js';
 import PVPGameMode from './PVPGameMode.js';
 
@@ -13,7 +15,9 @@ export default class GameServer {
     this.ticker = ticker;
 
     this.db = db;
-    this.pvp = new PVPGameMode(db, ticker);
+    this.gameMode = SETTINGS.GAME_MODE === 'PVP'
+      ? new PVPGameMode(db, ticker)
+      : new FFAGameMode(ticker);
 
     this.init();
 
@@ -26,7 +30,7 @@ export default class GameServer {
     this.server.start();
 
     this.printFpsInterval = setInterval(this.printFps.bind(this), 1000);
-    this.pvp.init();
+    this.gameMode.init();
   }
 
   onPlayerAuth(player) {
@@ -41,7 +45,7 @@ export default class GameServer {
           if (user) {
             player.user = user;
             log.info('authorized', user.id);
-            this.pvp.authorizePlayer(player, user);
+            this.gameMode.authorizePlayer(player, user);
           } else {
             throw new Error('Couldn\'t find user');
           }
@@ -64,7 +68,7 @@ export default class GameServer {
   }
 
   update(event) {
-    this.pvp.update(event);
+    this.gameMode.update(event);
     this.fps.update(event);
   }
 
