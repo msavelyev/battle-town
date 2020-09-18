@@ -23,12 +23,16 @@ export default class Room {
     this.finished = false;
   }
 
-  update(event) {
+  size() {
+    return this.players.length;
+  }
+
+  update(event, beforeWorld, onKill) {
     if (this.finished) {
       return;
     }
 
-    const updates = Match.update(this.match, event);
+    const updates = Match.update(this.match, event, beforeWorld, onKill);
     if (Match.finished(this.match)) {
       log.info('room is finished', this.id);
       this.finished = true;
@@ -113,6 +117,10 @@ export default class Room {
       default:
         console.error('Unknown message', netMessage);
     }
+  }
+
+  static hasPlayer(room, player) {
+    return room.players.find(p => p.user.id === player.user.id);
   }
 
 }

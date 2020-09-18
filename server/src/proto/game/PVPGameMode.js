@@ -1,7 +1,10 @@
 import {v4 as uuid} from 'uuid';
 import Configuration from '../../../../lib/src/data/Configuration.js';
 import Match from '../../../../lib/src/data/Match.js';
+import MatchState from '../../../../lib/src/data/MatchState.js';
 import World from '../../../../lib/src/data/World.js';
+import Score from '../../../../lib/src/data/worldevent/Score.js';
+import State from '../../../../lib/src/data/worldevent/State.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
@@ -118,10 +121,33 @@ export default class PVPGameMode extends GameMode {
 
   update(event) {
     for (let room of this.rooms) {
-      room.update(event);
+      room.update(event, this.beforeWorldUpdate.bind(this), this.onKill.bind(this));
       if (room.finished) {
         this.assignPoints(room.match);
         room.stop();
+      }
+    }
+  }
+
+  beforeWorldUpdate(match, event, updates) {
+    match.tick = event.tick;
+    match.event = event;
+
+    if (match.nextStateOnTick === event.tick) {
+      Match.transitionState(match, event, updates);
+      updates.push(State.fromMatch(match));
+    }
+  }
+
+  onKill(match, event, id, updates) {
+    if (match.state === MatchState.PLAY) {
+      match.score[id] += 1;
+      updates.push(new Score(match.score));
+
+      if (match.world.authoritative) {
+        Match.transitionState(match, event, updates);
+        match.stateSpotlight = id;
+        updates.push(State.fromMatch(match));
       }
     }
   }
