@@ -2,6 +2,7 @@ import menuBg from '../../../public/menu-bg.png';
 import api from '../api.js';
 import Scene from './Scene.js';
 import analytics from '../../../../lib/src/util/analytics.js';
+import howto from '../../../public/howto.png';
 
 export default class MainMenu extends Scene {
 
@@ -25,8 +26,6 @@ export default class MainMenu extends Scene {
             font-family: Helvetica, serif;
             color: white;
             flex: 1;
-            /*width: 475px;*/
-            /*height: 300px;*/
             justify-content: center;
             background:
               linear-gradient(
@@ -80,9 +79,26 @@ export default class MainMenu extends Scene {
             height: 15vh;
         }
         
+        .mainMenu__howto {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 20vw;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-family: Helvetica, sans-serif;
+            font-size: 2.5vh;
+            padding: 2vh;
+            margin: 1vh;
+        }
+
+        .mainMenu__howto img {
+            width: 20vw;
+        }
+
         .mainMenu__leaderboard {
             position: absolute;
-            width: 20vw;
+            width: 17vw;
             top: 0;
             right: 0;
             
@@ -138,6 +154,12 @@ export default class MainMenu extends Scene {
       <div class="mainMenu__leaderboard">
         <h4>Leaderboard</h4>
         ${this.leaderboard(data)}
+      </div>
+
+      <div class="mainMenu__howto">
+        <h4>How to play</h4>
+
+        <img src="${howto}" />
       </div>
     `;
 
