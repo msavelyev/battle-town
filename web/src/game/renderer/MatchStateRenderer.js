@@ -53,6 +53,12 @@ export default class MatchStateRenderer {
         return `${spotlight.name} scored`;
       case MatchState.FINISHED:
         return `${spotlight.name} won`;
+      case MatchState.WAITING_FOR_PLAYERS:
+        if (Math.floor((stateTicks / 60)) % 10 === 0) {
+          return 'Waiting for other players';
+        } else {
+          return null;
+        }
       default:
         return `${state}: ${countdown}`;
     }
