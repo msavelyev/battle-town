@@ -46,6 +46,7 @@ export default class GameServer {
           if (user) {
             player.user = user;
             log.info('authorized', user.id);
+            client.send(EventType.AUTH_ACK);
             this.gameMode.authorizePlayer(player);
           } else {
             throw new Error('Couldn\'t find user');
@@ -56,7 +57,6 @@ export default class GameServer {
           client.disconnect();
         })
         .then(() => {
-          client.send(EventType.AUTH_ACK);
           player.onAuth();
         });
     };
