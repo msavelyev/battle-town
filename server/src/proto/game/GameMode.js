@@ -1,0 +1,20 @@
+
+export default class GameMode {
+
+  init() {
+    throw new Error('not implemented yet');
+  }
+
+  stop() {
+    throw new Error('not implemented yet');
+  }
+
+  update(event) {
+    throw new Error('not implemented yet');
+  }
+
+  authorizePlayer(player, user) {
+    throw new Error('not implemented yet');
+  }
+
+}
