@@ -59,7 +59,7 @@ export default class PVPGameMode extends GameMode {
         room.add(player);
 
         client.on(EventType.MESSAGE, netMessage => {
-          room.handleEvent(client, netMessage);
+          room.handleEvent(client, netMessage, user.id);
         });
 
         player.onDisconnect(() => {

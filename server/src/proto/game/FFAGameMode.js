@@ -37,7 +37,7 @@ export default class FFAGameMode {
       this.room.remove(player);
     });
     client.on(EventType.MESSAGE, netMessage => {
-      this.room.handleEvent(client, netMessage);
+      this.room.handleEvent(client, netMessage, user.id);
     });
 
     const match = this.room.match;

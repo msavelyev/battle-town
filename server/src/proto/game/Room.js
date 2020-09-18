@@ -4,6 +4,8 @@ import World from '../../../../lib/src/data/World.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import log from '../../../../lib/src/util/log.js';
+import ClientMessage from './event/ClientMessage.js';
+import RoomEventType from './event/RoomEventType.js';
 import Player from './Player.js';
 
 export default class Room {
@@ -38,16 +40,8 @@ export default class Room {
       this.finished = true;
     }
 
-    for (let netMessage of this.queue) {
-      switch (netMessage.type){
-        case MessageType.SHOOT:
-        case MessageType.MOVE:
-          const result = Match.handleEvent(this.match, netMessage);
-          if (result) {
-            updates.push(result);
-          }
-          break;
-      }
+    for (let roomEvent of this.queue) {
+      Room.handleRoomEvent(this, roomEvent, updates);
     }
 
     this.queue = [];
@@ -99,11 +93,11 @@ export default class Room {
 
   }
 
-  handleEvent(client, netMessage) {
+  handleEvent(client, netMessage, id) {
     switch (netMessage.type) {
       case MessageType.MOVE:
       case MessageType.SHOOT:
-        this.queue.push(netMessage);
+        this.queue.push(new ClientMessage(id, netMessage));
         break;
       case MessageType.PING:
         client.sendMessage(new NetMessage(null, MessageType.PING));
@@ -119,6 +113,26 @@ export default class Room {
 
   static setLevel(room, blocks) {
     World.resetLevel(room.match.world, blocks);
+  }
+
+  static handleRoomEvent(room, roomEvent, updates) {
+    switch (roomEvent.type) {
+      case RoomEventType.CLIENT_MESSAGE:
+        Room.handleClientMessage(room, roomEvent.netMessage, updates);
+        break;
+    }
+  }
+
+  static handleClientMessage(room, netMessage, updates) {
+    switch (netMessage.type){
+      case MessageType.SHOOT:
+      case MessageType.MOVE:
+        const result = Match.handleEvent(room.match, netMessage);
+        if (result) {
+          updates.push(result);
+        }
+        break;
+    }
   }
 
 }
