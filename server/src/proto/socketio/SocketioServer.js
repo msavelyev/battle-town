@@ -4,11 +4,10 @@ import SocketioClient from './SocketioClient.js';
 
 export default class SocketioServer extends NetServer {
 
-  constructor(server, ticker) {
+  constructor(server) {
     super();
 
     this.io = IO(server);
-    this.ticker = ticker;
   }
 
   start() {
@@ -17,7 +16,7 @@ export default class SocketioServer extends NetServer {
 
   onConnected(cb) {
     this.io.on('connection', (socket) => {
-      cb(new SocketioClient(socket, this.ticker));
+      cb(new SocketioClient(socket));
     });
   }
 }

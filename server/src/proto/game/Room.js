@@ -8,16 +8,15 @@ import Player from './Player.js';
 
 export default class Room {
 
-  constructor(id, ticker) {
+  constructor(id, tick) {
     this.id = id;
-    this.ticker = ticker;
 
     this.players = [];
 
     this.match = new Match(
       id,
       new World(id),
-      ticker.tick
+      tick
     );
     this.queue = [];
 
@@ -89,13 +88,9 @@ export default class Room {
     this.broadcast(MessageType.DISCONNECTED, player.user.id);
   }
 
-  broadcast(name, data, tick) {
-    if (!tick) {
-      tick = this.ticker.tick;
-    }
-
+  broadcast(name, data) {
     this.players.forEach(player => {
-      player.client.sendMessage(new NetMessage(player.user.id, tick, name, data));
+      player.client.sendMessage(new NetMessage(player.user.id, name, data));
     });
   }
 
@@ -113,7 +108,7 @@ export default class Room {
         this.queue.push(netMessage);
         break;
       case MessageType.PING:
-        client.sendMessage(new NetMessage(null, this.ticker.tick, MessageType.PING));
+        client.sendMessage(new NetMessage(null, MessageType.PING));
         break;
       default:
         console.error('Unknown message', netMessage);

@@ -108,7 +108,6 @@ export default class Game {
       const move = new TankMove(increaseTick(this.moveId, val => this.moveId = val), this.direction);
       this.handleEvent(new NetMessage(
         this.id,
-        this.match.tick,
         MessageType.MOVE,
         move
       ));
@@ -140,7 +139,6 @@ export default class Game {
     }
     this.handleEvent(new NetMessage(
       this.id,
-      this.match.tick,
       MessageType.SHOOT,
       new TankMove(increaseTick(this.moveId, val => this.moveId = val), tank.direction)
     ));

@@ -71,7 +71,7 @@ export default class PVPGameMode extends GameMode {
         const user = player.user;
 
         client.sendMessage(
-          new NetMessage(user.id, this.ticker.tick, MessageType.INIT, new Configuration(user.id, match))
+          new NetMessage(user.id, MessageType.INIT, new Configuration(user.id, match))
         );
       }
     };
@@ -79,7 +79,7 @@ export default class PVPGameMode extends GameMode {
 
   createRoom() {
     const id = uuid();
-    const room = new Room(id, this.ticker);
+    const room = new Room(id, this.ticker.tick);
     log.info('created room', id);
     this.rooms.push(room);
 

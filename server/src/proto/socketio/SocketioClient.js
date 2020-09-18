@@ -1,14 +1,13 @@
-import NetClient from '../base/NetClient.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
-import randomInt from '../../../../lib/src/util/randomInt.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
+import randomInt from '../../../../lib/src/util/randomInt.js';
+import NetClient from '../base/NetClient.js';
 
 export default class SocketioClient extends NetClient {
 
-  constructor(socket, ticker) {
+  constructor(socket) {
     super();
     this.socket = socket;
-    this.ticker = ticker;
     this.lag = SETTINGS.LAG;
 
     this.callbacks = {};

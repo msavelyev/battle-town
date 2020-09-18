@@ -11,7 +11,6 @@ export default class SocketioClient extends NetClient {
     super();
 
     this.socket = io(SETTINGS.SERVER_WS_HOST, { autoConnect: false });
-    this.lastTick = -1;
     this.usage = new NetUsage();
   }
 
@@ -20,12 +19,7 @@ export default class SocketioClient extends NetClient {
       this.socket.on(name, msg => {
         this.usage.read(msg);
 
-        if (msg) {
-          this.lastTick = msg.tick;
-          cb(msg);
-        } else {
-          cb();
-        }
+        cb(msg);
       });
     } else {
       this.socket.off(name);
@@ -33,7 +27,7 @@ export default class SocketioClient extends NetClient {
   }
 
   sendMessage(messageType, data) {
-    this.sendNetMessage(new NetMessage(null, this.lastTick, messageType, data));
+    this.sendNetMessage(new NetMessage(null, messageType, data));
   }
 
   sendNetMessage(netMessage) {
