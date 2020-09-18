@@ -14,7 +14,9 @@ export default class ScoreRenderer {
     let offset = 0;
 
     const pos = this.position(this.size);
-    for (let [id, score] of Object.entries(this.match.score)) {
+    const entries = Object.entries(this.match.score);
+    entries.sort((a, b) => b[1] - a[1]);
+    for (let [id, score] of entries) {
       const user = Match.findUser(this.match, id);
       const text = `${this.trimName(user.name)}: ${score}`;
 
