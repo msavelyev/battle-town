@@ -26,12 +26,12 @@ export default class GameServer {
   }
 
   init() {
+    this.gameMode.init();
     this.server.onConnected(this.clientConnected.bind(this));
 
     this.server.start();
 
     this.printFpsInterval = setInterval(this.printFps.bind(this), 1000);
-    this.gameMode.init();
   }
 
   onPlayerAuth(player) {
