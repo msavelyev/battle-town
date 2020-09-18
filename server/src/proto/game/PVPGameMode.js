@@ -11,6 +11,7 @@ import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import log from '../../../../lib/src/util/log.js';
 import database from '../../database.js';
+import level from '../../level.js';
 import GameMode from './GameMode.js';
 import Player from './Player.js';
 import Room from './Room.js';
@@ -83,6 +84,7 @@ export default class PVPGameMode extends GameMode {
   createRoom() {
     const id = uuid();
     const room = new Room(id, this.ticker.tick);
+    Room.setLevel(room, level.generate(level.choose()));
     log.info('created room', id);
     this.rooms.push(room);
 

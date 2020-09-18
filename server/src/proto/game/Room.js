@@ -123,4 +123,8 @@ export default class Room {
     return room.players.find(p => p.user.id === player.user.id);
   }
 
+  static setLevel(room, blocks) {
+    World.resetLevel(room.match.world, blocks);
+  }
+
 }
