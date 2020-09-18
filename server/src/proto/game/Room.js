@@ -82,12 +82,6 @@ export default class Room {
     this.players = this.players.filter(p => p !== player);
     const match = this.match;
     Match.removeTank(match, player.user.id, true);
-    if (!this.finished) {
-      const player = this.players[0];
-      if (player) {
-        Match.setWinner(match, player.user.id, match.tick);
-      }
-    }
 
     this.broadcast(MessageType.DISCONNECTED, player.user.id);
   }

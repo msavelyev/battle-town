@@ -93,6 +93,13 @@ export default class PVPGameMode extends GameMode {
 
   removeFromRoom(room, player) {
     room.remove(player);
+    if (!room.finished) {
+      const player = room.players[0];
+      if (player) {
+        Match.setWinner(room.match, player.user.id, room.match.tick);
+      }
+    }
+
     if (room.isEmpty()) {
       log.info('removing room', room.id);
       room.stop();
