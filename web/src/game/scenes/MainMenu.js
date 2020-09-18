@@ -97,6 +97,7 @@ export default class MainMenu extends Scene {
         }
 
         .mainMenu__leaderboard {
+            display: none;
             position: absolute;
             width: 17vw;
             top: 0;
@@ -106,7 +107,7 @@ export default class MainMenu extends Scene {
             font-family: Helvetica, sans-serif;
             font-size: 2.5vh;
             
-            display: flex;
+            /*display: flex;*/
             flex-direction: column;
             
             background: rgba(90, 90, 90, 0.5);
