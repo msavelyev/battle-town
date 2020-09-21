@@ -94,6 +94,9 @@ export default class FFAGameMode {
       updates.push(new ResetLevel(world.blocks));
 
       World.resetTanks(world, match);
+      for (let tank of world.tanks) {
+        Entity.revive(tank, event.tick);
+      }
       updates.push(new ResetTanks(world.tanks));
 
       Match.resetScore(match);

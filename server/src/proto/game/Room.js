@@ -126,7 +126,7 @@ export default class Room {
           room.players.push(player);
           const user = player.user;
           log.info('added player', user.id, 'to room', room.id);
-          Match.addUser(room.match, Player.shortUser(player), updates);
+          Match.addUser(room.match, Player.shortUser(player), tick, updates);
           updates.push(new UserConnect(user.id, user.name));
         }
         break;
