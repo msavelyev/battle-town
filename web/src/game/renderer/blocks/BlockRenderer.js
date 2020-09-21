@@ -1,3 +1,4 @@
+import EntityState from '../../../../../lib/src/data/EntityState.js';
 import Sprites from '../Sprites.js';
 
 export default class BlockRenderer {
@@ -12,6 +13,10 @@ export default class BlockRenderer {
 
   update(event) {
     for (let block of this.world.blocks) {
+      if (block.state === EntityState.DEAD) {
+        continue;
+      }
+
       if (block.type === this.type) {
         this.drawBlock(this.ctx, block, event);
       }
