@@ -5,6 +5,7 @@ import MatchState from '../../../../lib/src/data/MatchState.js';
 import World from '../../../../lib/src/data/World.js';
 import Score from '../../../../lib/src/data/worldevent/Score.js';
 import State from '../../../../lib/src/data/worldevent/State.js';
+import TankRemove from '../../../../lib/src/data/worldevent/TankRemove.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
@@ -146,14 +147,17 @@ export default class PVPGameMode extends GameMode {
     }
   }
 
-  onKill(match, event, id, updates) {
+  onKill(match, event, killer, victim, updates) {
     if (match.state === MatchState.PLAY) {
-      match.score[id] += 1;
+      World.removeTank(match.world, victim.id);
+      updates.push(new TankRemove(victim.id));
+
+      match.score[killer] += 1;
       updates.push(new Score(match.score));
 
       if (match.world.authoritative) {
         Match.transitionState(match, event, updates);
-        match.stateSpotlight = id;
+        match.stateSpotlight = killer;
         updates.push(State.fromMatch(match));
       }
     }
