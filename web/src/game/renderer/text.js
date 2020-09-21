@@ -11,6 +11,10 @@ export function renderText(ctx, text, x, y, fontSize, options) {
     ctx.textBaseline = 'middle';
   }
 
+  if (options.baseline) {
+    ctx.textBaseline = options.baseline;
+  }
+
   if (options.bg) {
     const measure = ctx.measureText(text);
 

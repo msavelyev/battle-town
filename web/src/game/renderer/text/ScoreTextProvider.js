@@ -1,29 +1,29 @@
-import Match from '../../../../lib/src/data/Match.js';
-import {renderText} from './text.js';
+import Match from '../../../../../lib/src/data/Match.js';
+import TextRenderProvider from './TextRenderProvider.js';
 
-export default class ScoreRenderer {
+export default class ScoreTextProvider extends TextRenderProvider {
 
-  constructor(ctx, match, position, size) {
-    this.ctx = ctx;
+  constructor(match) {
+    super();
+
     this.match = match;
-    this.position = position;
-    this.size = size;
   }
 
   update() {
-    let offset = 0;
+    const scores = [];
 
-    const pos = this.position(this.size);
     const entries = Object.entries(this.match.score);
     entries.sort((a, b) => b[1] - a[1]);
     for (let [id, score] of entries) {
       const user = Match.findUser(this.match, id);
       const text = `${this.trimName(user.name)}: ${score}`;
 
-      renderText(this.ctx, text, pos.x, pos.y + offset, this.size.unit);
-
-      offset += this.size.unit;
+      scores.push(text);
     }
+
+    scores.push('');
+
+    return scores;
   }
 
   trimName(name) {

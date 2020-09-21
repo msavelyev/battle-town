@@ -1,10 +1,10 @@
+import Direction from '../../../lib/src/data/Direction.js';
 import Match from '../../../lib/src/data/Match.js';
 import Point from '../../../lib/src/data/Point.js';
 import World from '../../../lib/src/data/World.js';
 import TankMove from '../../../lib/src/event/TankMove.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../lib/src/proto/NetMessage.js';
-import {SETTINGS} from '../../../lib/src/util/dotenv.js';
 import increaseTick from '../../../lib/src/util/increaseTick.js';
 import BrickRenderer from './renderer/blocks/BrickRenderer.js';
 import JungleRenderer from './renderer/blocks/JungleRenderer.js';
@@ -12,14 +12,15 @@ import StoneRenderer from './renderer/blocks/StoneRenderer.js';
 import WaterRenderer from './renderer/blocks/WaterRenderer.js';
 import BulletRenderer from './renderer/BulletRenderer.js';
 import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
-import FpsRenderer from './renderer/FpsRenderer.js';
 import MatchStateRenderer from './renderer/MatchStateRenderer.js';
-import NetUsageRenderer from './renderer/NetUsageRenderer.js';
-import PingRenderer from './renderer/PingRenderer.js';
-import ScoreRenderer from './renderer/ScoreRenderer.js';
+import NetUsageRenderer from './renderer/text/NetUsageTextProvider.js';
+import ScoreTextProvider from './renderer/text/ScoreTextProvider.js';
 import TankRenderer from './renderer/TankRenderer.js';
-import TickRenderer from './renderer/TickRenderer.js';
-import UnackedInputRenderer from './renderer/UnackedInputRenderer.js';
+import FpsTextProvider from './renderer/text/FpsTextProvider.js';
+import PingTextProvider from './renderer/text/PingTextProvider.js';
+import TextRenderer from './renderer/text/TextRenderer.js';
+import TickTextProvider from './renderer/text/TickTextProvider.js';
+import UnackedInputTextProvider from './renderer/text/UnackedInputTextProvider.js';
 
 export default class Game {
 
@@ -42,53 +43,41 @@ export default class Game {
       new BulletRenderer(ctx, world, sprites, this.size),
       new TankRenderer(ctx, this.id, world, sprites, this.size),
       new JungleRenderer(ctx, world, sprites, this.size),
-      new PingRenderer(
+
+      new TextRenderer(
         ctx,
-        s => new Point(s.uiX + s.unit / 4, s.pixelHeight - s.unit),
-        this.client,
-        this.size
+        s => new Point(s.uiX + s.unit / 4, s.unit / 4),
+        this.size,
+        Direction.DOWN,
+        [
+          new ScoreTextProvider(this.match)
+        ]
       ),
-      new FpsRenderer(
-        ctx,
-        s => new Point(s.uiX + s.unit / 4, s.pixelHeight - s.unit * 2),
-        this.size
-      ),
-      new ScoreRenderer(
-        ctx,
-        this.match,
-        s => new Point(s.uiX + s.unit / 4, s.unit),
-        this.size
-      ),
+
+      new ExplosionsRenderer(ctx, world, sprites, this.size),
       new MatchStateRenderer(
         ctx,
         this.match,
         s => new Point(s.pixelWidth / 2, s.pixelHeight / 2),
         this.size
       ),
-      new ExplosionsRenderer(ctx, world, sprites, this.size)
-    ];
 
-    if (SETTINGS.DEBUG_INFO) {
-      this.ticks.push(new TickRenderer(
+
+
+      new TextRenderer(
         ctx,
-        this.match,
-        this.client,
-        s => new Point(s.uiX + s.unit / 4, s.pixelHeight - s.unit * 3),
-        this.size
-      ));
-      this.ticks.push(new UnackedInputRenderer(
-        ctx,
-        this.match,
-        s => new Point(s.uiX + s.unit / 4, s.pixelHeight - s.unit * 4),
-        this.size
-      ));
-      this.ticks.push(new NetUsageRenderer(
-        ctx,
-        this.client,
-        s => new Point(s.uiX + s.unit / 4, s.pixelHeight - s.unit * 6),
-        this.size
-      ));
-    }
+        s => new Point(s.uiX + s.unit / 4, s.pixelHeight),
+        this.size,
+        Direction.UP,
+        [
+          new PingTextProvider(client),
+          new FpsTextProvider(),
+          new TickTextProvider(this.match),
+          new UnackedInputTextProvider(this.match),
+          new NetUsageRenderer(this.client)
+        ]
+      )
+    ];
 
     this.moving = false;
     this.direction = null;
