@@ -1,7 +1,9 @@
 import Match from '../../../../lib/src/data/Match.js';
 import TickData from '../../../../lib/src/data/TickData.js';
 import World from '../../../../lib/src/data/World.js';
+import EntityState from '../../../../lib/src/data/EntityState.js';
 import UserConnect from '../../../../lib/src/data/worldevent/UserConnect.js';
+import BlockUpdate from '../../../../lib/src/data/worldevent/BlockUpdate.js';
 import UserDisconnect from '../../../../lib/src/data/worldevent/UserDisconnect.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
@@ -137,7 +139,20 @@ export default class Room {
           updates.push(new UserDisconnect(player.user.id));
         }
         break;
+      case RoomEventType.REVIVE_BLOCKS:
+        const world = room.match.world;
+        for (let block of world.blocks) {
+          if (block.state === EntityState.DEAD) {
+            block.state = EntityState.REVIVING;
+            updates.push(BlockUpdate.fromBlock(block));
+          }
+        }
+        break;
     }
+  }
+
+  static send(room, roomEvent) {
+    room.queue.push(roomEvent);
   }
 
   static handleClientMessage(room, netMessage, updates) {

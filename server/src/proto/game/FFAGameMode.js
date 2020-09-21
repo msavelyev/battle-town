@@ -11,12 +11,15 @@ import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import log from '../../../../lib/src/util/log.js';
 import level from '../../level.js';
 import Room from './Room.js';
+import ReviveBlocks from './event/ReviveBlocks.js';
 
 export default class FFAGameMode {
 
   constructor(ticker) {
     this.ticker = ticker;
     this.room = null;
+
+    this.blockReviveInterval = null;
   }
 
   init() {
@@ -25,6 +28,8 @@ export default class FFAGameMode {
     const world = match.world;
     World.resetLevel(world, level.ffa());
     Match.setState(match, MatchState.WAITING_FOR_PLAYERS, this.ticker.tick);
+
+    this.blockReviveInterval = setInterval(this.reviveBlocks.bind(this), 10000);
   }
 
   authorizePlayer(player) {
@@ -89,7 +94,12 @@ export default class FFAGameMode {
     updates.push(TankUpdate.fromTank(victimTank));
   }
 
+  reviveBlocks() {
+    Room.send(this.room, new ReviveBlocks());
+  }
+
   stop() {
+    clearInterval(this.blockReviveInterval);
   }
 
 }
