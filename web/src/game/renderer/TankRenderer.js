@@ -1,5 +1,8 @@
+import BlockType from '../../../../lib/src/data/BlockType.js';
 import Direction from '../../../../lib/src/data/Direction.js';
+import Entity from '../../../../lib/src/data/Entity.js';
 import EntityState from '../../../../lib/src/data/EntityState.js';
+import World from '../../../../lib/src/data/World.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Sprites from './Sprites.js';
 
@@ -26,6 +29,16 @@ export default class TankRenderer {
     this.drawTank(ctx, tank);
   }
 
+  inJungle(tank) {
+    for (let block of World.findBlocksByType(this.world, BlockType.JUNGLE)) {
+      if (Entity.collides(tank, block)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   drawTank(ctx, tank) {
     const x = tank.position.x;
     const y = tank.position.y;
@@ -35,10 +48,12 @@ export default class TankRenderer {
     ctx.setTransform(1, 0, 0, 1, x * this.size.unit, y * this.size.unit);
     ctx.transform(1, 0, 0, 1, size / 2, size / 2);
 
-    ctx.textAlign = 'center';
-    ctx.font = `${this.size.unit * 0.75}px Helvetica`;
-    ctx.fillText(tank.name, 0, - this.size.unit * 1.25);
-    ctx.textAlign = 'left';
+    if (!this.inJungle(tank)) {
+      ctx.textAlign = 'center';
+      ctx.font = `${this.size.unit * 0.75}px Helvetica`;
+      ctx.fillText(tank.name, 0, -this.size.unit * 1.25);
+      ctx.textAlign = 'left';
+    }
 
     ctx.rotate(Direction.toRad(tank.direction));
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
