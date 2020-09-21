@@ -13,6 +13,8 @@ import WaterRenderer from './renderer/blocks/WaterRenderer.js';
 import BulletRenderer from './renderer/BulletRenderer.js';
 import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
 import MatchStateRenderer from './renderer/MatchStateRenderer.js';
+import EmptyTextProvider from './renderer/text/EmptyTextProvider.js';
+import MatchTimeTextProvider from './renderer/text/MatchTimeTextProvider.js';
 import NetUsageRenderer from './renderer/text/NetUsageTextProvider.js';
 import ScoreTextProvider from './renderer/text/ScoreTextProvider.js';
 import TankRenderer from './renderer/TankRenderer.js';
@@ -50,6 +52,8 @@ export default class Game {
         this.size,
         Direction.DOWN,
         [
+          new MatchTimeTextProvider(this.match),
+          new EmptyTextProvider(),
           new ScoreTextProvider(this.match)
         ]
       ),

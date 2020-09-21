@@ -1,3 +1,4 @@
+import {convertToTime} from '../../../../lib/src/util/time.js';
 import Scene from './Scene.js';
 import Client from '../proto/Client.js';
 import SocketioClient from '../proto/SocketioClient.js';
@@ -113,19 +114,8 @@ export default class Matchmaking extends Scene {
   updateTimer(timer) {
     return () => {
       const elapsed = this.now() - this.startTime;
-      const seconds = this.formatTwoDigits(elapsed % 60);
-      const minutes = Math.floor(elapsed / 60);
-
-      timer.innerText = `${minutes}:${seconds}`;
+      timer.innerText = convertToTime(elapsed);
     };
-  }
-
-  formatTwoDigits(number) {
-    if (number < 10) {
-      return `0${number}`;
-    } else {
-      return `${number}`;
-    }
   }
 
   now() {
