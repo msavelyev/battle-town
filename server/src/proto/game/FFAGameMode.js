@@ -3,12 +3,16 @@ import Entity from '../../../../lib/src/data/Entity.js';
 import Match from '../../../../lib/src/data/Match.js';
 import MatchState from '../../../../lib/src/data/MatchState.js';
 import World from '../../../../lib/src/data/World.js';
+import ResetLevel from '../../../../lib/src/data/worldevent/ResetLevel.js';
+import ResetTanks from '../../../../lib/src/data/worldevent/ResetTanks.js';
 import Score from '../../../../lib/src/data/worldevent/Score.js';
 import State from '../../../../lib/src/data/worldevent/State.js';
 import TankUpdate from '../../../../lib/src/data/worldevent/TankUpdate.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
+import {FPS} from '../../../../lib/src/Ticker.js';
+import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import log from '../../../../lib/src/util/log.js';
 import level from '../../level.js';
 import Room from './Room.js';
@@ -78,6 +82,24 @@ export default class FFAGameMode {
     } else if (this.room.size() === 1 && match.state === MatchState.PLAY) {
       Match.setState(match, MatchState.WAITING_FOR_PLAYERS, this.ticker.tick);
       updates.push(State.fromMatch(match));
+    }
+
+    if (match.state === MatchState.PLAY) {
+      const matchFinishTick = SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS + match.stateSinceTick;
+      if (matchFinishTick <= event.tick) {
+        const world = match.world;
+        World.resetLevel(world, level.ffa());
+        updates.push(new ResetLevel(world.blocks));
+
+        World.resetTanks(world, match);
+        updates.push(new ResetTanks(world.tanks));
+
+        Match.resetScore(match);
+        updates.push(new Score(match.score));
+
+        match.stateSinceTick = event.tick;
+        updates.push(State.fromMatch(match));
+      }
     }
   }
 
