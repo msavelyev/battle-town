@@ -1,3 +1,4 @@
+import Block from '../../../../lib/src/data/Block.js';
 import Match from '../../../../lib/src/data/Match.js';
 import TickData from '../../../../lib/src/data/TickData.js';
 import World from '../../../../lib/src/data/World.js';
@@ -47,7 +48,7 @@ export default class Room {
     }
 
     for (let roomEvent of this.queue) {
-      Room.handleRoomEvent(this, roomEvent, updates);
+      Room.handleRoomEvent(this, roomEvent, event.tick, updates);
     }
 
     this.queue = [];
@@ -114,7 +115,7 @@ export default class Room {
     World.resetLevel(room.match.world, blocks);
   }
 
-  static handleRoomEvent(room, roomEvent, updates) {
+  static handleRoomEvent(room, roomEvent, tick, updates) {
     switch (roomEvent.type) {
       case RoomEventType.CLIENT_MESSAGE:
         Room.handleClientMessage(room, roomEvent.netMessage, updates);
@@ -143,7 +144,7 @@ export default class Room {
         const world = room.match.world;
         for (let block of world.blocks) {
           if (block.state === EntityState.DEAD) {
-            block.state = EntityState.REVIVING;
+            Block.revive(block, tick);
             updates.push(BlockUpdate.fromBlock(block));
           }
         }
