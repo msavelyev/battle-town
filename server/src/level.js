@@ -199,6 +199,9 @@ export default Object.freeze({
   },
 
   ffa: () => {
+    if (SETTINGS.USE_LEVEL === -1) {
+      return createLevel(DEBUG_LEVEL);
+    }
     return createLevel(FFA_LEVEL)
   },
 
