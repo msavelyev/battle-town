@@ -86,13 +86,9 @@ export default class FFAGameMode {
     updates.push(new Score(match.score));
 
     const world = match.world;
-    World.removeTank(world, victimId);
-
-    const user = Match.findUser(match, victimId);
-    World.createTank(world, user);
-
     const victimTank = World.findTank(world, victimId);
-    Entity.revive(victimTank, event.tick);
+    Entity.kill(victimTank, event.tick);
+
     updates.push(TankUpdate.fromTank(victimTank));
   }
 
