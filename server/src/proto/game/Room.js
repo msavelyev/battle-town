@@ -1,10 +1,14 @@
 import Match from '../../../../lib/src/data/Match.js';
 import TickData from '../../../../lib/src/data/TickData.js';
 import World from '../../../../lib/src/data/World.js';
+import UserConnect from '../../../../lib/src/data/worldevent/UserConnect.js';
+import UserDisconnect from '../../../../lib/src/data/worldevent/UserDisconnect.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import log from '../../../../lib/src/util/log.js';
 import ClientMessage from './event/ClientMessage.js';
+import Connect from './event/Connect.js';
+import Disconnect from './event/Disconnect.js';
 import RoomEventType from './event/RoomEventType.js';
 import Player from './Player.js';
 
@@ -66,18 +70,11 @@ export default class Room {
   }
 
   add(player) {
-    this.players.push(player);
-    log.info('added player', player.user.id, 'to room', this.id);
-    Match.addUser(this.match, Player.shortUser(player));
+    this.queue.push(new Connect(player));
   }
 
   remove(player) {
-    log.info('players', this.players.length, 'removing one', player.user.id);
-    this.players = this.players.filter(p => p !== player);
-    const match = this.match;
-    Match.removeTank(match, player.user.id, true);
-
-    this.broadcast(MessageType.DISCONNECTED, player.user.id);
+    this.queue.push(new Disconnect(player));
   }
 
   broadcast(name, data) {
@@ -119,6 +116,26 @@ export default class Room {
     switch (roomEvent.type) {
       case RoomEventType.CLIENT_MESSAGE:
         Room.handleClientMessage(room, roomEvent.netMessage, updates);
+        break;
+      case RoomEventType.CONNECT:
+        {
+          const player = roomEvent.player;
+          room.players.push(player);
+          const user = player.user;
+          log.info('added player', user.id, 'to room', room.id);
+          Match.addUser(room.match, Player.shortUser(player), updates);
+          updates.push(new UserConnect(user.id, user.name));
+        }
+        break;
+      case RoomEventType.DISCONNECT:
+        {
+          const player = roomEvent.player;
+          log.info('players', room.players.length, 'removing one', player.user.id);
+          room.players = room.players.filter(p => p !== player);
+          const match = room.match;
+          Match.removeTank(match, player.user.id, updates);
+          updates.push(new UserDisconnect(player.user.id));
+        }
         break;
     }
   }
