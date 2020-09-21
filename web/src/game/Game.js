@@ -13,6 +13,7 @@ import WaterRenderer from './renderer/blocks/WaterRenderer.js';
 import BulletRenderer from './renderer/BulletRenderer.js';
 import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
 import MatchStateRenderer from './renderer/MatchStateRenderer.js';
+import SpawnInRenderer from './renderer/SpawnInRenderer.js';
 import EmptyTextProvider from './renderer/text/EmptyTextProvider.js';
 import MatchTimeTextProvider from './renderer/text/MatchTimeTextProvider.js';
 import NetUsageRenderer from './renderer/text/NetUsageTextProvider.js';
@@ -66,7 +67,13 @@ export default class Game {
         this.size
       ),
 
-
+      new SpawnInRenderer(
+        ctx,
+        this.match,
+        this.id,
+        s => new Point(s.pixelWidth / 2, s.pixelHeight / 2),
+        this.size
+      ),
 
       new TextRenderer(
         ctx,
