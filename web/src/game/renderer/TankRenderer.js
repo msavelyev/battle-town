@@ -1,4 +1,5 @@
 import Direction from '../../../../lib/src/data/Direction.js';
+import EntityState from '../../../../lib/src/data/EntityState.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Sprites from './Sprites.js';
 
@@ -13,7 +14,12 @@ export default class TankRenderer {
   }
 
   update(event) {
-    this.world.tanks.forEach(tank => this.updateTank(this.ctx, event, tank));
+    for (let tank of this.world.tanks) {
+      if (tank.state === EntityState.DEAD) {
+        continue;
+      }
+      this.updateTank(this.ctx, event, tank);
+    }
   }
 
   updateTank(ctx, event, tank) {
