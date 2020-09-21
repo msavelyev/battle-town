@@ -60,13 +60,6 @@ export default class Game {
       ),
 
       new ExplosionsRenderer(ctx, world, sprites, this.size),
-      new MatchStateRenderer(
-        ctx,
-        this.match,
-        s => new Point(s.pixelWidth / 2, s.pixelHeight / 2),
-        this.size
-      ),
-
       new SpawnInRenderer(
         ctx,
         this.match,
@@ -74,7 +67,12 @@ export default class Game {
         s => new Point(s.pixelWidth / 2, s.pixelHeight / 2),
         this.size
       ),
-
+      new MatchStateRenderer(
+        ctx,
+        this.match,
+        s => new Point(s.pixelWidth / 2, s.pixelHeight / 2),
+        this.size
+      ),
       new TextRenderer(
         ctx,
         s => new Point(s.uiX + s.unit / 4, s.pixelHeight),

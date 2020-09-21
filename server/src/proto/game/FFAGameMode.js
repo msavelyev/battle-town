@@ -76,30 +76,32 @@ export default class FFAGameMode {
   }
 
   onBeforeWorldUpdate(match, event, updates) {
-    if (this.room.size() >= 2 && match.state !== MatchState.PLAY) {
-      Match.setState(match, MatchState.PLAY, this.ticker.tick);
+    if (this.room.size() >= 2 && match.state === MatchState.WAITING_FOR_PLAYERS) {
+      Match.setState(match, MatchState.PLAY, event.tick);
+      match.nextStateOnTick = event.tick + SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS;
       updates.push(State.fromMatch(match));
     } else if (this.room.size() === 1 && match.state === MatchState.PLAY) {
-      Match.setState(match, MatchState.WAITING_FOR_PLAYERS, this.ticker.tick);
+      Match.setState(match, MatchState.WAITING_FOR_PLAYERS, event.tick);
       updates.push(State.fromMatch(match));
     }
 
-    if (match.state === MatchState.PLAY) {
-      const matchFinishTick = SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS + match.stateSinceTick;
-      if (matchFinishTick <= event.tick) {
-        const world = match.world;
-        World.resetLevel(world, level.ffa());
-        updates.push(new ResetLevel(world.blocks));
+    if (match.state === MatchState.PLAY && match.nextStateOnTick <= event.tick) {
+      Match.setWinner(match, Match.winner(match).id, event.tick);
+      updates.push(State.fromMatch(match));
+    } else if (match.state === MatchState.FINISHED && match.nextStateOnTick <= event.tick) {
+      const world = match.world;
+      World.resetLevel(world, level.ffa());
+      updates.push(new ResetLevel(world.blocks));
 
-        World.resetTanks(world, match);
-        updates.push(new ResetTanks(world.tanks));
+      World.resetTanks(world, match);
+      updates.push(new ResetTanks(world.tanks));
 
-        Match.resetScore(match);
-        updates.push(new Score(match.score));
+      Match.resetScore(match);
+      updates.push(new Score(match.score));
 
-        match.stateSinceTick = event.tick;
-        updates.push(State.fromMatch(match));
-      }
+      Match.setState(match, MatchState.PLAY, event.tick);
+      match.nextStateOnTick = event.tick + SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS;
+      updates.push(State.fromMatch(match));
     }
   }
 
