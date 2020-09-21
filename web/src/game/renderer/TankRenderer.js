@@ -27,7 +27,7 @@ export default class TankRenderer {
 
   inJungle(tank) {
     for (let block of World.findBlocksByType(this.world, BlockType.JUNGLE)) {
-      if (Entity.collides(tank, block)) {
+      if (Entity.collides(block, tank)) {
         return true;
       }
     }
