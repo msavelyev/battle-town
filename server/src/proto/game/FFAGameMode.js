@@ -1,4 +1,5 @@
 import Configuration from '../../../../lib/src/data/Configuration.js';
+import Entity from '../../../../lib/src/data/Entity.js';
 import Match from '../../../../lib/src/data/Match.js';
 import MatchState from '../../../../lib/src/data/MatchState.js';
 import World from '../../../../lib/src/data/World.js';
@@ -91,6 +92,7 @@ export default class FFAGameMode {
     World.createTank(world, user);
 
     const victimTank = World.findTank(world, victimId);
+    Entity.revive(victimTank, event.tick);
     updates.push(TankUpdate.fromTank(victimTank));
   }
 

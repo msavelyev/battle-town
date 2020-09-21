@@ -21,12 +21,8 @@ export default class TankRenderer {
       if (tank.state === EntityState.DEAD) {
         continue;
       }
-      this.updateTank(this.ctx, event, tank);
+      this.drawTank(this.ctx, event, tank);
     }
-  }
-
-  updateTank(ctx, event, tank) {
-    this.drawTank(ctx, tank);
   }
 
   inJungle(tank) {
@@ -39,10 +35,21 @@ export default class TankRenderer {
     return false;
   }
 
-  drawTank(ctx, tank) {
+  drawTank(ctx, event, tank) {
     const x = tank.position.x;
     const y = tank.position.y;
     const size = tank.size * this.size.unit;
+
+    if (tank.state === EntityState.REVIVING) {
+      ctx.globalAlpha = 0.5;
+    }
+
+    let draw = true;
+    if (tank.state === EntityState.REVIVING) {
+      if (Math.ceil(event.tick / 10) % 2 !== 0) {
+        draw = false;
+      }
+    }
 
     ctx.fillStyle = tank.id === this.id ? 'yellow' : 'red';
     ctx.setTransform(1, 0, 0, 1, x * this.size.unit, y * this.size.unit);
@@ -59,12 +66,16 @@ export default class TankRenderer {
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
     ctx.beginPath();
 
-    Sprites.draw(ctx, this.sprites.tank, 0, 0, size, size);
+    if (draw) {
+      Sprites.draw(ctx, this.sprites.tank, 0, 0, size, size);
 
-    const tmp = ctx.globalCompositeOperation;
-    ctx.globalCompositeOperation = 'multiply';
-    ctx.fillRect(0, 0, size, size);
-    ctx.globalCompositeOperation = tmp;
+      const tmp = ctx.globalCompositeOperation;
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.fillRect(0, 0, size, size);
+      ctx.globalCompositeOperation = tmp;
+    }
+
+    ctx.globalAlpha = 1;
 
     if (SETTINGS.DEBUG_RENDER) {
       ctx.strokeStyle = 'cyan';

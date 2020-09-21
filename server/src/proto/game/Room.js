@@ -1,4 +1,4 @@
-import Block from '../../../../lib/src/data/Block.js';
+import Entity from '../../../../lib/src/data/Entity.js';
 import Match from '../../../../lib/src/data/Match.js';
 import TickData from '../../../../lib/src/data/TickData.js';
 import World from '../../../../lib/src/data/World.js';
@@ -144,7 +144,7 @@ export default class Room {
         const world = room.match.world;
         for (let block of world.blocks) {
           if (block.state === EntityState.DEAD) {
-            Block.revive(block, tick);
+            Entity.revive(block, tick);
             updates.push(BlockUpdate.fromBlock(block));
           }
         }
