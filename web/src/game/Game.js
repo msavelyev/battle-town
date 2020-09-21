@@ -24,6 +24,7 @@ import PingTextProvider from './renderer/text/PingTextProvider.js';
 import TextRenderer from './renderer/text/TextRenderer.js';
 import TickTextProvider from './renderer/text/TickTextProvider.js';
 import UnackedInputTextProvider from './renderer/text/UnackedInputTextProvider.js';
+import ThisIsYouRenderer from './renderer/ThisIsYouRenderer.js';
 
 export default class Game {
 
@@ -85,7 +86,9 @@ export default class Game {
           new UnackedInputTextProvider(this.match),
           new NetUsageRenderer(this.client)
         ]
-      )
+      ),
+
+      new ThisIsYouRenderer(ctx, world, this.id, this.size)
     ];
 
     this.moving = false;
