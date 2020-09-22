@@ -139,7 +139,7 @@ export default class MainMenu extends Scene {
 
       <div class="mainMenu__container">
         <div class="mainMenu__row">
-          <h1>Battle Village</h1>
+          <h1>Battle Town</h1>
         </div>
         <div class="mainMenu__row mainMenu__spacer">
         </div>
