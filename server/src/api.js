@@ -1,6 +1,7 @@
 import {v4 as uuid} from 'uuid';
 import log from '../../lib/src/util/log.js';
 import database from './database.js';
+import telegram from './telegram.js';
 import username from './username.js';
 
 import express from 'express';
@@ -31,6 +32,7 @@ export async function init(db, expressApp) {
 
   expressApp.get('/api/new', handleErrors(async (req, res) => {
     const user = await database.createUser(db, uuid(), username.generate(), uuid());
+    telegram.sendMessage('new user created ' + user.id);
     log.info('created', user);
     await res.json(user);
   }));
@@ -42,6 +44,8 @@ export async function init(db, expressApp) {
     if (!user) {
       await res.status(404).end();
     } else {
+      telegram.sendMessage('user logged in ' + user.id + ', ' + user.name);
+
       await res.json(user);
     }
   }));
@@ -58,6 +62,8 @@ export async function init(db, expressApp) {
     const name = user.name.trim();
     const id = user.id;
     const token = user.token;
+
+    telegram.sendMessage('user updated name ' + user.id + ', ' + user.name);
 
     if (!username.validate(user.name)) {
       return await res.status(400)

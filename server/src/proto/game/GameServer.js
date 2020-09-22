@@ -4,6 +4,7 @@ import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Fps from '../../../../lib/src/util/Fps.js';
 import log from '../../../../lib/src/util/log.js';
 import database from '../../database.js';
+import telegram from '../../telegram.js';
 import FFAGameMode from './FFAGameMode.js';
 import Player from './Player.js';
 import PVPGameMode from './PVPGameMode.js';
@@ -46,6 +47,7 @@ export default class GameServer {
           if (user) {
             player.user = user;
             log.info('authorized', user.id);
+            telegram.sendMessage('user authorized ' + user.id + ', ' + user.name);
             client.send(EventType.AUTH_ACK);
             this.gameMode.authorizePlayer(player);
           } else {
