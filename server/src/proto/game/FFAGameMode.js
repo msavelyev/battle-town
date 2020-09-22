@@ -34,7 +34,7 @@ export default class FFAGameMode {
     World.resetLevel(world, level.ffa());
     Match.setState(match, MatchState.WAITING_FOR_PLAYERS, this.ticker.tick);
 
-    this.blockReviveInterval = setInterval(this.reviveBlocks.bind(this), 30000);
+    this.blockReviveInterval = setInterval(this.reviveBlocks.bind(this), 60000);
   }
 
   authorizePlayer(player) {
