@@ -81,7 +81,7 @@ function circle(center, r) {
   return result;
 }
 
-function printCell(x, y, cell) {
+function printCell(cell) {
   const color = COLORS[cell];
   print(chalk.hex(color).bgHex(color)('aa'));
 }
@@ -90,16 +90,28 @@ function printGeneratedLevel(lvl, offset) {
   for (let y = offset; y < lvl.length; y++) {
     print('\n');
     for (let x = offset; x < lvl[y].length; x++) {
-      const cell = lvl[x][y];
+      const cell = lvl[y][x];
 
-      printCell(x, y, cell);
+      printCell(cell);
     }
   }
 }
 
-const offset = 5;
-const lvl = generateLevel(10, offset);
-printGeneratedLevel(lvl, offset);
+function printLevel(start, size) {
+  for (let y = start.y; y < start.y + size; y++) {
+    print('\n');
+    for (let x = start.x; x < start.x + size; x++) {
+      printCell(randomBlock(new Point(x, y)));
+    }
+  }
+}
+
+const offset = -1;
+const size = 10;
+// const lvl = generateLevel(size, offset);
+// printGeneratedLevel(lvl, offset);
+
+printLevel(new Point(offset, offset), size * 2 + 1);
 
 // printLevel(FFA_LEVEL);
 
