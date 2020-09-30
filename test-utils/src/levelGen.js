@@ -2,8 +2,7 @@ import chalk from 'chalk';
 import BlockType from '../../lib/src/data/BlockType.js';
 import Direction from '../../lib/src/data/Direction.js';
 import Point from '../../lib/src/data/Point.js';
-import randomInt from '../../lib/src/util/randomInt.js';
-import level from '../../server/src/level.js';
+import * as rand from '../../lib/src/util/rand.js';
 
 function print() {
   process.stdout.write(...arguments);
@@ -18,8 +17,10 @@ const COLORS = {
   [BlockType.JUNGLE]: '#4c4',
 };
 
-function randomBlock() {
-  return randomInt(0, 5);
+function randomBlock(point) {
+  const val = rand.valueNoise(point.x, point.y);
+
+  return Math.floor(val * 5);
 }
 
 function setBlock(level, point, block) {
@@ -34,13 +35,13 @@ function setBlock(level, point, block) {
 }
 
 function generateBlock(level, point) {
-  setBlock(level, point, randomBlock());
+  setBlock(level, point, randomBlock(point));
 }
 
-function generateLevel(radius) {
+function generateLevel(radius, offset) {
   const size = radius * 2 + 1;
-  const x = Math.floor((size - 1) / 2);
-  const y = Math.floor((size - 1) / 2);
+  const x = Math.floor((size - 1) / 2) + offset;
+  const y = Math.floor((size - 1) / 2) + offset;
   const start = new Point(x, y);
 
   console.log('start', start);
@@ -58,7 +59,6 @@ function generateLevel(radius) {
 }
 
 function circle(center, r) {
-  const side = r * 2 + 1;
   const tl = new Point(center.x - r, center.y - r);
   const br = new Point(center.x + r, center.y + r);
 
@@ -82,25 +82,14 @@ function circle(center, r) {
 }
 
 function printCell(x, y, cell) {
-  if (x === 0) {
-    print('\n');
-  }
-
   const color = COLORS[cell];
   print(chalk.hex(color).bgHex(color)('aa'));
 }
 
-function printLevel(lvl) {
-  level.iterate(lvl, (x, y, cell) => {
-    printCell(x, y, cell);
-  });
-
-  print('\n');
-}
-
-function printGeneratedLevel(lvl) {
-  for (let y = 0; y < lvl.length; y++) {
-    for (let x = 0; x < lvl[y].length; x++) {
+function printGeneratedLevel(lvl, offset) {
+  for (let y = offset; y < lvl.length; y++) {
+    print('\n');
+    for (let x = offset; x < lvl[y].length; x++) {
       const cell = lvl[x][y];
 
       printCell(x, y, cell);
@@ -108,9 +97,9 @@ function printGeneratedLevel(lvl) {
   }
 }
 
-const lvl = generateLevel(10);
-console.log(lvl);
-printGeneratedLevel(lvl);
+const offset = 5;
+const lvl = generateLevel(10, offset);
+printGeneratedLevel(lvl, offset);
 
 // printLevel(FFA_LEVEL);
 
