@@ -2,7 +2,7 @@ import Block from '../../lib/src/data/Block.js';
 import BlockType from '../../lib/src/data/BlockType.js';
 import Point from '../../lib/src/data/Point.js';
 import {SETTINGS} from '../../lib/src/util/dotenv.js';
-import randomInt from '../../lib/src/util/randomInt.js';
+import * as rand from '../../lib/src/util/rand.js';
 
 export const DEBUG_LEVEL = `
 1111111111111111111111111
@@ -197,7 +197,7 @@ function createLevel(level) {
 
 export default Object.freeze({
   choose: () => {
-    return randomInt(0, LEVELS.length - 1)
+    return rand.randomInt(0, LEVELS.length - 1)
   },
 
   generate: levelId => {

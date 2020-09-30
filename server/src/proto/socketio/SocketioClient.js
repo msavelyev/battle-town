@@ -1,6 +1,6 @@
 import EventType from '../../../../lib/src/proto/EventType.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
-import randomInt from '../../../../lib/src/util/randomInt.js';
+import * as rand from '../../../../lib/src/util/rand.js';
 import NetClient from '../base/NetClient.js';
 
 export default class SocketioClient extends NetClient {
@@ -79,7 +79,7 @@ export default class SocketioClient extends NetClient {
     }
 
     if (this.lag === 'RANDOM') {
-      return randomInt(50, 150);
+      return rand.randomInt(50, 150);
     }
 
     return SETTINGS.LAG;

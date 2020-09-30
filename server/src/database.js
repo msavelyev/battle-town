@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
 import util from 'util';
-import randomInt from '../../lib/src/util/randomInt.js';
+import * as rand from '../../lib/src/util/rand.js';
 import username from './username.js';
 
 const fileExists = util.promisify(fs.exists);
@@ -46,7 +46,7 @@ async function init(db) {
       VALUES ($user, $user, $user, $points)
     `, {
       $user: name,
-      $points: randomInt(5, 29)
+      $points: rand(5, 29)
     })
   }
 }
