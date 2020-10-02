@@ -3,9 +3,9 @@ import Match from '../../../../lib/src/data/Match.js';
 import TickData from '../../../../lib/src/data/TickData.js';
 import World from '../../../../lib/src/data/World.js';
 import EntityState from '../../../../lib/src/data/EntityState.js';
-import UserConnect from '../../../../lib/src/data/worldevent/UserConnect.js';
-import BlockUpdate from '../../../../lib/src/data/worldevent/BlockUpdate.js';
-import UserDisconnect from '../../../../lib/src/data/worldevent/UserDisconnect.js';
+import * as UserConnect from '../../../../lib/src/data/worldevent/UserConnect.js';
+import * as BlockUpdate from '../../../../lib/src/data/worldevent/BlockUpdate.js';
+import * as UserDisconnect from '../../../../lib/src/data/worldevent/UserDisconnect.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import log from '../../../../lib/src/util/log.js';
@@ -65,6 +65,7 @@ export default class Room {
       return true;
     }
 
+    // noinspection RedundantIfStatementJS
     if (this.players.length === 1 && this.players[0].user.id === 'bot') {
       return true;
     }
@@ -127,7 +128,7 @@ export default class Room {
           const user = player.user;
           log.info('added player', user.id, 'to room', room.id);
           Match.addUser(room.match, Player.shortUser(player), tick, updates);
-          updates.push(new UserConnect(user.id, user.name));
+          updates.push(UserConnect.create(user.id, user.name));
         }
         break;
       case RoomEventType.DISCONNECT:
@@ -137,7 +138,7 @@ export default class Room {
           room.players = room.players.filter(p => p !== player);
           const match = room.match;
           Match.removeTank(match, player.user.id, updates);
-          updates.push(new UserDisconnect(player.user.id));
+          updates.push(UserDisconnect.create(player.user.id));
         }
         break;
       case RoomEventType.REVIVE_BLOCKS:

@@ -3,11 +3,11 @@ import Entity from '../../../../lib/src/data/Entity.js';
 import Match from '../../../../lib/src/data/Match.js';
 import MatchState from '../../../../lib/src/data/MatchState.js';
 import World from '../../../../lib/src/data/World.js';
-import ResetLevel from '../../../../lib/src/data/worldevent/ResetLevel.js';
-import ResetTanks from '../../../../lib/src/data/worldevent/ResetTanks.js';
-import Score from '../../../../lib/src/data/worldevent/Score.js';
-import State from '../../../../lib/src/data/worldevent/State.js';
-import TankUpdate from '../../../../lib/src/data/worldevent/TankUpdate.js';
+import * as ResetLevel from '../../../../lib/src/data/worldevent/ResetLevel.js';
+import * as ResetTanks from '../../../../lib/src/data/worldevent/ResetTanks.js';
+import * as Score from '../../../../lib/src/data/worldevent/Score.js';
+import * as State from '../../../../lib/src/data/worldevent/State.js';
+import * as TankUpdate from '../../../../lib/src/data/worldevent/TankUpdate.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import NetMessage from '../../../../lib/src/proto/NetMessage.js';
@@ -91,16 +91,16 @@ export default class FFAGameMode {
     } else if (match.state === MatchState.FINISHED && match.nextStateOnTick <= event.tick) {
       const world = match.world;
       World.resetLevel(world, level.ffa());
-      updates.push(new ResetLevel(world.blocks));
+      updates.push(ResetLevel.create(world.blocks));
 
       World.resetTanks(world, match);
       for (let tank of world.tanks) {
         Entity.revive(tank, event.tick);
       }
-      updates.push(new ResetTanks(world.tanks));
+      updates.push(ResetTanks.create(world.tanks));
 
       Match.resetScore(match);
-      updates.push(new Score(match.score));
+      updates.push(Score.create(match.score));
 
       Match.setState(match, MatchState.PLAY, event.tick);
       match.nextStateOnTick = event.tick + SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS;
@@ -110,7 +110,7 @@ export default class FFAGameMode {
 
   onKill(match, event, killer, victimId, updates) {
     match.score[killer] += 1;
-    updates.push(new Score(match.score));
+    updates.push(Score.create(match.score));
 
     const world = match.world;
     const victimTank = World.findTank(world, victimId);
