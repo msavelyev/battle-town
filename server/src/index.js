@@ -17,14 +17,14 @@ const server = http.createServer(app);
 
 app.use('/', express.static('../web-build/dist'));
 
-async function main() {
+function main() {
   const dbPath = process.env.DB_PATH;
   if (!dbPath) {
     throw new Error('DB_PATH env variable must be specified');
   }
 
-  const db = await database.open(dbPath);
-  await api.init(db, app);
+  const db = database.open(dbPath);
+  api.init(db, app);
 
   const ticker = new Ticker(setInterval, performance.now);
   const gameServer = new GameServer(new SocketioServer(server), ticker, db);
@@ -37,9 +37,11 @@ async function main() {
 }
 
 
-main()
-  .then()
-  .catch(err => {
-    console.error('unhandled exception', err);
-  });
+export function run() {
+  main()
+    .then()
+    .catch(err => {
+      console.error('unhandled exception', err);
+    });
+}
 

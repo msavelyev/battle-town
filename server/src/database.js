@@ -27,8 +27,8 @@ function dbRun(db, query, params) {
 
 }
 
-async function init(db) {
-  await dbRun(db, `
+function init(db) {
+  dbRun(db, `
     CREATE TABLE users
     (
       id     TEXT   NOT NULL PRIMARY KEY,
@@ -41,7 +41,7 @@ async function init(db) {
   for (let i = 0; i < 5; i++) {
     const name = username.generate();
 
-    await dbRun(db, `
+    dbRun(db, `
       INSERT INTO users (id, name, token, points)
       VALUES ($user, $user, $user, $points)
     `, {
@@ -52,20 +52,20 @@ async function init(db) {
 }
 
 export default {
-  open: async function open(filename) {
-    const alreadyCreated = await fileExists(filename);
+  open: function open(filename) {
+    const alreadyCreated = fileExists(filename);
 
     const db = new sqlite3.Database(filename);
 
     if (!alreadyCreated) {
-      await init(db);
+      init(db);
     }
 
     return db;
   },
 
-  createUser: async function createUser(db, uuid, name, token) {
-    await dbRun(db, `
+  createUser: function createUser(db, uuid, name, token) {
+    dbRun(db, `
       INSERT INTO users (id, name, token)
       VALUES ($id, $name, $token)
     `, {
@@ -81,8 +81,8 @@ export default {
     };
   },
 
-  findUser: async function findUser(db, uuid, token) {
-    return await dbGet(
+  findUser: function findUser(db, uuid, token) {
+    return dbGet(
       db,
       'SELECT * FROM users WHERE id = $id AND token = $token',
       {
@@ -92,8 +92,8 @@ export default {
     );
   },
 
-  leaderboard: async function leaderboard(db, id) {
-    const top = await dbAll(
+  leaderboard: function leaderboard(db, id) {
+    const top = dbAll(
       db,
       `
         SELECT
@@ -108,7 +108,7 @@ export default {
     );
 
     if (!top.find(item => item.id === id)) {
-      const you = await dbGet(
+      const you = dbGet(
         db,
         `
         SELECT * FROM (
@@ -129,8 +129,8 @@ export default {
     return top;
   },
 
-  updateUser: async function updateUser(db, id, token, name) {
-    const updated = await dbRun(db, `
+  updateUser: function updateUser(db, id, token, name) {
+    const updated = dbRun(db, `
       UPDATE users SET name = $name
       WHERE id = $id AND token = $token
     `, {
@@ -142,8 +142,8 @@ export default {
     return updated === 1;
   },
 
-  addPoints: async function (db, id, points) {
-    await dbRun(db, `
+  addPoints: function (db, id, points) {
+    dbRun(db, `
       UPDATE users SET points = points + $delta
       WHERE id = $id
     `, {

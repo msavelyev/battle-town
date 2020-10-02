@@ -7,57 +7,57 @@ import username from './username.js';
 import express from 'express';
 
 function handleErrors(fn) {
-  return async (req, res) => {
+  return (req, res) => {
     try {
-      await fn(req, res);
+      fn(req, res);
     } catch (err) {
       log.error(err);
-      await res.status(500).json(err);
+      res.status(500).json(err);
     }
   };
 }
 
-export async function init(db, expressApp) {
+export function init(db, expressApp) {
   expressApp.use(express.json());
 
-  expressApp.use(async (err, req, res, next) => {
+  expressApp.use((err, req, res, next) => {
     if (err) {
       log.error(err);
-      await res.status(500).json(err);
+      res.status(500).json(err);
       return;
     }
 
     next();
   });
 
-  expressApp.get('/api/new', handleErrors(async (req, res) => {
-    const user = await database.createUser(db, uuid(), username.generate(), uuid());
+  expressApp.get('/api/new', handleErrors((req, res) => {
+    const user = database.createUser(db, uuid(), username.generate(), uuid());
     telegram.sendMessage('new user created ' + user.id);
     log.info('created', user);
-    await res.json(user);
+    res.json(user);
   }));
 
-  expressApp.post('/api/get', handleErrors(async (req, res) => {
+  expressApp.post('/api/get', handleErrors((req, res) => {
     const body = req.body;
-    const user = await database.findUser(db, body.id, body.token);
+    const user = database.findUser(db, body.id, body.token);
 
     if (!user) {
-      await res.status(404).end();
+      res.status(404).end();
     } else {
       telegram.sendMessage('user logged in ' + user.id + ', ' + user.name);
 
-      await res.json(user);
+      res.json(user);
     }
   }));
 
-  expressApp.get('/api/top', handleErrors(async (req, res) => {
+  expressApp.get('/api/top', handleErrors((req, res) => {
     const id = req.query.id;
-    const top = await database.leaderboard(db, id);
+    const top = database.leaderboard(db, id);
 
-    await res.json(top);
+    res.json(top);
   }));
 
-  expressApp.post('/api/update', handleErrors(async (req, res) => {
+  expressApp.post('/api/update', handleErrors((req, res) => {
     const user = req.body;
     const name = user.name.trim();
     const id = user.id;
@@ -66,7 +66,7 @@ export async function init(db, expressApp) {
     telegram.sendMessage('user updated name ' + user.id + ', ' + user.name);
 
     if (!username.validate(user.name)) {
-      return await res.status(400)
+      return res.status(400)
         .json({
           success: false,
           msg: 'Username length should be between 2 and 32 characters'
@@ -74,9 +74,9 @@ export async function init(db, expressApp) {
     }
 
     try {
-      const updated = await database.updateUser(db, id, token, name);
+      const updated = database.updateUser(db, id, token, name);
       if (updated) {
-        return await res.json({
+        return res.json({
           success: true,
           user: {
             id,
@@ -85,13 +85,13 @@ export async function init(db, expressApp) {
           }
         });
       } else {
-        return await res.status(400).json({
+        return res.status(400).json({
           success: false,
           msg: 'Something went wrong'
         });
       }
     } catch (e) {
-      return await res.json({
+      return res.json({
         success: false,
         msg: 'Username is already taken'
       })

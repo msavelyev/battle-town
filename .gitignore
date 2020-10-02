@@ -1,2 +1,5 @@
 *.db
 *.db-journal
+.cljs_node_repl
+.cpcache
+out
