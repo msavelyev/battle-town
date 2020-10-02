@@ -8,7 +8,7 @@ import * as State from '../../../../lib/src/data/worldevent/State.js';
 import * as TankRemove from '../../../../lib/src/data/worldevent/TankRemove.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
-import NetMessage from '../../../../lib/src/proto/NetMessage.js';
+import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import log from '../../../../lib/src/util/log.js';
 import database from '../../database.js';
@@ -76,7 +76,7 @@ export default class PVPGameMode extends GameMode {
         const user = player.user;
 
         client.sendMessage(
-          new NetMessage(user.id, MessageType.INIT, new Configuration(user.id, match))
+          NetMessage(user.id, MessageType.INIT, new Configuration(user.id, match))
         );
       }
     };

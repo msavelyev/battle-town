@@ -7,7 +7,7 @@ import * as UserConnect from '../../../../lib/src/data/worldevent/UserConnect.js
 import * as BlockUpdate from '../../../../lib/src/data/worldevent/BlockUpdate.js';
 import * as UserDisconnect from '../../../../lib/src/data/worldevent/UserDisconnect.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
-import NetMessage from '../../../../lib/src/proto/NetMessage.js';
+import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
 import log from '../../../../lib/src/util/log.js';
 import ClientMessage from './event/ClientMessage.js';
 import Connect from './event/Connect.js';
@@ -83,7 +83,7 @@ export default class Room {
 
   broadcast(name, data) {
     this.players.forEach(player => {
-      player.client.sendMessage(new NetMessage(player.user.id, name, data));
+      player.client.sendMessage(NetMessage(player.user.id, name, data));
     });
   }
 
@@ -101,7 +101,7 @@ export default class Room {
         this.queue.push(new ClientMessage(id, netMessage));
         break;
       case MessageType.PING:
-        client.sendMessage(new NetMessage(null, MessageType.PING));
+        client.sendMessage(NetMessage(null, MessageType.PING));
         break;
       default:
         console.error('Unknown message', netMessage);

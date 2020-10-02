@@ -10,7 +10,7 @@ import * as State from '../../../../lib/src/data/worldevent/State.js';
 import * as TankUpdate from '../../../../lib/src/data/worldevent/TankUpdate.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
-import NetMessage from '../../../../lib/src/proto/NetMessage.js';
+import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
 import {FPS} from '../../../../lib/src/Ticker.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import log from '../../../../lib/src/util/log.js';
@@ -57,7 +57,7 @@ export default class FFAGameMode {
     log.info('authorized with tanks', match.world.tanks);
 
     client.sendMessage(
-      new NetMessage(user.id, MessageType.INIT, new Configuration(user.id, match))
+      NetMessage(user.id, MessageType.INIT, new Configuration(user.id, match))
     );
   }
 

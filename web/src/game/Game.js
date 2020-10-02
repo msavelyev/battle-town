@@ -2,9 +2,9 @@ import Direction from '../../../lib/src/data/Direction.js';
 import Match from '../../../lib/src/data/Match.js';
 import Point from '../../../lib/src/data/Point.js';
 import World from '../../../lib/src/data/World.js';
-import TankMove from '../../../lib/src/event/TankMove.js';
+import * as TankMove from '../../../lib/src/event/TankMove.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
-import NetMessage from '../../../lib/src/proto/NetMessage.js';
+import { NetMessage } from '../../../lib/src/proto/NetMessage.js';
 import increaseTick from '../../../lib/src/util/increaseTick.js';
 import BrickRenderer from './renderer/blocks/BrickRenderer.js';
 import JungleRenderer from './renderer/blocks/JungleRenderer.js';
@@ -106,8 +106,8 @@ export default class Game {
     this.ctx.strokeRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
     if (this.moving) {
-      const move = new TankMove(increaseTick(this.moveId, val => this.moveId = val), this.direction);
-      this.handleEvent(new NetMessage(
+      const move = TankMove.create(increaseTick(this.moveId, val => this.moveId = val), this.direction);
+      this.handleEvent(NetMessage(
         this.id,
         MessageType.MOVE,
         move
@@ -138,10 +138,10 @@ export default class Game {
     if (!tank) {
       return;
     }
-    this.handleEvent(new NetMessage(
+    this.handleEvent(NetMessage(
       this.id,
       MessageType.SHOOT,
-      new TankMove(increaseTick(this.moveId, val => this.moveId = val), tank.direction)
+      TankMove.create(increaseTick(this.moveId, val => this.moveId = val), tank.direction)
     ));
   }
 

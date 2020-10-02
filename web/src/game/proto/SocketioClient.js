@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import NetClient from './NetClient.js';
-import NetMessage from '../../../../lib/src/proto/NetMessage.js';
+import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import NetUsage from './NetUsage.js';
@@ -27,7 +27,7 @@ export default class SocketioClient extends NetClient {
   }
 
   sendMessage(messageType, data) {
-    this.sendNetMessage(new NetMessage(null, messageType, data));
+    this.sendNetMessage(NetMessage(null, messageType, data));
   }
 
   sendNetMessage(netMessage) {
