@@ -6,6 +6,8 @@ import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import analytics from '../../../../lib/src/util/analytics.js';
 
+import './Matchmaking.css';
+
 export default class Matchmaking extends Scene {
 
   constructor(overlay) {
@@ -30,34 +32,6 @@ export default class Matchmaking extends Scene {
     this.user = user;
 
     this.overlay.innerHTML = `
-      <style>
-        .matchmaking__container {
-            display: flex;
-            color: white;
-            flex-direction: column;
-            font-family: Helvetica, sans-serif;
-            text-align: center;
-            align-items: center;
-            flex-grow: 1;
-            justify-content: center;
-        }
-        
-        h1 {
-            font-size: 5vh;
-        }
-        
-        h2 {
-            margin-top: 2vh;
-            margin-bottom: 3vh;
-            font-size: 3.5vh;
-        }
-        
-        #matchmaking__status {
-            color: #333;
-            font-size: 2vh;
-        }
-        
-      </style>
       <div class="matchmaking__container">
         <h1>Finding an opponent for you</h1>
         <h2 id="matchmaking__timer">0:00</h2>

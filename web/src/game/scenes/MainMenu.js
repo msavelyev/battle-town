@@ -1,8 +1,9 @@
-import menuBg from '../../../public/menu-bg.png';
 import api from '../api.js';
 import Scene from './Scene.js';
 import analytics from '../../../../lib/src/util/analytics.js';
 import howto from '../../../public/howto.png';
+
+import './MainMenu.css';
 
 export default class MainMenu extends Scene {
 
@@ -19,124 +20,6 @@ export default class MainMenu extends Scene {
     this.data = data;
 
     this.overlay.innerHTML = `
-      <style>
-        .mainMenu__container {
-            display: flex;
-            flex-direction: column;
-            font-family: Helvetica, serif;
-            color: white;
-            flex: 1;
-            justify-content: center;
-            background:
-              linear-gradient(
-               rgba(0, 0, 0, 0.7), 
-               rgba(0, 0, 0, 0.7)
-              ),
-              url('${menuBg}') no-repeat;
-            background-size: cover;
-        }
-        
-        #mainMenu__start {
-            margin-top: 2vh;
-            padding: 0.5vh 2vh;
-            font-size: 5vh;
-        }
-        
-        .mainMenu__row {
-            display: flex;
-            justify-content: center;
-        }
-        
-        #mainMenu__input {
-            font-size: 3vh;
-            padding: 0.7vh;
-        }
-        
-        .mainMenu__label {
-            color: white;
-            margin-right: 2vh;
-            font-size: 3vh;
-            align-items: center;
-            display: flex;
-        }      
-        
-        h1, h3 {
-            text-align: center;
-        }
-        
-        h1 {
-            font-size: 11vh;
-            margin-top: 2vh;
-        }
-        
-        h4 {
-            text-align: center;
-            font-size: 4vh;
-            margin-bottom: 2vh;
-        }
-        
-        .mainMenu__spacer {
-            height: 15vh;
-        }
-        
-        .mainMenu__howto {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 20vw;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            font-family: Helvetica, sans-serif;
-            font-size: 2.5vh;
-            padding: 2vh;
-            margin: 1vh;
-        }
-
-        .mainMenu__howto img {
-            width: 20vw;
-        }
-
-        .mainMenu__leaderboard {
-            display: none;
-            position: absolute;
-            width: 17vw;
-            top: 0;
-            right: 0;
-            
-            color: white;
-            font-family: Helvetica, sans-serif;
-            font-size: 2.5vh;
-            
-            /*display: flex;*/
-            flex-direction: column;
-            
-            background: rgba(90, 90, 90, 0.5);
-            border-radius: 1vh;
-            padding: 2vh;
-            margin: 1vh;        
-        }
-        
-        .mainMenu__leaderboard-item {
-            display: flex;
-            margin: 0.7vh;
-        }
-        
-        .mainMenu__leaderboard-you {
-            font-weight: bold;
-            color: #090;
-        }
-        
-        .mainMenu__leaderboard-item-left {
-            flex-grow: 3;
-        }
-        
-        .mainMenu__leaderboard-item-right {
-            flex-grow: 1;
-            text-align: right;
-        }
-        
-      </style>
-
       <div class="mainMenu__container">
         <div class="mainMenu__row">
           <h1>Battle Town</h1>

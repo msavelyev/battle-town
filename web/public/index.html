@@ -5,91 +5,13 @@
     <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Battle Town</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0
-        }
-
-        html {
-            height: 100%;
-            touch-action: none;
-        }
-
-        body {
-            background-color: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100%;
-
-            -moz-user-select: none;
-            -webkit-user-select: none;
-        }
-
-        #game {
-            position: relative;
-            flex-direction: column;
-            justify-content: stretch;
-            align-items: stretch;
-        }
-
-        .footer {
-            color: #555;
-            font-family: Helvetica, sans-serif;
-            font-size: 2.5vh;
-            height: 4vh;
-            display: flex;
-            align-items: center;
-        }
-
-        .footer a {
-            color: #999;
-        }
-
-        .container {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-        }
-
-        #portrait {
-            color: white;
-            /*font-size: 2vh;*/
-            text-align: center;
-            font-family: Helvetica, sans-serif;
-            /*line-height: 15px;*/
-        }
-
-        @media screen and (orientation:portrait) {
-            #portrait {
-                display: block;
-            }
-            #game {
-                display: none;
-            }
-        }
-
-        @media screen and (orientation:landscape) {
-            #portrait {
-                display: none;
-            }
-            #game {
-                display: flex;
-            }
-        }
-    </style>
-
-    <link rel="preload" href="sprites-new-big.png" as="image" id="sprites" />
 </head>
 <body>
     <div class="container">
         <div id="portrait">
             <div>This game works best in landscape mode.</div>
             <div>Rotate your screen horizontally to play.</div>
-            <img src="imgs/landscape.svg" style="width: 150px; height: 150px;" />
+            <img id="landscape-svg" src="" style="width: 150px; height: 150px;" />
         </div>
         <div id="game"></div>
     </div>
@@ -97,7 +19,5 @@
         © 2020, contact:&nbsp;
         <a href="mailto:misha@tsbaw.com">misha@tsbaw.com</a>
     </div>
-
-    <script src="../src/index.js"></script>
 </body>
 </html>

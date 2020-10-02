@@ -3,6 +3,8 @@ import api from '../api.js';
 import Scene from './Scene.js';
 import analytics from '../../../../lib/src/util/analytics.js';
 
+import './Loading.css';
+
 const BASIC_TEXT = 'Loading';
 
 export default class Loading extends Scene {
@@ -19,20 +21,6 @@ export default class Loading extends Scene {
     analytics.log('LOADING_SETUP');
 
     this.overlay.innerHTML = `
-      <style>
-        .loading__container {
-            flex: 1;
-            align-items: center;
-            justify-content: center;
-            display: flex;
-        }
-        h1 {
-            color: white;
-            font-family: Helvetica, sans-serif;
-            font-size: 7vh;
-            text-align: center;
-        }
-      </style>
       <div class="loading__container">
         <h1 id="loading__text">${BASIC_TEXT}</h1>
       </div>

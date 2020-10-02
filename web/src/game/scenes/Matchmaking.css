@@ -1,0 +1,25 @@
+.matchmaking__container {
+    display: flex;
+    color: white;
+    flex-direction: column;
+    font-family: Helvetica, sans-serif;
+    text-align: center;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.matchmaking__container h1 {
+    font-size: 5vh;
+}
+
+#matchmaking__timer {
+    margin-top: 2vh;
+    margin-bottom: 3vh;
+    font-size: 3.5vh;
+}
+
+#matchmaking__status {
+    color: #333;
+    font-size: 2vh;
+}

@@ -9,6 +9,10 @@ import userStorage from './game/userStorage.js';
 import dotenv, {SETTINGS} from '../../lib/src/util/dotenv.js';
 import analytics from '../../lib/src/util/analytics.js';
 
+import landscapeSvg from '../public/imgs/landscape.svg';
+import spritesPng from '../public/sprites-new-big.png';
+import '../public/main.css';
+
 analytics.init();
 
 dotenv();
@@ -34,6 +38,8 @@ function resizeOverlay(overlay) {
 }
 
 window.addEventListener('load', () => {
+  document.getElementById('landscape-svg').src = landscapeSvg;
+
   analytics.log('LOADED');
 
   const spritesImg = new Image();
@@ -64,5 +70,5 @@ window.addEventListener('load', () => {
       scenes.resize(size);
     };
   });
-  spritesImg.src = document.getElementById('sprites').href;
+  spritesImg.src = spritesPng;
 });

@@ -1,5 +1,7 @@
 import Scene from './Scene.js';
 
+import './Disconnected.css';
+
 export default class Disconnected extends Scene {
 
   constructor(overlay) {
@@ -11,16 +13,6 @@ export default class Disconnected extends Scene {
 
   setup(data) {
     this.overlay.innerHTML = `
-      <style>
-        .disconnected__container {
-            color: white;
-            font-family: Helvetica, sans-serif;
-            display: flex;
-            flex: 1;
-            justify-content: center;
-            align-items: center;
-        }
-      </style>
       <div class="disconnected__container">
         <h1>Match finished. Redirecting to main menu.</h1>
       </div>
