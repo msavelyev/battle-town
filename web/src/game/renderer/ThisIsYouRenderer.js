@@ -1,6 +1,6 @@
 import {degToRad} from '../../../../lib/src/data/Direction.js';
-import EntityState from '../../../../lib/src/data/EntityState.js';
-import World from '../../../../lib/src/data/World.js';
+import { EntityState } from '../../../../lib/src/data/EntityState.js';
+import * as World from '../../../../lib/src/data/World.js';
 
 export default class ThisIsYouRenderer {
 

@@ -1,7 +1,7 @@
-import Direction from '../../../lib/src/data/Direction.js';
-import Match from '../../../lib/src/data/Match.js';
-import Point from '../../../lib/src/data/Point.js';
-import World from '../../../lib/src/data/World.js';
+import * as Direction from '../../../lib/src/data/Direction.js';
+import * as Match from '../../../lib/src/data/Match.js';
+import * as Point from '../../../lib/src/data/Point.js';
+import * as World from '../../../lib/src/data/World.js';
 import * as TankMove from '../../../lib/src/event/TankMove.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
 import { NetMessage } from '../../../lib/src/proto/NetMessage.js';
@@ -50,9 +50,9 @@ export default class Game {
 
       new TextRenderer(
         ctx,
-        s => new Point(s.uiX + s.unit / 4, s.unit / 4),
+        s => Point.create(s.uiX + s.unit / 4, s.unit / 4),
         this.size,
-        Direction.DOWN,
+        Direction.Direction.DOWN,
         [
           new MatchTimeTextProvider(this.match),
           new EmptyTextProvider(),
@@ -65,20 +65,20 @@ export default class Game {
         ctx,
         this.match,
         this.id,
-        s => new Point(s.pixelWidth / 2, s.pixelHeight / 2),
+        s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2),
         this.size
       ),
       new MatchStateRenderer(
         ctx,
         this.match,
-        s => new Point(s.pixelWidth / 2, s.pixelHeight / 2),
+        s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2),
         this.size
       ),
       new TextRenderer(
         ctx,
-        s => new Point(s.uiX + s.unit / 4, s.pixelHeight),
+        s => Point.create(s.uiX + s.unit / 4, s.pixelHeight),
         this.size,
-        Direction.UP,
+        Direction.Direction.UP,
         [
           new PingTextProvider(client),
           new FpsTextProvider(),

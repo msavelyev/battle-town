@@ -1,4 +1,4 @@
-import Direction from '../../../../../lib/src/data/Direction.js';
+import * as Direction from '../../../../../lib/src/data/Direction.js';
 import {renderText} from '../text.js';
 
 export default class TextRenderer {
@@ -41,9 +41,9 @@ export default class TextRenderer {
   }
 
   baseline() {
-    if (this.direction === Direction.UP) {
+    if (this.direction === Direction.Direction.UP) {
       return { baseline: 'bottom' };
-    } else if (this.direction === Direction.DOWN) {
+    } else if (this.direction === Direction.Direction.DOWN) {
       return { baseline: 'top' };
     } else {
       throw new Error('Unknown text render direction ' + this.direction);
@@ -51,9 +51,9 @@ export default class TextRenderer {
   }
 
   calcY(y, offset) {
-    if (this.direction === Direction.UP) {
+    if (this.direction === Direction.Direction.UP) {
       return y - offset;
-    } else if (this.direction === Direction.DOWN) {
+    } else if (this.direction === Direction.Direction.DOWN) {
       return y + offset;
     } else {
       throw new Error('Unknown text render direction ' + this.direction);

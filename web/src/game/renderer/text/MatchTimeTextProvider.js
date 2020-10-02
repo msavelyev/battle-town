@@ -1,4 +1,4 @@
-import MatchState from '../../../../../lib/src/data/MatchState.js';
+import * as MatchState from '../../../../../lib/src/data/MatchState.js';
 import {FPS} from '../../../../../lib/src/Ticker.js';
 import {SETTINGS} from '../../../../../lib/src/util/dotenv.js';
 import {convertToTime} from '../../../../../lib/src/util/time.js';
@@ -19,7 +19,7 @@ export default class MatchTimeTextProvider extends TextRenderProvider {
       return null;
     }
 
-    if (this.match.state !== MatchState.PLAY) {
+    if (this.match.state !== MatchState.state.PLAY) {
       return PREFIX + '--:--';
     }
 

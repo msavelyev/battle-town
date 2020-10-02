@@ -1,8 +1,8 @@
 import {v4 as uuid} from 'uuid';
-import Configuration from '../../../../lib/src/data/Configuration.js';
-import Match from '../../../../lib/src/data/Match.js';
-import MatchState from '../../../../lib/src/data/MatchState.js';
-import World from '../../../../lib/src/data/World.js';
+import * as Configuration from '../../../../lib/src/data/Configuration.js';
+import * as Match from '../../../../lib/src/data/Match.js';
+import * as MatchState from '../../../../lib/src/data/MatchState.js';
+import * as World from '../../../../lib/src/data/World.js';
 import * as Score from '../../../../lib/src/data/worldevent/Score.js';
 import * as State from '../../../../lib/src/data/worldevent/State.js';
 import * as TankRemove from '../../../../lib/src/data/worldevent/TankRemove.js';
@@ -76,7 +76,7 @@ export default class PVPGameMode extends GameMode {
         const user = player.user;
 
         client.sendMessage(
-          NetMessage(user.id, MessageType.INIT, new Configuration(user.id, match))
+          NetMessage(user.id, MessageType.INIT, Configuration.create(user.id, match))
         );
       }
     };
@@ -148,7 +148,7 @@ export default class PVPGameMode extends GameMode {
   }
 
   onKill(match, event, killer, victim, updates) {
-    if (match.state === MatchState.PLAY) {
+    if (match.state === MatchState.state.PLAY) {
       World.removeTank(match.world, victim.id);
       updates.push(TankRemove.create(victim.id));
 

@@ -1,4 +1,4 @@
-import BlockType from '../../../../../lib/src/data/BlockType.js';
+import { BlockType } from '../../../../../lib/src/data/BlockType.js';
 import BlockRenderer from './BlockRenderer.js';
 
 function findImage(sprites, subtype) {

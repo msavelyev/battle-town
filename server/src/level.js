@@ -1,6 +1,6 @@
-import Block from '../../lib/src/data/Block.js';
-import BlockType from '../../lib/src/data/BlockType.js';
-import Point from '../../lib/src/data/Point.js';
+import * as Block from '../../lib/src/data/Block.js';
+import { BlockType } from '../../lib/src/data/BlockType.js';
+import * as Point from '../../lib/src/data/Point.js';
 import {SETTINGS} from '../../lib/src/util/dotenv.js';
 import * as rand from '../../lib/src/util/rand.js';
 
@@ -163,19 +163,19 @@ function createLevel(level) {
     }
 
     if (blockType === BlockType.SPAWN) {
-      const point = new Point(x * BLOCKS_PER_CELL * BLOCK_SIZE, y * BLOCKS_PER_CELL * BLOCK_SIZE);
-      blocks.push(new Block(getBlockId(), point, blockType, BLOCK_SIZE));
+      const point = Point.create(x * BLOCKS_PER_CELL * BLOCK_SIZE, y * BLOCKS_PER_CELL * BLOCK_SIZE);
+      blocks.push(Block.create(getBlockId(), point, blockType, BLOCK_SIZE));
       return;
     }
 
     if (blockType === BlockType.BRICK) {
       for (let dx = 0; dx < BLOCKS_PER_CELL * 2; dx++) {
         for (let dy = 0; dy < BLOCKS_PER_CELL * 2; dy++) {
-          const point = new Point(
+          const point = Point.create(
             x * BLOCKS_PER_CELL * BLOCK_SIZE + dx * BRICK_SIZE,
             y * BLOCKS_PER_CELL * BLOCK_SIZE + dy * BRICK_SIZE
           );
-          blocks.push(new Block(getBlockId(), point, brickSubtype(dx, dy), BRICK_SIZE));
+          blocks.push(Block.create(getBlockId(), point, brickSubtype(dx, dy), BRICK_SIZE));
         }
       }
       return;
@@ -183,11 +183,11 @@ function createLevel(level) {
 
     for (let dx = 0; dx < BLOCKS_PER_CELL; dx++) {
       for (let dy = 0; dy < BLOCKS_PER_CELL; dy++) {
-        const point = new Point(
+        const point = Point.create(
           x * BLOCKS_PER_CELL * BLOCK_SIZE + dx,
           y * BLOCKS_PER_CELL * BLOCK_SIZE + dy
         );
-        blocks.push(new Block(getBlockId(), point, blockType, BLOCK_SIZE));
+        blocks.push(Block.create(getBlockId(), point, blockType, BLOCK_SIZE));
       }
     }
   });

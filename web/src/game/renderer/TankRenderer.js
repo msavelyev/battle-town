@@ -1,8 +1,8 @@
-import BlockType from '../../../../lib/src/data/BlockType.js';
-import Direction from '../../../../lib/src/data/Direction.js';
-import Entity from '../../../../lib/src/data/Entity.js';
-import EntityState from '../../../../lib/src/data/EntityState.js';
-import World from '../../../../lib/src/data/World.js';
+import { BlockType } from '../../../../lib/src/data/BlockType.js';
+import * as Direction from '../../../../lib/src/data/Direction.js';
+import * as Entity from '../../../../lib/src/data/Entity.js';
+import { EntityState } from '../../../../lib/src/data/EntityState.js';
+import * as World from '../../../../lib/src/data/World.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Sprites from './Sprites.js';
 

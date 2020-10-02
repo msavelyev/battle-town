@@ -1,4 +1,4 @@
-import Match from '../../../../../lib/src/data/Match.js';
+import * as Match from '../../../../../lib/src/data/Match.js';
 import TextRenderProvider from './TextRenderProvider.js';
 
 export default class ScoreTextProvider extends TextRenderProvider {

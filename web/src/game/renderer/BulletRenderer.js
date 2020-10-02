@@ -1,5 +1,5 @@
-import Bullet from '../../../../lib/src/data/Bullet.js';
-import Direction from '../../../../lib/src/data/Direction.js';
+import * as Bullet from '../../../../lib/src/data/Bullet.js';
+import * as Direction from '../../../../lib/src/data/Direction.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import Sprites from './Sprites.js';
 

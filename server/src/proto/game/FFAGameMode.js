@@ -1,8 +1,8 @@
-import Configuration from '../../../../lib/src/data/Configuration.js';
-import Entity from '../../../../lib/src/data/Entity.js';
-import Match from '../../../../lib/src/data/Match.js';
-import MatchState from '../../../../lib/src/data/MatchState.js';
-import World from '../../../../lib/src/data/World.js';
+import * as Configuration from '../../../../lib/src/data/Configuration.js';
+import * as Entity from '../../../../lib/src/data/Entity.js';
+import * as Match from '../../../../lib/src/data/Match.js';
+import * as MatchState from '../../../../lib/src/data/MatchState.js';
+import * as World from '../../../../lib/src/data/World.js';
 import * as ResetLevel from '../../../../lib/src/data/worldevent/ResetLevel.js';
 import * as ResetTanks from '../../../../lib/src/data/worldevent/ResetTanks.js';
 import * as Score from '../../../../lib/src/data/worldevent/Score.js';
@@ -32,7 +32,7 @@ export default class FFAGameMode {
     const match = this.room.match;
     const world = match.world;
     World.resetLevel(world, level.ffa());
-    Match.setState(match, MatchState.WAITING_FOR_PLAYERS, this.ticker.tick);
+    Match.setState(match, MatchState.state.WAITING_FOR_PLAYERS, this.ticker.tick);
 
     this.blockReviveInterval = setInterval(this.reviveBlocks.bind(this), 60000);
   }
@@ -57,7 +57,7 @@ export default class FFAGameMode {
     log.info('authorized with tanks', match.world.tanks);
 
     client.sendMessage(
-      NetMessage(user.id, MessageType.INIT, new Configuration(user.id, match))
+      NetMessage(user.id, MessageType.INIT, Configuration.create(user.id, match))
     );
   }
 
@@ -76,19 +76,19 @@ export default class FFAGameMode {
   }
 
   onBeforeWorldUpdate(match, event, updates) {
-    if (this.room.size() >= 2 && match.state === MatchState.WAITING_FOR_PLAYERS) {
-      Match.setState(match, MatchState.PLAY, event.tick);
+    if (this.room.size() >= 2 && match.state === MatchState.state.WAITING_FOR_PLAYERS) {
+      Match.setState(match, MatchState.state.PLAY, event.tick);
       match.nextStateOnTick = event.tick + SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS;
       updates.push(State.fromMatch(match));
-    } else if (this.room.size() === 1 && match.state === MatchState.PLAY) {
-      Match.setState(match, MatchState.WAITING_FOR_PLAYERS, event.tick);
+    } else if (this.room.size() === 1 && match.state === MatchState.state.PLAY) {
+      Match.setState(match, MatchState.state.WAITING_FOR_PLAYERS, event.tick);
       updates.push(State.fromMatch(match));
     }
 
-    if (match.state === MatchState.PLAY && match.nextStateOnTick <= event.tick) {
+    if (match.state === MatchState.state.PLAY && match.nextStateOnTick <= event.tick) {
       Match.setWinner(match, Match.winner(match).id, event.tick);
       updates.push(State.fromMatch(match));
-    } else if (match.state === MatchState.FINISHED && match.nextStateOnTick <= event.tick) {
+    } else if (match.state === MatchState.state.FINISHED && match.nextStateOnTick <= event.tick) {
       const world = match.world;
       World.resetLevel(world, level.ffa());
       updates.push(ResetLevel.create(world.blocks));
@@ -102,7 +102,7 @@ export default class FFAGameMode {
       Match.resetScore(match);
       updates.push(Score.create(match.score));
 
-      Match.setState(match, MatchState.PLAY, event.tick);
+      Match.setState(match, MatchState.state.PLAY, event.tick);
       match.nextStateOnTick = event.tick + SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS;
       updates.push(State.fromMatch(match));
     }

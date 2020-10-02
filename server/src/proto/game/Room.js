@@ -1,8 +1,8 @@
-import Entity from '../../../../lib/src/data/Entity.js';
-import Match from '../../../../lib/src/data/Match.js';
-import TickData from '../../../../lib/src/data/TickData.js';
-import World from '../../../../lib/src/data/World.js';
-import EntityState from '../../../../lib/src/data/EntityState.js';
+import * as Entity from '../../../../lib/src/data/Entity.js';
+import * as Match from '../../../../lib/src/data/Match.js';
+import * as TickData from '../../../../lib/src/data/TickData.js';
+import * as World from '../../../../lib/src/data/World.js';
+import { EntityState } from '../../../../lib/src/data/EntityState.js';
 import * as UserConnect from '../../../../lib/src/data/worldevent/UserConnect.js';
 import * as BlockUpdate from '../../../../lib/src/data/worldevent/BlockUpdate.js';
 import * as UserDisconnect from '../../../../lib/src/data/worldevent/UserDisconnect.js';
@@ -22,9 +22,9 @@ export default class Room {
 
     this.players = [];
 
-    this.match = new Match(
+    this.match = Match.create(
       id,
-      new World(id),
+      World.create(id),
       tick
     );
     this.queue = [];
@@ -53,7 +53,7 @@ export default class Room {
 
     this.queue = [];
 
-    this.broadcast(MessageType.TICK, new TickData(
+    this.broadcast(MessageType.TICK, TickData.create(
       event.tick,
       updates,
       JSON.parse(JSON.stringify(this.match.ack)),

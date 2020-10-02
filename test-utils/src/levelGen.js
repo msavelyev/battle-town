@@ -1,7 +1,7 @@
 import chalk from 'chalk';
-import BlockType from '../../lib/src/data/BlockType.js';
-import Direction from '../../lib/src/data/Direction.js';
-import Point from '../../lib/src/data/Point.js';
+import { BlockType } from '../../lib/src/data/BlockType.js';
+import * as Direction from '../../lib/src/data/Direction.js';
+import * as Point from '../../lib/src/data/Point.js';
 import * as rand from '../../lib/src/util/rand.js';
 
 function print() {
@@ -42,7 +42,7 @@ function generateLevel(radius, offset) {
   const size = radius * 2 + 1;
   const x = Math.floor((size - 1) / 2) + offset;
   const y = Math.floor((size - 1) / 2) + offset;
-  const start = new Point(x, y);
+  const start = Point.create(x, y);
 
   console.log('start', start);
 
@@ -59,15 +59,15 @@ function generateLevel(radius, offset) {
 }
 
 function circle(center, r) {
-  const tl = new Point(center.x - r, center.y - r);
-  const br = new Point(center.x + r, center.y + r);
+  const tl = Point.create(center.x - r, center.y - r);
+  const br = Point.create(center.x + r, center.y + r);
 
-  const start = new Point(center.x - r, center.y);
+  const start = Point.create(center.x - r, center.y);
 
   const result = [];
 
   let current = start;
-  let direction = Direction.UP;
+  let direction = Direction.Direction.UP;
   do {
     const next = Point.move(current, direction, 1);
     if (Point.within(next, tl, br)) {
@@ -101,7 +101,7 @@ function printLevel(start, size) {
   for (let y = start.y; y < start.y + size; y++) {
     print('\n');
     for (let x = start.x; x < start.x + size; x++) {
-      printCell(randomBlock(new Point(x, y)));
+      printCell(randomBlock(Point.create(x, y)));
     }
   }
 }
@@ -111,8 +111,8 @@ const size = 10;
 // const lvl = generateLevel(size, offset);
 // printGeneratedLevel(lvl, offset);
 
-printLevel(new Point(offset, offset), size * 2 + 1);
+printLevel(Point.create(offset, offset), size * 2 + 1);
 
 // printLevel(FFA_LEVEL);
 
-// console.log(circle(new Point(0, 0), 0));
+// console.log(circle(Point.create(0, 0), 0));

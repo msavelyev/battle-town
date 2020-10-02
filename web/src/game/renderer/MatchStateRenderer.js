@@ -1,7 +1,7 @@
 import {renderText} from './text.js';
 import * as Ticker from '../../../../lib/src/Ticker.js';
-import MatchState from '../../../../lib/src/data/MatchState.js';
-import Match from '../../../../lib/src/data/Match.js';
+import * as MatchState from '../../../../lib/src/data/MatchState.js';
+import * as Match from '../../../../lib/src/data/Match.js';
 
 export default class MatchStateRenderer {
 
@@ -39,21 +39,21 @@ export default class MatchStateRenderer {
     const countdown = Ticker.countdown(tick, nextStateOnTick);
 
     switch (state) {
-      case MatchState.PREPARE:
+      case MatchState.state.PREPARE:
         return `Prepare to fight`;
-      case MatchState.READY:
+      case MatchState.state.READY:
         return `${countdown}`;
-      case MatchState.PLAY:
+      case MatchState.state.PLAY:
         if (stateTicks > Ticker.FPS) {
           return null;
         } else {
           return 'GO';
         }
-      case MatchState.SCORE:
+      case MatchState.state.SCORE:
         return `${spotlight.name} scored`;
-      case MatchState.FINISHED:
+      case MatchState.state.FINISHED:
         return `${spotlight.name} won`;
-      case MatchState.WAITING_FOR_PLAYERS:
+      case MatchState.state.WAITING_FOR_PLAYERS:
         if (Math.floor((stateTicks / 60)) % 10 === 0) {
           return 'Waiting for other players';
         } else {

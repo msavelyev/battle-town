@@ -1,5 +1,5 @@
-import Direction from '../../../lib/src/data/Direction.js';
-import Point from '../../../lib/src/data/Point.js';
+import * as Direction from '../../../lib/src/data/Direction.js';
+import * as Point from '../../../lib/src/data/Point.js';
 
 function positionToDirection(original, touch) {
   const dx = touch.pageX - original.x;
@@ -8,13 +8,13 @@ function positionToDirection(original, touch) {
   const ady = Math.abs(dy);
 
   if (adx > ady && dx > 0) {
-    return Direction.RIGHT;
+    return Direction.Direction.RIGHT;
   } else if (adx > ady && dx < 0) {
-    return Direction.LEFT;
+    return Direction.Direction.LEFT;
   } else if (ady > adx && dy > 0) {
-    return Direction.DOWN;
+    return Direction.Direction.DOWN;
   } else if (ady > adx && dy < 0) {
-    return Direction.UP;
+    return Direction.Direction.UP;
   }
 
   return null;
@@ -61,7 +61,7 @@ export default class Input {
     for (let touch of touches) {
       if (touch.pageX < (window.innerWidth / 2) && this.movingTouch === null) {
         this.movingTouch = touch.identifier;
-        this.movingPos = new Point(touch.pageX, touch.pageY);
+        this.movingPos = Point.create(touch.pageX, touch.pageY);
         stillMoving = true;
         continue;
       }
@@ -106,16 +106,16 @@ export default class Input {
     switch (keyCode) {
       case 'ArrowUp':
       case 'KeyW':
-        return Direction.UP;
+        return Direction.Direction.UP;
       case 'ArrowDown':
       case 'KeyS':
-        return Direction.DOWN;
+        return Direction.Direction.DOWN;
       case 'ArrowLeft':
       case 'KeyA':
-        return Direction.LEFT;
+        return Direction.Direction.LEFT;
       case 'ArrowRight':
       case 'KeyD':
-        return Direction.RIGHT;
+        return Direction.Direction.RIGHT;
     }
 
     return null;
