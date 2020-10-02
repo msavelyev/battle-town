@@ -1,7 +1,7 @@
 import * as process from 'process';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
-import Fps from '../../../../lib/src/util/Fps.js';
+import * as Fps from '../../../../lib/src/util/Fps.js';
 import log from '../../../../lib/src/util/log.js';
 import database from '../../database.js';
 import telegram from '../../telegram.js';
@@ -12,7 +12,7 @@ import PVPGameMode from './PVPGameMode.js';
 export default class GameServer {
 
   constructor(server, ticker, db) {
-    this.fps = new Fps();
+    this.fps = Fps.fps();
     this.server = server;
     this.ticker = ticker;
 
@@ -73,7 +73,7 @@ export default class GameServer {
 
   update(event) {
     this.gameMode.update(event);
-    this.fps.update(event);
+    Fps.update(this.fps);
   }
 
   printFps() {

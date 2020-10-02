@@ -1,7 +1,7 @@
 import {DEAD_TICKS} from '../../../../lib/src/data/Entity.js';
 import EntityState from '../../../../lib/src/data/EntityState.js';
 import World from '../../../../lib/src/data/World.js';
-import Ticker from '../../../../lib/src/Ticker.js';
+import * as Ticker from '../../../../lib/src/Ticker.js';
 import {renderText} from './text.js';
 
 export default class SpawnInRenderer {

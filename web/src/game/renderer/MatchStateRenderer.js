@@ -1,5 +1,5 @@
 import {renderText} from './text.js';
-import Ticker, {FPS} from '../../../../lib/src/Ticker.js';
+import * as Ticker from '../../../../lib/src/Ticker.js';
 import MatchState from '../../../../lib/src/data/MatchState.js';
 import Match from '../../../../lib/src/data/Match.js';
 
@@ -44,7 +44,7 @@ export default class MatchStateRenderer {
       case MatchState.READY:
         return `${countdown}`;
       case MatchState.PLAY:
-        if (stateTicks > FPS) {
+        if (stateTicks > Ticker.FPS) {
           return null;
         } else {
           return 'GO';

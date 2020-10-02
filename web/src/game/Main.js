@@ -1,6 +1,6 @@
 import EventType from '../../../lib/src/proto/EventType.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
-import Ticker from '../../../lib/src/Ticker.js';
+import * as Ticker from '../../../lib/src/Ticker.js';
 import level from '../../../server/src/level.js';
 import Game from './Game.js';
 import Input from './Input.js';
@@ -50,11 +50,11 @@ export default class Main {
     this.input = new Input(this.game);
     this.client.onMessage(MessageType.TICK, this.game.onSync.bind(this.game));
 
-    this.ticker = new Ticker(
+    this.ticker = Ticker.create(
       window.setInterval.bind(null),
       window.performance.now.bind(window.performance)
     );
-    this.ticker.start(this.game);
+    Ticker.start(this.ticker, this.game);
   }
 
   disconnect() {
@@ -75,7 +75,7 @@ export default class Main {
     }
     this.game = null;
     if (this.ticker) {
-      this.ticker.stop();
+      Ticker.stop(this.ticker);
     }
     this.ticker = null;
 

@@ -1,4 +1,4 @@
-import Fps from '../../../../../lib/src/util/Fps.js';
+import * as Fps from '../../../../../lib/src/util/Fps.js';
 import TextRenderProvider from './TextRenderProvider.js';
 
 export default class FpsTextProvider extends TextRenderProvider {
@@ -6,11 +6,11 @@ export default class FpsTextProvider extends TextRenderProvider {
   constructor() {
     super();
 
-    this.fps = new Fps();
+    this.fps = Fps.fps();
   }
 
   update() {
-    this.fps.update();
+    Fps.update(this.fps)
 
     return 'fps: ' + this.fps.fps;
   }

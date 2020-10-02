@@ -5,7 +5,7 @@ import GameServer from './proto/game/GameServer.js';
 import * as process from 'process';
 import { performance } from 'perf_hooks';
 import SocketioServer from './proto/socketio/SocketioServer.js';
-import Ticker from '../../lib/src/Ticker.js';
+import * as Ticker from '../../lib/src/Ticker.js';
 import api from './api.js';
 import database from './database.js';
 import dotenv from '../../lib/src/util/dotenv.js';
@@ -26,9 +26,9 @@ async function main() {
   const db = await database.open(dbPath);
   await api.init(db, app);
 
-  const ticker = new Ticker(setInterval, performance.now);
+  const ticker = Ticker.create(setInterval, performance.now);
   const gameServer = new GameServer(new SocketioServer(server), ticker, db);
-  ticker.start(gameServer);
+  Ticker.start(ticker, gameServer);
 
   const port = process.env.PORT || 8080;
   server.listen(port, () => {
