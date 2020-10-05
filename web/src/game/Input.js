@@ -30,6 +30,8 @@ export default class Input {
   }
 
   keydown(event) {
+    event.preventDefault();
+
     const direction = this.keyToDirection(event.code);
     if (direction !== null) {
       this.game.startMoving(direction);
@@ -45,6 +47,8 @@ export default class Input {
   }
 
   keyup(event) {
+    event.preventDefault();
+
     if (!this.game.moving) {
       return;
     }
