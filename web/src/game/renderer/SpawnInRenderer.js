@@ -16,6 +16,9 @@ export default class SpawnInRenderer {
 
   update() {
     const tank = World.findTank(this.match.world, this.id);
+    if (!tank) {
+      return;
+    }
 
     if (tank.state !== EntityState.DEAD) {
       return;
