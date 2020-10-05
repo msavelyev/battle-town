@@ -30,11 +30,10 @@ export default class Input {
   }
 
   keydown(event) {
-    event.preventDefault();
-
     const direction = this.keyToDirection(event.code);
     if (direction !== null) {
       this.game.startMoving(direction);
+      event.preventDefault();
       return;
     }
 
@@ -42,13 +41,12 @@ export default class Input {
       case 'Space':
       case 'KeyK':
         this.game.shoot();
+        event.preventDefault();
         break;
     }
   }
 
   keyup(event) {
-    event.preventDefault();
-
     if (!this.game.moving) {
       return;
     }
