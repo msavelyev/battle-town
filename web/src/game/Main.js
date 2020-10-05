@@ -9,13 +9,13 @@ const UI_WIDTH = 11;
 
 function updateSize(size) {
   const unitSize = Math.floor(Math.min(size.pixelWidth / level.WIDTH, size.pixelHeight / level.HEIGHT));
-  return {
-    ...size,
+  const sizeCopy = Object.assign({}, size);
+  return Object.assign(sizeCopy, {
     pixelWidth: (level.WIDTH + UI_WIDTH) * unitSize,
     pixelHeight: level.HEIGHT * unitSize,
     unit: unitSize,
     uiX: (level.WIDTH) * unitSize,
-  };
+  });
 }
 
 export default class Main {
