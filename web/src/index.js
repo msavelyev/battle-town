@@ -13,6 +13,8 @@ import landscapeSvg from '../public/imgs/landscape.svg';
 import spritesPng from '../public/sprites-new-big.png';
 import '../public/main.css';
 
+import './polyfill/object-entries.js';
+
 analytics.init();
 
 dotenv();
