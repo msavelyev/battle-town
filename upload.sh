@@ -12,3 +12,5 @@ rsync \
   --exclude=docker \
   --exclude=lib/env.js \
   . tanks:app
+
+ssh tanks 'cd app && npm run build && pkill -f node'
