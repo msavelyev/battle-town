@@ -59,8 +59,13 @@ export default class TankRenderer {
       ctx.textAlign = 'center';
       ctx.font = `${this.size.unit * 0.75}px Helvetica`;
       ctx.fillText(tank.name, 0, -this.size.unit * 1.25);
-      ctx.textAlign = 'left';
     }
+
+    if (SETTINGS.DEBUG_RENDER) {
+      ctx.fillText(`(${x}; ${y})`, 0, this.size.unit * 2);
+    }
+
+    ctx.textAlign = 'left';
 
     ctx.rotate(Direction.toRad(tank.direction));
     ctx.transform(1, 0, 0, 1, -size / 2, -size / 2);
