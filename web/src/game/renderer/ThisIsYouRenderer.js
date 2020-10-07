@@ -53,6 +53,8 @@ export default class ThisIsYouRenderer {
       ctx.rotate(degToRad(90));
     }
 
+    ctx.lineWidth = 1;
+
     ctx.resetTransform();
 
   }
