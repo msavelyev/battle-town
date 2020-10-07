@@ -114,8 +114,9 @@ export default class FFAGameMode {
     updates.push(Score.create(match.score));
 
     const world = match.world;
-    const victimTank = World.findTank(world, victimId);
-    Entity.kill(victimTank, event.tick);
+    let victimTank = World.findTank(world, victimId);
+    victimTank = Entity.kill(victimTank, event.tick);
+    World.replaceTank(world, victimTank);
 
     updates.push(TankUpdate.fromTank(victimTank));
   }
