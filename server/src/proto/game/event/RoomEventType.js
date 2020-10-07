@@ -1,5 +1,6 @@
+import freeze from '../../../../../lib/src/util/freeze.js';
 
-export default Object.freeze({
+export default freeze({
   CONNECT: 'connect',
   DISCONNECT: 'disconnect',
   CLIENT_MESSAGE: 'client-message',
