@@ -1,4 +1,4 @@
-import { EntityState } from '../../../../../lib/src/data/EntityState.js';
+import { EntityState } from '../../../../../lib/src/data/entity/EntityState.js';
 import Sprites from '../Sprites.js';
 
 export default class BlockRenderer {

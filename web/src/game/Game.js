@@ -1,6 +1,6 @@
-import * as Direction from '../../../lib/src/data/Direction.js';
+import * as Direction from '../../../lib/src/data/primitives/Direction.js';
 import * as Match from '../../../lib/src/data/Match.js';
-import * as Point from '../../../lib/src/data/Point.js';
+import * as Point from '../../../lib/src/data/primitives/Point.js';
 import * as World from '../../../lib/src/data/World.js';
 import * as TankMove from '../../../lib/src/event/TankMove.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';

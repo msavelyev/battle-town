@@ -1,4 +1,4 @@
-import * as Direction from '../../../../../lib/src/data/Direction.js';
+import * as Direction from '../../../../../lib/src/data/primitives/Direction.js';
 import {renderText} from '../text.js';
 
 export default class TextRenderer {

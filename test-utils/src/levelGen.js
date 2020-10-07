@@ -1,7 +1,7 @@
 import chalk from 'chalk';
-import { BlockType } from '../../lib/src/data/BlockType.js';
-import * as Direction from '../../lib/src/data/Direction.js';
-import * as Point from '../../lib/src/data/Point.js';
+import { BlockType } from '../../lib/src/data/entity/BlockType.js';
+import * as Direction from '../../lib/src/data/primitives/Direction.js';
+import * as Point from '../../lib/src/data/primitives/Point.js';
 import * as rand from '../../lib/src/util/rand.js';
 
 function print() {
@@ -38,6 +38,7 @@ function generateBlock(level, point) {
   setBlock(level, point, randomBlock(point));
 }
 
+// noinspection JSUnusedLocalSymbols
 function generateLevel(radius, offset) {
   const size = radius * 2 + 1;
   const x = Math.floor((size - 1) / 2) + offset;
@@ -86,6 +87,7 @@ function printCell(cell) {
   print(chalk.hex(color).bgHex(color)('aa'));
 }
 
+// noinspection JSUnusedLocalSymbols
 function printGeneratedLevel(lvl, offset) {
   for (let y = offset; y < lvl.length; y++) {
     print('\n');

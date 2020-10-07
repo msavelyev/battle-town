@@ -1,5 +1,5 @@
 import * as Configuration from '../../../../lib/src/data/Configuration.js';
-import * as Entity from '../../../../lib/src/data/Entity.js';
+import * as Entity from '../../../../lib/src/data/entity/Entity.js';
 import * as Match from '../../../../lib/src/data/Match.js';
 import * as MatchState from '../../../../lib/src/data/MatchState.js';
 import * as World from '../../../../lib/src/data/World.js';

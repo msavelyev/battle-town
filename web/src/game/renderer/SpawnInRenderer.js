@@ -1,5 +1,5 @@
-import {DEAD_TICKS} from '../../../../lib/src/data/Entity.js';
-import { EntityState } from '../../../../lib/src/data/EntityState.js';
+import {DEAD_TICKS} from '../../../../lib/src/data/entity/Entity.js';
+import { EntityState } from '../../../../lib/src/data/entity/EntityState.js';
 import * as World from '../../../../lib/src/data/World.js';
 import * as Ticker from '../../../../lib/src/Ticker.js';
 import {renderText} from './text.js';
