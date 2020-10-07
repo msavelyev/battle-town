@@ -113,7 +113,7 @@ export default class Room {
   }
 
   static setLevel(room, blocks) {
-    World.resetLevel(room.match.world, blocks);
+    Match.resetLevel(room.match, blocks);
   }
 
   static handleRoomEvent(room, roomEvent, tick, updates) {
@@ -145,7 +145,8 @@ export default class Room {
         const world = room.match.world;
         for (let block of world.blocks) {
           if (block.state === EntityState.DEAD) {
-            Entity.revive(block, tick);
+            block = Entity.revive(block, tick);
+            World.replaceBlock(world, block);
             updates.push(BlockUpdate.fromBlock(block));
           }
         }
