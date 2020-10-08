@@ -34,8 +34,10 @@ export default class Game {
     this.match = conf.match;
     this.size = size;
 
-    this.match.world = copy(this.match.world, {
-      authoritative: false
+    this.match = copy(this.match, {
+      world: copy(this.match.world, {
+        authoritative: false
+      }),
     });
 
     this.client = client;
@@ -145,16 +147,18 @@ export default class Game {
   }
 
   handleEvent(netMessage) {
-    if (Match.handleEvent(this.match, netMessage, [])) {
+    const updates = [];
+    this.match = Match.handleEvent(this.match, netMessage, updates);
+    if (updates.length > 0) {
       this.client.sendNetMessage(netMessage);
-      Match.addUnackedMessage(this.match, netMessage);
+      this.match = Match.addUnackedMessage(this.match, netMessage);
       return true;
     }
     return false;
   }
 
   onSync(tickData) {
-    Match.sync(this.match, this.id, tickData);
+    this.match = Match.sync(this.match, this.id, tickData);
   }
 
   stop() {

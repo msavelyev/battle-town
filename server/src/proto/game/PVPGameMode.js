@@ -10,6 +10,7 @@ import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
+import {copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import database from '../../database.js';
 import level from '../../level.js';
@@ -52,7 +53,7 @@ export default class PVPGameMode extends GameMode {
   createMatch(players) {
     return () => {
       const room = this.createRoom();
-      const match = room.match;
+      let match = room.match;
       for (let player of players) {
         const client = player.client;
         const user = player.user;
@@ -69,7 +70,9 @@ export default class PVPGameMode extends GameMode {
         });
       }
 
-      match.world = World.resetTanks(match.world, match);
+      match = copy(match, {
+        world: World.resetTanks(match.world, match)
+      });
 
       for (let player of players) {
         const client = player.client;
@@ -97,7 +100,7 @@ export default class PVPGameMode extends GameMode {
     if (!room.finished) {
       const player = room.players[0];
       if (player) {
-        Match.setWinner(room.match, player.user.id, room.match.tick);
+        room.match = Match.setWinner(room.match, player.user.id, room.match.tick);
       }
     }
 
@@ -138,34 +141,39 @@ export default class PVPGameMode extends GameMode {
   }
 
   beforeWorldUpdate(match, event, updates) {
-    match.tick = event.tick;
-    match.event = event;
+    match = copy(match, {
+      tick: event.tick,
+      event: event,
+    });
 
     if (match.nextStateOnTick === event.tick) {
-      Match.transitionState(match, event, updates);
+      match = Match.transitionState(match, event, updates);
       updates.push(State.fromMatch(match));
     }
 
-    return match.world;
+    return match;
   }
 
   onKill(match, event, killer, victim, updates) {
-    let world = match.world;
     if (match.state === MatchState.state.PLAY) {
-      world = World.removeTank(world, victim.id);
+      match = copy(match, {
+        world: World.removeTank(match.world, victim.id)
+      });
       updates.push(TankRemove.create(victim.id));
 
-      match.score[killer] += 1;
+      match = Match.increaseScore(match, killer);
       updates.push(Score.create(match.score));
 
       if (match.world.authoritative) {
-        Match.transitionState(match, event, updates);
-        match.stateSpotlight = killer;
+        match = Match.transitionState(match, event, updates);
+        match = copy(match, {
+          stateSpotlight: killer,
+        });
         updates.push(State.fromMatch(match));
       }
     }
 
-    return world;
+    return match;
   }
 
   assignPoints(match) {

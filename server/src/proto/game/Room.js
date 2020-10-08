@@ -8,6 +8,7 @@ import * as BlockUpdate from '../../../../lib/src/data/worldevent/BlockUpdate.js
 import * as UserDisconnect from '../../../../lib/src/data/worldevent/UserDisconnect.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
+import {copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import ClientMessage from './event/ClientMessage.js';
 import Connect from './event/Connect.js';
@@ -41,7 +42,8 @@ export default class Room {
       return;
     }
 
-    const updates = Match.update(this.match, event, beforeWorld, onKill);
+    const updates = [];
+    this.match = Match.update(this.match, event, beforeWorld, onKill, updates);
     if (Match.finished(this.match)) {
       log.info('room is finished', this.id);
       this.finished = true;
@@ -113,7 +115,7 @@ export default class Room {
   }
 
   static setLevel(room, blocks) {
-    Match.resetLevel(room.match, blocks);
+    room.match = Match.resetLevel(room.match, blocks);
   }
 
   static handleRoomEvent(room, roomEvent, tick, updates) {
@@ -127,7 +129,7 @@ export default class Room {
           room.players.push(player);
           const user = player.user;
           log.info('added player', user.id, 'to room', room.id);
-          Match.addUser(room.match, Player.shortUser(player), tick, updates);
+          room.match = Match.addUser(room.match, Player.shortUser(player), tick, updates);
           updates.push(UserConnect.create(user.id, user.name));
         }
         break;
@@ -136,8 +138,7 @@ export default class Room {
           const player = roomEvent.player;
           log.info('players', room.players.length, 'removing one', player.user.id);
           room.players = room.players.filter(p => p !== player);
-          const match = room.match;
-          Match.removeTank(match, player.user.id, updates);
+          room.match = Match.removeTank(room.match, player.user.id, updates);
           updates.push(UserDisconnect.create(player.user.id));
         }
         break;
@@ -150,7 +151,9 @@ export default class Room {
             updates.push(BlockUpdate.fromBlock(block));
           }
         }
-        room.match.world = world;
+        room.match = copy(room.match, {
+          world
+        });
         break;
     }
   }
@@ -163,7 +166,7 @@ export default class Room {
     switch (netMessage.type){
       case MessageType.SHOOT:
       case MessageType.MOVE:
-        Match.handleEvent(room.match, netMessage, updates);
+        room.match = Match.handleEvent(room.match, netMessage, updates);
         break;
     }
   }
