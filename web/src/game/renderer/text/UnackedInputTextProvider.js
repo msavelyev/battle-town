@@ -3,10 +3,10 @@ import TextRenderProvider from './TextRenderProvider.js';
 
 export default class UnackedInputTextProvider extends TextRenderProvider {
 
-  constructor(match) {
+  constructor(game) {
     super();
 
-    this.match = match;
+    this.game = game;
   }
 
   update() {
@@ -14,7 +14,7 @@ export default class UnackedInputTextProvider extends TextRenderProvider {
       return null;
     }
 
-    return 'inputs: ' + this.match.unackedMessages.length;
+    return 'inputs: ' + this.game.match.unackedMessages.length;
   }
 
 }

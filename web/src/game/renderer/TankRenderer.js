@@ -8,16 +8,14 @@ import Sprites from './Sprites.js';
 
 export default class TankRenderer {
 
-  constructor(ctx, id, world, sprites, size) {
+  constructor(ctx, game, sprites) {
     this.ctx = ctx;
-    this.id = id;
-    this.world = world;
+    this.game = game;
     this.sprites = sprites;
-    this.size = size;
   }
 
   update(event) {
-    for (let tank of this.world.tanks) {
+    for (let tank of this.game.match.world.tanks) {
       if (tank.state === EntityState.DEAD) {
         continue;
       }
@@ -26,7 +24,7 @@ export default class TankRenderer {
   }
 
   inJungle(tank) {
-    for (let block of World.findBlocksByType(this.world, BlockType.JUNGLE)) {
+    for (let block of World.findBlocksByType(this.game.match.world, BlockType.JUNGLE)) {
       if (Entity.collides(block, tank)) {
         return true;
       }
@@ -36,9 +34,10 @@ export default class TankRenderer {
   }
 
   drawTank(ctx, event, tank) {
+    const gameSize = this.game.size;
     const x = tank.position.x;
     const y = tank.position.y;
-    const size = tank.size * this.size.unit;
+    const size = tank.size * gameSize.unit;
 
     if (tank.state === EntityState.REVIVING) {
       ctx.globalAlpha = 0.5;
@@ -51,18 +50,18 @@ export default class TankRenderer {
       }
     }
 
-    ctx.fillStyle = tank.id === this.id ? 'yellow' : 'red';
-    ctx.setTransform(1, 0, 0, 1, x * this.size.unit, y * this.size.unit);
+    ctx.fillStyle = tank.id === this.game.id ? 'yellow' : 'red';
+    ctx.setTransform(1, 0, 0, 1, x * gameSize.unit, y * gameSize.unit);
     ctx.transform(1, 0, 0, 1, size / 2, size / 2);
 
     if (!this.inJungle(tank)) {
       ctx.textAlign = 'center';
-      ctx.font = `${this.size.unit * 0.75}px Helvetica`;
-      ctx.fillText(tank.name, 0, -this.size.unit * 1.25);
+      ctx.font = `${gameSize.unit * 0.75}px Helvetica`;
+      ctx.fillText(tank.name, 0, -gameSize.unit * 1.25);
     }
 
     if (SETTINGS.DEBUG_RENDER) {
-      ctx.fillText(`(${x}; ${y})`, 0, this.size.unit * 2);
+      ctx.fillText(`(${x}; ${y})`, 0, gameSize.unit * 2);
     }
 
     ctx.textAlign = 'left';

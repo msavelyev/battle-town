@@ -5,27 +5,29 @@ import Sprites from './Sprites.js';
 
 export default class BulletRenderer {
 
-  constructor(ctx, world, sprites, size) {
+  constructor(ctx, game, sprites) {
     this.ctx = ctx;
-    this.world = world;
+    this.game = game;
     this.sprites = sprites;
-    this.size = size;
   }
 
   update() {
-    this.world.bullets.forEach(bullet => this.drawBullet(this.ctx, bullet));
+    for (let bullet of this.game.match.world.bullets) {
+      this.drawBullet(this.ctx, bullet);
+    }
   }
 
   drawBullet(ctx, bullet) {
+    const gameSize = this.game.size;
     const x = bullet.position.x;
     const y = bullet.position.y;
-    const width = bullet.width * this.size.unit;
-    const height = bullet.height * this.size.unit
+    const width = bullet.width * gameSize.unit;
+    const height = bullet.height * gameSize.unit
     const img = this.sprites.bullet;
-    const size = Bullet.size() / 2 * this.size.unit;
+    const size = Bullet.size() / 2 * gameSize.unit;
 
     ctx.fillStyle = 'white';
-    ctx.setTransform(1, 0, 0, 1, x * this.size.unit, y * this.size.unit);
+    ctx.setTransform(1, 0, 0, 1, x * gameSize.unit, y * gameSize.unit);
     ctx.transform(1, 0, 0, 1, width / 2, height / 2);
     ctx.rotate(Direction.toRad(bullet.direction));
     ctx.transform(1, 0, 0, 1, - width / 2, - height / 2);

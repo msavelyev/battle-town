@@ -1,5 +1,5 @@
 import * as Block from '../../lib/src/data/entity/Block.js';
-import { BlockType } from '../../lib/src/data/entity/BlockType.js';
+import {BlockType} from '../../lib/src/data/entity/BlockType.js';
 import * as Point from '../../lib/src/data/primitives/Point.js';
 import {SETTINGS} from '../../lib/src/util/dotenv.js';
 import * as rand from '../../lib/src/util/rand.js';

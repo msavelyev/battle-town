@@ -5,6 +5,7 @@ import * as World from '../../../lib/src/data/World.js';
 import * as TankMove from '../../../lib/src/event/TankMove.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
 import { NetMessage } from '../../../lib/src/proto/NetMessage.js';
+import {copy} from '../../../lib/src/util/immutable.js';
 import increaseTick from '../../../lib/src/util/increaseTick.js';
 import BrickRenderer from './renderer/blocks/BrickRenderer.js';
 import JungleRenderer from './renderer/blocks/JungleRenderer.js';
@@ -33,20 +34,21 @@ export default class Game {
     this.match = conf.match;
     this.size = size;
 
-    const world = this.match.world;
-    world.authoritative = false;
+    this.match.world = copy(this.match.world, {
+      authoritative: false
+    });
 
     this.client = client;
 
     this.id = conf.id;
 
     this.ticks = [
-      new StoneRenderer(ctx, world, sprites, this.size),
-      new BrickRenderer(ctx, world, sprites, this.size),
-      new WaterRenderer(ctx, world, sprites, this.size),
-      new BulletRenderer(ctx, world, sprites, this.size),
-      new TankRenderer(ctx, this.id, world, sprites, this.size),
-      new JungleRenderer(ctx, world, sprites, this.size),
+      new StoneRenderer(ctx, this, sprites),
+      new BrickRenderer(ctx, this, sprites),
+      new WaterRenderer(ctx, this, sprites),
+      new BulletRenderer(ctx, this, sprites),
+      new TankRenderer(ctx, this, sprites),
+      new JungleRenderer(ctx, this, sprites),
 
       new TextRenderer(
         ctx,
@@ -54,25 +56,22 @@ export default class Game {
         this.size,
         Direction.Direction.DOWN,
         [
-          new MatchTimeTextProvider(this.match),
+          new MatchTimeTextProvider(this),
           new EmptyTextProvider(),
-          new ScoreTextProvider(this.match)
+          new ScoreTextProvider(this)
         ]
       ),
 
-      new ExplosionsRenderer(ctx, world, sprites, this.size),
+      new ExplosionsRenderer(ctx, this, sprites),
       new SpawnInRenderer(
         ctx,
-        this.match,
-        this.id,
-        s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2),
-        this.size
+        this,
+        s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2)
       ),
       new MatchStateRenderer(
         ctx,
-        this.match,
-        s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2),
-        this.size
+        this,
+        s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2)
       ),
       new TextRenderer(
         ctx,
@@ -82,13 +81,13 @@ export default class Game {
         [
           new PingTextProvider(client),
           new FpsTextProvider(),
-          new TickTextProvider(this.match),
-          new UnackedInputTextProvider(this.match),
+          new TickTextProvider(this),
+          new UnackedInputTextProvider(this),
           new NetUsageRenderer(this.client)
         ]
       ),
 
-      new ThisIsYouRenderer(ctx, world, this.id, this.size)
+      new ThisIsYouRenderer(ctx, this)
     ];
 
     this.moving = false;
@@ -146,7 +145,7 @@ export default class Game {
   }
 
   handleEvent(netMessage) {
-    if (Match.handleEvent(this.match, netMessage)) {
+    if (Match.handleEvent(this.match, netMessage, [])) {
       this.client.sendNetMessage(netMessage);
       Match.addUnackedMessage(this.match, netMessage);
       return true;

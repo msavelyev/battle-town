@@ -6,16 +6,16 @@ import {renderText} from './text.js';
 
 export default class SpawnInRenderer {
 
-  constructor(ctx, match, id, position, size) {
+  constructor(ctx, game, position) {
     this.ctx = ctx;
-    this.match = match;
-    this.id = id;
+    this.game = game;
+    this.id = game.id;
     this.position = position;
-    this.size = size;
+    this.size = game.size;
   }
 
   update() {
-    const tank = World.findTank(this.match.world, this.id);
+    const tank = World.findTank(this.game.match.world, this.id);
     if (!tank) {
       return;
     }
@@ -35,7 +35,7 @@ export default class SpawnInRenderer {
   }
 
   createText(tank) {
-    const tick = this.match.tick;
+    const tick = this.game.match.tick;
     const spawnOnTick = tank.stateSince + DEAD_TICKS;
     const countdown = Ticker.countdown(tick, spawnOnTick);
 

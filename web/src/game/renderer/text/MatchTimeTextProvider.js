@@ -8,10 +8,10 @@ const PREFIX = 'time left: ';
 
 export default class MatchTimeTextProvider extends TextRenderProvider {
 
-  constructor(match) {
+  constructor(game) {
     super();
 
-    this.match = match;
+    this.game = game;
   }
 
   update() {
@@ -19,11 +19,13 @@ export default class MatchTimeTextProvider extends TextRenderProvider {
       return null;
     }
 
-    if (this.match.state !== MatchState.state.PLAY) {
+    if (this.game.match.state !== MatchState.state.PLAY) {
       return PREFIX + '--:--';
     }
 
-    const ticksPassed = this.match.tick - this.match.stateSinceTick;
+    const match = this.game.match;
+
+    const ticksPassed = match.tick - match.stateSinceTick;
     const ticksLeft = SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS - ticksPassed;
     const secondsLeft = Math.floor(ticksLeft / FPS);
 

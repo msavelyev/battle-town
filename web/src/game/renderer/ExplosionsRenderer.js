@@ -3,25 +3,25 @@ import Sprites from './Sprites.js';
 
 export default class ExplosionsRenderer {
 
-  constructor(ctx, world, sprites, size) {
+  constructor(ctx, game, sprites) {
     this.ctx = ctx;
-    this.world = world;
+    this.game = game;
     this.sprites = sprites;
-    this.size = size;
   }
 
   update(event) {
-    for (let explosion of this.world.explosions) {
+    for (let explosion of this.game.match.world.explosions) {
       const image = this.pickImage(explosion, event);
 
       if (!image) {
         continue;
       }
 
+      const gameSize = this.game.size;
       const x = explosion.position.x;
       const y = explosion.position.y;
-      const size = explosion.size * this.size.unit;
-      this.ctx.setTransform(1, 0, 0, 1, x * this.size.unit, y * this.size.unit);
+      const size = explosion.size * gameSize.unit;
+      this.ctx.setTransform(1, 0, 0, 1, x * gameSize.unit, y * gameSize.unit);
       Sprites.draw(this.ctx, image, 0, 0, size, size);
 
       if (SETTINGS.DEBUG_RENDER) {

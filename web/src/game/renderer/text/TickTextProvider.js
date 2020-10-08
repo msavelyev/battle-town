@@ -3,10 +3,10 @@ import TextRenderProvider from './TextRenderProvider.js';
 
 export default class TickTextProvider extends TextRenderProvider {
 
-  constructor(match) {
+  constructor(game) {
     super();
 
-    this.match = match;
+    this.game = game;
   }
 
   update() {
@@ -14,7 +14,7 @@ export default class TickTextProvider extends TextRenderProvider {
       return null;
     }
 
-    return 'tick: ' + this.match.tick;
+    return 'tick: ' + this.game.match.tick;
   }
 
 }

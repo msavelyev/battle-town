@@ -3,16 +3,15 @@ import Sprites from '../Sprites.js';
 
 export default class BlockRenderer {
 
-  constructor(ctx, world, type, image, size) {
+  constructor(ctx, game, type, image) {
     this.ctx = ctx;
-    this.world = world;
+    this.game = game;
     this.type = type;
     this.image = image;
-    this.size = size;
   }
 
   update(event) {
-    for (let block of this.world.blocks) {
+    for (let block of this.game.match.world.blocks) {
       if (block.state === EntityState.DEAD) {
         continue;
       }
@@ -24,8 +23,9 @@ export default class BlockRenderer {
   }
 
   drawBlock(ctx, block, event) {
-    const size = block.size * this.size.unit;
-    ctx.setTransform(1, 0, 0, 1, block.position.x * this.size.unit, block.position.y * this.size.unit);
+    const gameSize = this.game.size;
+    const size = block.size * gameSize.unit;
+    ctx.setTransform(1, 0, 0, 1, block.position.x * gameSize.unit, block.position.y * gameSize.unit);
     if (block.state === EntityState.REVIVING) {
       ctx.globalAlpha = 0.5;
     }

@@ -5,11 +5,11 @@ import * as Match from '../../../../lib/src/data/Match.js';
 
 export default class MatchStateRenderer {
 
-  constructor(ctx, match, position, size) {
+  constructor(ctx, game, position) {
     this.ctx = ctx;
-    this.match = match;
+    this.game = game;
     this.position = position;
-    this.size = size;
+    this.size = game.size;
   }
 
   update() {
@@ -28,7 +28,7 @@ export default class MatchStateRenderer {
   }
 
   createText() {
-    const match = this.match;
+    const match = this.game.match;
     const state = match.state;
     const tick = match.tick;
     const stateSinceTick = match.stateSinceTick;

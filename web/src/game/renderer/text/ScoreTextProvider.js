@@ -3,19 +3,19 @@ import TextRenderProvider from './TextRenderProvider.js';
 
 export default class ScoreTextProvider extends TextRenderProvider {
 
-  constructor(match) {
+  constructor(game) {
     super();
 
-    this.match = match;
+    this.game = game;
   }
 
   update() {
     const scores = [];
 
-    const entries = Object.entries(this.match.score);
+    const entries = Object.entries(this.game.match.score);
     entries.sort((a, b) => b[1] - a[1]);
     for (let [id, score] of entries) {
-      const user = Match.findUser(this.match, id);
+      const user = Match.findUser(this.game.match, id);
       const text = `${this.trimName(user.name)}: ${score}`;
 
       scores.push(text);

@@ -142,14 +142,15 @@ export default class Room {
         }
         break;
       case RoomEventType.REVIVE_BLOCKS:
-        const world = room.match.world;
+        let world = room.match.world;
         for (let block of world.blocks) {
           if (block.state === EntityState.DEAD) {
             block = Entity.revive(block, tick);
-            World.replaceBlock(world, block);
+            world = World.replaceBlock(world, block);
             updates.push(BlockUpdate.fromBlock(block));
           }
         }
+        room.match.world = world;
         break;
     }
   }
@@ -162,10 +163,7 @@ export default class Room {
     switch (netMessage.type){
       case MessageType.SHOOT:
       case MessageType.MOVE:
-        const result = Match.handleEvent(room.match, netMessage);
-        if (result) {
-          updates.push(result);
-        }
+        Match.handleEvent(room.match, netMessage, updates);
         break;
     }
   }

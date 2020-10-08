@@ -30,8 +30,9 @@ export default class FFAGameMode {
   init() {
     this.room = new Room('FFA', this.ticker.tick);
     const match = this.room.match;
-    const world = match.world;
-    World.resetLevel(world, level.ffa());
+    let world = match.world;
+    world = World.resetLevel(world, level.ffa());
+    match.world = world;
     Match.setState(match, MatchState.state.WAITING_FOR_PLAYERS, this.ticker.tick);
 
     this.blockReviveInterval = setInterval(this.reviveBlocks.bind(this), 60000);
@@ -76,6 +77,8 @@ export default class FFAGameMode {
   }
 
   onBeforeWorldUpdate(match, event, updates) {
+    let world = match.world;
+
     if (this.room.size() >= 2 && match.state === MatchState.state.WAITING_FOR_PLAYERS) {
       Match.setState(match, MatchState.state.PLAY, event.tick);
       match.nextStateOnTick = event.tick + SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS;
@@ -89,14 +92,13 @@ export default class FFAGameMode {
       Match.setWinner(match, Match.winner(match).id, event.tick);
       updates.push(State.fromMatch(match));
     } else if (match.state === MatchState.state.FINISHED && match.nextStateOnTick <= event.tick) {
-      const world = match.world;
-      World.resetLevel(world, level.ffa());
+      world = World.resetLevel(world, level.ffa());
       updates.push(ResetLevel.create(world.blocks));
 
-      World.resetTanks(world, match);
+      world = World.resetTanks(world, match);
       for (let tank of world.tanks) {
         tank = Entity.revive(tank, event.tick);
-        World.replaceTank(world, tank);
+        world = World.replaceTank(world, tank);
       }
       updates.push(ResetTanks.create(world.tanks));
 
@@ -107,18 +109,23 @@ export default class FFAGameMode {
       match.nextStateOnTick = event.tick + SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS;
       updates.push(State.fromMatch(match));
     }
+
+    return world;
   }
 
   onKill(match, event, killer, victimId, updates) {
     match.score[killer] += 1;
     updates.push(Score.create(match.score));
 
-    const world = match.world;
+    let world = match.world;
     let victimTank = World.findTank(world, victimId);
     victimTank = Entity.kill(victimTank, event.tick);
-    World.replaceTank(world, victimTank);
+    world = World.replaceTank(world, victimTank);
+    match.world = world;
 
     updates.push(TankUpdate.fromTank(victimTank));
+
+    return world;
   }
 
   reviveBlocks() {

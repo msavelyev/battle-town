@@ -69,7 +69,7 @@ export default class PVPGameMode extends GameMode {
         });
       }
 
-      World.resetTanks(match.world, match);
+      match.world = World.resetTanks(match.world, match);
 
       for (let player of players) {
         const client = player.client;
@@ -145,11 +145,14 @@ export default class PVPGameMode extends GameMode {
       Match.transitionState(match, event, updates);
       updates.push(State.fromMatch(match));
     }
+
+    return match.world;
   }
 
   onKill(match, event, killer, victim, updates) {
+    let world = match.world;
     if (match.state === MatchState.state.PLAY) {
-      World.removeTank(match.world, victim.id);
+      world = World.removeTank(world, victim.id);
       updates.push(TankRemove.create(victim.id));
 
       match.score[killer] += 1;
@@ -161,6 +164,8 @@ export default class PVPGameMode extends GameMode {
         updates.push(State.fromMatch(match));
       }
     }
+
+    return world;
   }
 
   assignPoints(match) {
