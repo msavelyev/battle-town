@@ -31,7 +31,7 @@ export function createSpriteSheet(unitSize) {
       "frames": [[u*2, u*2, u*2, u*2]]
     },
     "bullet": {
-      "frames": [[u*4, u*2, u, u]]
+      "frames": [[u*4 + u/4, u*2 + u/8, u/2, u/2]]
     },
     "tank-moving": {
       "frames": [
