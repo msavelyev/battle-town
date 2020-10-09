@@ -8,7 +8,8 @@ import Input from './Input.js';
 const UI_WIDTH = 11;
 
 function updateSize(size) {
-  const unitSize = Math.floor(Math.min(size.pixelWidth / level.WIDTH, size.pixelHeight / level.HEIGHT));
+  let unitSize = Math.floor(Math.min(size.pixelWidth / level.WIDTH, size.pixelHeight / level.HEIGHT));
+  unitSize = Math.pow(2, Math.floor(Math.log(unitSize) / Math.log(2)));
   const sizeCopy = Object.assign({}, size);
   return Object.assign(sizeCopy, {
     pixelWidth: (level.WIDTH + UI_WIDTH) * unitSize,

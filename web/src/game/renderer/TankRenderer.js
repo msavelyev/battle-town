@@ -1,10 +1,11 @@
-import { BlockType } from '../../../../lib/src/data/entity/BlockType.js';
-import * as Direction from '../../../../lib/src/data/primitives/Direction.js';
+import {BlockType} from '../../../../lib/src/data/entity/BlockType.js';
 import * as Entity from '../../../../lib/src/data/entity/Entity.js';
-import { EntityState } from '../../../../lib/src/data/entity/EntityState.js';
+import {EntityState} from '../../../../lib/src/data/entity/EntityState.js';
+import * as Direction from '../../../../lib/src/data/primitives/Direction.js';
 import * as World from '../../../../lib/src/data/World.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
-import Sprites from './Sprites.js';
+import * as sprites from './sprites.js';
+import {SPRITES} from './sprites.js';
 
 export default class TankRenderer {
 
@@ -71,7 +72,7 @@ export default class TankRenderer {
     ctx.beginPath();
 
     if (draw) {
-      Sprites.draw(ctx, this.sprites.tank, 0, 0, size, size);
+      sprites.draw(ctx, event.tick, this.sprites[gameSize.unit][SPRITES.TANK_STATIC], 0, 0, size, size);
 
       const tmp = ctx.globalCompositeOperation;
       ctx.globalCompositeOperation = 'multiply';

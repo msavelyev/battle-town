@@ -25,6 +25,7 @@ import PingTextProvider from './renderer/text/PingTextProvider.js';
 import TextRenderer from './renderer/text/TextRenderer.js';
 import TickTextProvider from './renderer/text/TickTextProvider.js';
 import UnackedInputTextProvider from './renderer/text/UnackedInputTextProvider.js';
+import UnitSizeTextProvider from './renderer/text/UnitSizeTextProvider.js';
 import ThisIsYouRenderer from './renderer/ThisIsYouRenderer.js';
 
 export default class Game {
@@ -44,7 +45,7 @@ export default class Game {
 
     this.id = conf.id;
 
-    this.ticks = [
+    this.renderers = [
       new StoneRenderer(ctx, this, sprites),
       new BrickRenderer(ctx, this, sprites),
       new WaterRenderer(ctx, this, sprites),
@@ -85,7 +86,8 @@ export default class Game {
           new FpsTextProvider(),
           new TickTextProvider(this),
           new UnackedInputTextProvider(this),
-          new NetUsageRenderer(this.client)
+          new NetUsageRenderer(this.client),
+          new UnitSizeTextProvider(this)
         ]
       ),
 
@@ -115,7 +117,7 @@ export default class Game {
       ));
     }
 
-    for (let tick of this.ticks) {
+    for (let tick of this.renderers) {
       tick.update(event);
     }
   }

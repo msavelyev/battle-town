@@ -1,16 +1,17 @@
 import { BlockType } from '../../../../../lib/src/data/entity/BlockType.js';
+import {SPRITES} from '../sprites.js';
 import BlockRenderer from './BlockRenderer.js';
 
-function findImage(sprites, subtype) {
+function findImage(subtype) {
   switch (subtype) {
     case BlockType.BRICK_TL:
-      return sprites.brick_tl;
+      return SPRITES.BRICK_TL;
     case BlockType.BRICK_TR:
-      return sprites.brick_tr;
+      return SPRITES.BRICK_TR;
     case BlockType.BRICK_BL:
-      return sprites.brick_bl;
+      return SPRITES.BRICK_BL;
     case BlockType.BRICK_BR:
-      return sprites.brick_br;
+      return SPRITES.BRICK_BR;
     default:
       throw new Error('Unknown subtype ' + subtype);
   }
@@ -19,12 +20,11 @@ function findImage(sprites, subtype) {
 export default class BrickRenderer extends BlockRenderer {
 
   constructor(ctx, game, sprites) {
-    super(ctx, game, BlockType.BRICK, sprites.brick);
-    this.sprites = sprites;
+    super(ctx, game, BlockType.BRICK, sprites, SPRITES.BRICK);
   }
 
   drawBlock(ctx, block, event) {
-    this.image = findImage(this.sprites, block.subtype);
+    this.spriteName = findImage(block.subtype);
 
     super.drawBlock(ctx, block, event);
   }

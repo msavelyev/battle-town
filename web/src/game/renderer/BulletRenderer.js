@@ -1,7 +1,8 @@
 import * as Bullet from '../../../../lib/src/data/entity/Bullet.js';
 import * as Direction from '../../../../lib/src/data/primitives/Direction.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
-import Sprites from './Sprites.js';
+import {SPRITES} from './sprites.js';
+import * as sprites from './sprites.js';
 
 export default class BulletRenderer {
 
@@ -11,19 +12,19 @@ export default class BulletRenderer {
     this.sprites = sprites;
   }
 
-  update() {
+  update(event) {
     for (let bullet of this.game.match.world.bullets) {
-      this.drawBullet(this.ctx, bullet);
+      this.drawBullet(this.ctx, event.tick, bullet);
     }
   }
 
-  drawBullet(ctx, bullet) {
+  drawBullet(ctx, tick, bullet) {
     const gameSize = this.game.size;
     const x = bullet.position.x;
     const y = bullet.position.y;
     const width = bullet.width * gameSize.unit;
     const height = bullet.height * gameSize.unit
-    const img = this.sprites.bullet;
+    const img = this.sprites[gameSize.unit][SPRITES.BULLET];
     const size = Bullet.size() / 2 * gameSize.unit;
 
     ctx.fillStyle = 'white';
@@ -31,8 +32,9 @@ export default class BulletRenderer {
     ctx.transform(1, 0, 0, 1, width / 2, height / 2);
     ctx.rotate(Direction.toRad(bullet.direction));
     ctx.transform(1, 0, 0, 1, - width / 2, - height / 2);
-    Sprites.draw(
+    sprites.draw(
       ctx,
+      tick,
       img,
       Math.ceil((width - size) / 2),
       Math.ceil((height - size) / 2),

@@ -136,9 +136,10 @@ function brickSubtype(dx, dy) {
   }
 }
 
-const BLOCKS_PER_CELL = 2;
-const BLOCK_SIZE = 1;
-const BRICK_SIZE = BLOCK_SIZE / 2;
+const BLOCKS_PER_CELL = 1;
+const BLOCK_SIZE = 2;
+const BRICKS_PER_CELL = 4;
+const BRICK_SIZE = BLOCK_SIZE / BRICKS_PER_CELL;
 
 function iterate(levelDef, cb) {
   levelDef.trim().split('\n').forEach((row, y) => {
@@ -169,8 +170,8 @@ function createLevel(level) {
     }
 
     if (blockType === BlockType.BRICK) {
-      for (let dx = 0; dx < BLOCKS_PER_CELL * 2; dx++) {
-        for (let dy = 0; dy < BLOCKS_PER_CELL * 2; dy++) {
+      for (let dx = 0; dx < BRICKS_PER_CELL; dx++) {
+        for (let dy = 0; dy < BRICKS_PER_CELL; dy++) {
           const point = Point.create(
             x * BLOCKS_PER_CELL * BLOCK_SIZE + dx * BRICK_SIZE,
             y * BLOCKS_PER_CELL * BLOCK_SIZE + dy * BRICK_SIZE
@@ -211,8 +212,8 @@ export default Object.freeze({
     return createLevel(FFA_LEVEL)
   },
 
-  WIDTH: WIDTH * BLOCKS_PER_CELL,
-  HEIGHT: HEIGHT * BLOCKS_PER_CELL,
+  WIDTH: WIDTH * BLOCKS_PER_CELL * BLOCK_SIZE,
+  HEIGHT: HEIGHT * BLOCKS_PER_CELL * BLOCK_SIZE,
 
   iterate: iterate
 });

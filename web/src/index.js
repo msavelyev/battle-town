@@ -10,8 +10,8 @@ import dotenv, {SETTINGS} from '../../lib/src/util/dotenv.js';
 import analytics from '../../lib/src/util/analytics.js';
 
 import landscapeSvg from '../public/imgs/landscape.svg';
-import spritesPng from '../public/sprites-new-big.png';
 import '../public/main.css';
+import * as spritesLoader from './spritesLoader.js';
 
 import './polyfill/object-entries.js';
 
@@ -44,9 +44,7 @@ window.addEventListener('load', () => {
 
   analytics.log('LOADED');
 
-  const spritesImg = new Image();
-  spritesImg.addEventListener('load', () => {
-
+  spritesLoader.loadSpriteSheets(spriteSheet => {
     const overlay = document.getElementById('game');
     const size = resizeOverlay(overlay);
 
@@ -54,7 +52,7 @@ window.addEventListener('load', () => {
       new Loading(overlay),
       new MainMenu(overlay),
       new Matchmaking(overlay),
-      new GameScene(overlay, spritesImg),
+      new GameScene(overlay, spriteSheet),
       new Disconnected(overlay)
     ], size);
 
@@ -72,5 +70,4 @@ window.addEventListener('load', () => {
       scenes.resize(size);
     };
   });
-  spritesImg.src = spritesPng;
 });

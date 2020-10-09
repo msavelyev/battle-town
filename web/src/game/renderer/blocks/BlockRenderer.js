@@ -1,13 +1,14 @@
-import { EntityState } from '../../../../../lib/src/data/entity/EntityState.js';
-import Sprites from '../Sprites.js';
+import {EntityState} from '../../../../../lib/src/data/entity/EntityState.js';
+import * as sprites from '../sprites.js';
 
 export default class BlockRenderer {
 
-  constructor(ctx, game, type, image) {
+  constructor(ctx, game, type, sprites, spriteName) {
     this.ctx = ctx;
     this.game = game;
     this.type = type;
-    this.image = image;
+    this.sprites = sprites;
+    this.spriteName = spriteName;
   }
 
   update(event) {
@@ -38,7 +39,7 @@ export default class BlockRenderer {
     }
 
     if (draw) {
-      Sprites.draw(ctx, this.image, 0, 0, size, size);
+      sprites.draw(ctx, event.tick, this.sprites[gameSize.unit][this.spriteName], 0, 0, size, size);
     }
     ctx.globalAlpha = 1;
     ctx.resetTransform();

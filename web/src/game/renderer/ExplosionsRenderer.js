@@ -1,5 +1,6 @@
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
-import Sprites from './Sprites.js';
+import {SPRITES} from './sprites.js';
+import * as sprites from './sprites.js';
 
 export default class ExplosionsRenderer {
 
@@ -11,18 +12,21 @@ export default class ExplosionsRenderer {
 
   update(event) {
     for (let explosion of this.game.match.world.explosions) {
-      const image = this.pickImage(explosion, event);
-
-      if (!image) {
-        continue;
-      }
-
       const gameSize = this.game.size;
       const x = explosion.position.x;
       const y = explosion.position.y;
       const size = explosion.size * gameSize.unit;
       this.ctx.setTransform(1, 0, 0, 1, x * gameSize.unit, y * gameSize.unit);
-      Sprites.draw(this.ctx, image, 0, 0, size, size);
+      sprites.draw(
+        this.ctx,
+        event.tick,
+        this.sprites[gameSize.unit][SPRITES.EXPLOSION],
+        0,
+        0,
+        size,
+        size,
+        explosion.tick
+      );
 
       if (SETTINGS.DEBUG_RENDER) {
         this.ctx.strokeStyle = 'orange';
@@ -35,23 +39,6 @@ export default class ExplosionsRenderer {
       }
 
       this.ctx.resetTransform();
-    }
-  }
-
-  pickImage(explosion, event) {
-    const tick = event.tick;
-    const startTick = explosion.tick;
-
-    const frame = Math.ceil((tick - startTick) / 10);
-    switch (frame) {
-      case 1:
-        return this.sprites.explosion1;
-      case 2:
-        return this.sprites.explosion2;
-      case 3:
-        return this.sprites.explosion3;
-      default:
-        return null;
     }
   }
 

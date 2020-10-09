@@ -1,14 +1,14 @@
 import Main from '../Main.js';
-import Sprites from '../renderer/Sprites.js';
+import * as sprites from '../renderer/sprites.js';
 import Scene from './Scene.js';
 import analytics from '../../../../lib/src/util/analytics.js';
 
 export default class GameScene extends Scene {
 
-  constructor(overlay, spritesImg) {
+  constructor(overlay, spriteSheet) {
     super();
     this.overlay = overlay;
-    this.spritesImg = spritesImg;
+    this.spriteSheet = spriteSheet;
 
     this.size = null
     this.main = null;
@@ -31,8 +31,8 @@ export default class GameScene extends Scene {
     this.overlay.innerHTML = '<canvas id="canvas" style="flex: 1;"></canvas>';
     const canvas = document.getElementById('canvas');
 
-    const sprites = new Sprites(this.spritesImg);
-    this.main = new Main(canvas, sprites, client, this.size, this.onFinishCb);
+    const spritesConf = sprites.configure(this.spriteSheet);
+    this.main = new Main(canvas, spritesConf, client, this.size, this.onFinishCb);
 
     this.onDisconnect = this.main.disconnect.bind(this.main);
     window.addEventListener('beforeunload', this.onDisconnect);
