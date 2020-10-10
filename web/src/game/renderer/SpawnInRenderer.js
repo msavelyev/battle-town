@@ -27,7 +27,7 @@ export default class SpawnInRenderer {
     const text = this.createText(tank);
 
     const pos = this.position(this.size);
-    renderText(this.ctx, text, pos.x, pos.y, this.size.unit * 4, {
+    renderText(this.ctx, text, pos.x, pos.y, this.size.unit * 8, {
       center: true,
       stroke: true,
       bg: 'rgba(0, 0, 0, 0.8)'

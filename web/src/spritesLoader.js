@@ -14,9 +14,9 @@ function createImage(src, cb) {
 
 export function loadSpriteSheets(cb) {
   const imgs = {
-    8: sprites1x,
-    16: sprites2x,
-    32: sprites4x
+    4: sprites1x,
+    8: sprites2x,
+    16: sprites4x
   };
 
   const result = {};

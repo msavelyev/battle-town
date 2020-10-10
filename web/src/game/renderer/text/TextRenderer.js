@@ -32,10 +32,10 @@ export default class TextRenderer {
           text,
           pos.x,
           this.calcY(pos.y, offset),
-          this.size.unit,
+          this.size.unit * 2,
           this.baseline()
         );
-        offset += this.size.unit;
+        offset += this.size.unit * 2;
       }
     }
   }

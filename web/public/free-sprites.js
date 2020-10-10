@@ -1,5 +1,5 @@
 export function createSpriteSheet(unitSize) {
-  const u = unitSize;
+  const u = unitSize * 2;
 
   return {
     "jungle": {

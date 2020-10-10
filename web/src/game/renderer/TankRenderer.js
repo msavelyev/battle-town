@@ -55,14 +55,14 @@ export default class TankRenderer {
     ctx.setTransform(1, 0, 0, 1, x * gameSize.unit, y * gameSize.unit);
     ctx.transform(1, 0, 0, 1, size / 2, size / 2);
 
+    ctx.font = `${gameSize.unit * 1.5}px Helvetica`;
+    ctx.textAlign = 'center';
     if (!this.inJungle(tank)) {
-      ctx.textAlign = 'center';
-      ctx.font = `${gameSize.unit * 0.75}px Helvetica`;
-      ctx.fillText(tank.name, 0, -gameSize.unit * 1.25);
+      ctx.fillText(tank.name, 0, -gameSize.unit * 2.5);
     }
 
     if (SETTINGS.DEBUG_RENDER) {
-      ctx.fillText(`(${x}; ${y})`, 0, gameSize.unit * 2);
+      ctx.fillText(`(${x}; ${y})`, 0, gameSize.unit * 4);
     }
 
     ctx.textAlign = 'left';

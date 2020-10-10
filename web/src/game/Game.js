@@ -55,7 +55,7 @@ export default class Game {
 
       new TextRenderer(
         ctx,
-        s => Point.create(s.uiX + s.unit / 4, s.unit / 4),
+        s => Point.create(s.uiX + s.unit / 2, s.unit / 2),
         this.size,
         Direction.Direction.DOWN,
         [
@@ -78,7 +78,7 @@ export default class Game {
       ),
       new TextRenderer(
         ctx,
-        s => Point.create(s.uiX + s.unit / 4, s.pixelHeight),
+        s => Point.create(s.uiX + s.unit / 2, s.pixelHeight),
         this.size,
         Direction.Direction.UP,
         [

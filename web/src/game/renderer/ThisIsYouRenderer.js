@@ -32,21 +32,21 @@ export default class ThisIsYouRenderer {
     ctx.rotate(degToRad((event.tick - tank.stateSince) * 1.5));
 
     ctx.strokeStyle = '#ff0';
-    ctx.lineWidth = gameSize.unit / 4;
+    ctx.lineWidth = gameSize.unit / 2;
 
-    const n = gameSize.unit * Math.sin(event.tick / 10) / 2;
+    const n = gameSize.unit * Math.sin(event.tick / 10);
 
     for (let i = 0; i < 4; i++) {
       ctx.moveTo(-(size * 2) + n, 0);
-      ctx.lineTo(-gameSize.unit * 1.5 + n, 0);
+      ctx.lineTo(-gameSize.unit * 3 + n, 0);
       ctx.stroke();
 
-      ctx.moveTo(-gameSize.unit * 1.5 - gameSize.unit + n, -gameSize.unit / 4);
-      ctx.lineTo(-gameSize.unit * 1.5 + n, 0);
+      ctx.moveTo(-gameSize.unit * 3 - gameSize.unit * 2 + n, -gameSize.unit / 2);
+      ctx.lineTo(-gameSize.unit * 3 + n, 0);
       ctx.stroke();
 
-      ctx.moveTo(-gameSize.unit * 1.5 - gameSize.unit + n, +gameSize.unit / 4);
-      ctx.lineTo(-gameSize.unit * 1.5 + n, 0);
+      ctx.moveTo(-gameSize.unit * 3 - gameSize.unit * 2 + n, +gameSize.unit / 2);
+      ctx.lineTo(-gameSize.unit * 3 + n, 0);
       ctx.stroke();
 
       ctx.rotate(degToRad(90));

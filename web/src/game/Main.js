@@ -1,17 +1,17 @@
 import EventType from '../../../lib/src/proto/EventType.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
 import * as Ticker from '../../../lib/src/Ticker.js';
+import {assign} from '../../../lib/src/util/immutable.js';
 import level from '../../../server/src/level.js';
 import Game from './Game.js';
 import Input from './Input.js';
 
-const UI_WIDTH = 11;
+const UI_WIDTH = 22;
 
 function updateSize(size) {
   let unitSize = Math.floor(Math.min(size.pixelWidth / level.WIDTH, size.pixelHeight / level.HEIGHT));
   unitSize = Math.pow(2, Math.floor(Math.log(unitSize) / Math.log(2)));
-  const sizeCopy = Object.assign({}, size);
-  return Object.assign(sizeCopy, {
+  return assign(assign({}, size), {
     pixelWidth: (level.WIDTH + UI_WIDTH) * unitSize,
     pixelHeight: level.HEIGHT * unitSize,
     unit: unitSize,

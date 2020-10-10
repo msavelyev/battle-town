@@ -137,7 +137,7 @@ function brickSubtype(dx, dy) {
 }
 
 const BLOCKS_PER_CELL = 1;
-const BLOCK_SIZE = 2;
+const BLOCK_SIZE = 4;
 const BRICKS_PER_CELL = 4;
 const BRICK_SIZE = BLOCK_SIZE / BRICKS_PER_CELL;
 
