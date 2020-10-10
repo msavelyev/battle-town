@@ -7,7 +7,22 @@ import database from '../../database.js';
 import telegram from '../../telegram.js';
 import FFAGameMode from './FFAGameMode.js';
 import Player from './Player.js';
+import PVEGameMode from './PVEGameMode.js';
 import PVPGameMode from './PVPGameMode.js';
+
+function createGameMode(db, ticker) {
+  const gameMode = SETTINGS.GAME_MODE;
+  switch (gameMode) {
+    case 'PVP':
+      return new PVPGameMode(db, ticker);
+    case 'PVE':
+      return new PVEGameMode(ticker);
+    case 'FFE':
+      return new FFAGameMode(ticker);
+    default:
+      throw new Error('Unknown game mode ' + gameMode);
+  }
+}
 
 export default class GameServer {
 
@@ -17,9 +32,7 @@ export default class GameServer {
     this.ticker = ticker;
 
     this.db = db;
-    this.gameMode = SETTINGS.GAME_MODE === 'PVP'
-      ? new PVPGameMode(db, ticker)
-      : new FFAGameMode(ticker);
+    this.gameMode = createGameMode(db, ticker);
 
     this.init();
 
