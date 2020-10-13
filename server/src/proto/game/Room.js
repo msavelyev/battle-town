@@ -16,159 +16,154 @@ import Disconnect from './event/Disconnect.js';
 import RoomEventType from './event/RoomEventType.js';
 import Player from './Player.js';
 
-export default class Room {
-
-  constructor(id, tick) {
-    this.id = id;
-
-    this.players = [];
-
-    this.match = Match.create(
+export function create(id, tick) {
+  return {
+    id: id,
+    players: [],
+    match: Match.create(
       id,
       World.create(id),
       tick
-    );
-    this.queue = [];
+    ),
+    queue: [],
+    finished: false,
+  };
+}
 
-    this.finished = false;
+export function size(room) {
+  return room.players.length;
+}
+
+export function update(room, event, beforeWorld, onKill) {
+  if (room.finished) {
+    return;
   }
 
-  size() {
-    return this.players.length;
+  const updates = [];
+  room.match = Match.update(room.match, event, beforeWorld, onKill, updates);
+  if (Match.finished(room.match)) {
+    log.info('room is finished', room.id);
+    room.finished = true;
   }
 
-  update(event, beforeWorld, onKill) {
-    if (this.finished) {
-      return;
+  for (let roomEvent of room.queue) {
+    handleRoomEvent(room, roomEvent, event.tick, updates);
+  }
+
+  room.queue = [];
+
+  broadcast(room, MessageType.TICK, TickData.create(
+    event.tick,
+    updates,
+    JSON.parse(JSON.stringify(room.match.ack)),
+  ));
+}
+
+export function isEmpty(room) {
+  if (room.players.length === 0) {
+    return true;
+  }
+
+  // noinspection RedundantIfStatementJS
+  if (room.players.length === 1 && room.players[0].user.id === 'bot') {
+    return true;
+  }
+
+  return false;
+}
+
+export function add(room, player) {
+  room.queue.push(new Connect(player));
+}
+
+export function remove(room, player) {
+  room.queue.push(new Disconnect(player));
+}
+
+function broadcast(room, name, data) {
+  room.players.forEach(player => {
+    player.client.sendMessage(NetMessage(player.user.id, name, data));
+  });
+}
+
+export function stop(room) {
+  for (let player of room.players) {
+    player.client.disconnect();
+  }
+
+}
+
+export function handleEvent(room, client, netMessage, id) {
+  switch (netMessage.type) {
+    case MessageType.MOVE:
+    case MessageType.SHOOT:
+      room.queue.push(new ClientMessage(id, netMessage));
+      break;
+    case MessageType.PING:
+      client.sendMessage(NetMessage(null, MessageType.PING));
+      break;
+    default:
+      console.error('Unknown message', netMessage);
+  }
+}
+
+export function hasPlayer(room, player) {
+  return room.players.find(p => p.user.id === player.user.id);
+}
+
+export function setLevel(room, blocks) {
+  room.match = Match.resetLevel(room.match, blocks);
+}
+
+function handleRoomEvent(room, roomEvent, tick, updates) {
+  switch (roomEvent.type) {
+    case RoomEventType.CLIENT_MESSAGE:
+      handleClientMessage(room, roomEvent.netMessage, updates);
+      break;
+    case RoomEventType.CONNECT:
+    {
+      const player = roomEvent.player;
+      room.players.push(player);
+      const user = player.user;
+      log.info('added player', user.id, 'to room', room.id);
+      room.match = Match.addUser(room.match, Player.shortUser(player), tick, updates);
+      updates.push(UserConnect.create(user.id, user.name));
     }
-
-    const updates = [];
-    this.match = Match.update(this.match, event, beforeWorld, onKill, updates);
-    if (Match.finished(this.match)) {
-      log.info('room is finished', this.id);
-      this.finished = true;
+      break;
+    case RoomEventType.DISCONNECT:
+    {
+      const player = roomEvent.player;
+      log.info('players', room.players.length, 'removing one', player.user.id);
+      room.players = room.players.filter(p => p !== player);
+      room.match = Match.removeTank(room.match, player.user.id, updates);
+      updates.push(UserDisconnect.create(player.user.id));
     }
-
-    for (let roomEvent of this.queue) {
-      Room.handleRoomEvent(this, roomEvent, event.tick, updates);
-    }
-
-    this.queue = [];
-
-    this.broadcast(MessageType.TICK, TickData.create(
-      event.tick,
-      updates,
-      JSON.parse(JSON.stringify(this.match.ack)),
-    ));
-  }
-
-  isEmpty() {
-    if (this.players.length === 0) {
-      return true;
-    }
-
-    // noinspection RedundantIfStatementJS
-    if (this.players.length === 1 && this.players[0].user.id === 'bot') {
-      return true;
-    }
-
-    return false;
-  }
-
-  add(player) {
-    this.queue.push(new Connect(player));
-  }
-
-  remove(player) {
-    this.queue.push(new Disconnect(player));
-  }
-
-  broadcast(name, data) {
-    this.players.forEach(player => {
-      player.client.sendMessage(NetMessage(player.user.id, name, data));
-    });
-  }
-
-  stop() {
-    for (let player of this.players) {
-      player.client.disconnect();
-    }
-
-  }
-
-  handleEvent(client, netMessage, id) {
-    switch (netMessage.type) {
-      case MessageType.MOVE:
-      case MessageType.SHOOT:
-        this.queue.push(new ClientMessage(id, netMessage));
-        break;
-      case MessageType.PING:
-        client.sendMessage(NetMessage(null, MessageType.PING));
-        break;
-      default:
-        console.error('Unknown message', netMessage);
-    }
-  }
-
-  static hasPlayer(room, player) {
-    return room.players.find(p => p.user.id === player.user.id);
-  }
-
-  static setLevel(room, blocks) {
-    room.match = Match.resetLevel(room.match, blocks);
-  }
-
-  static handleRoomEvent(room, roomEvent, tick, updates) {
-    switch (roomEvent.type) {
-      case RoomEventType.CLIENT_MESSAGE:
-        Room.handleClientMessage(room, roomEvent.netMessage, updates);
-        break;
-      case RoomEventType.CONNECT:
-        {
-          const player = roomEvent.player;
-          room.players.push(player);
-          const user = player.user;
-          log.info('added player', user.id, 'to room', room.id);
-          room.match = Match.addUser(room.match, Player.shortUser(player), tick, updates);
-          updates.push(UserConnect.create(user.id, user.name));
+      break;
+    case RoomEventType.REVIVE_BLOCKS:
+      let world = room.match.world;
+      for (let block of world.blocks) {
+        if (block.state === EntityState.DEAD) {
+          block = Entity.revive(block, tick);
+          world = World.replaceBlock(world, block);
+          updates.push(BlockUpdate.fromBlock(block));
         }
-        break;
-      case RoomEventType.DISCONNECT:
-        {
-          const player = roomEvent.player;
-          log.info('players', room.players.length, 'removing one', player.user.id);
-          room.players = room.players.filter(p => p !== player);
-          room.match = Match.removeTank(room.match, player.user.id, updates);
-          updates.push(UserDisconnect.create(player.user.id));
-        }
-        break;
-      case RoomEventType.REVIVE_BLOCKS:
-        let world = room.match.world;
-        for (let block of world.blocks) {
-          if (block.state === EntityState.DEAD) {
-            block = Entity.revive(block, tick);
-            world = World.replaceBlock(world, block);
-            updates.push(BlockUpdate.fromBlock(block));
-          }
-        }
-        room.match = copy(room.match, {
-          world
-        });
-        break;
-    }
+      }
+      room.match = copy(room.match, {
+        world
+      });
+      break;
   }
+}
 
-  static send(room, roomEvent) {
-    room.queue.push(roomEvent);
+export function send(room, roomEvent) {
+  room.queue.push(roomEvent);
+}
+
+function handleClientMessage(room, netMessage, updates) {
+  switch (netMessage.type){
+    case MessageType.SHOOT:
+    case MessageType.MOVE:
+      room.match = Match.handleEvent(room.match, netMessage, updates);
+      break;
   }
-
-  static handleClientMessage(room, netMessage, updates) {
-    switch (netMessage.type){
-      case MessageType.SHOOT:
-      case MessageType.MOVE:
-        room.match = Match.handleEvent(room.match, netMessage, updates);
-        break;
-    }
-  }
-
 }

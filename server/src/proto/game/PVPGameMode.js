@@ -16,7 +16,7 @@ import database from '../../database.js';
 import level from '../../level.js';
 import GameMode from './GameMode.js';
 import Player from './Player.js';
-import Room from './Room.js';
+import * as Room from './Room.js';
 
 export default class PVPGameMode extends GameMode {
 
@@ -58,10 +58,10 @@ export default class PVPGameMode extends GameMode {
         const client = player.client;
         const user = player.user;
 
-        room.add(player);
+        Room.add(room, player);
 
         client.on(EventType.MESSAGE, netMessage => {
-          room.handleEvent(client, netMessage, user.id);
+          Room.handleEvent(room, client, netMessage, user.id);
         });
 
         player.onDisconnect(() => {
@@ -87,7 +87,7 @@ export default class PVPGameMode extends GameMode {
 
   createRoom() {
     const id = uuid();
-    const room = new Room(id, this.ticker.tick);
+    const room = Room.create(id, this.ticker.tick);
     Room.setLevel(room, level.generate(level.choose()));
     log.info('created room', id);
     this.rooms.push(room);
@@ -96,7 +96,7 @@ export default class PVPGameMode extends GameMode {
   }
 
   removeFromRoom(room, player) {
-    room.remove(player);
+    Room.remove(room, player);
     if (!room.finished) {
       const player = room.players[0];
       if (player) {
@@ -104,9 +104,9 @@ export default class PVPGameMode extends GameMode {
       }
     }
 
-    if (room.isEmpty()) {
+    if (Room.isEmpty(room)) {
       log.info('removing room', room.id);
-      room.stop();
+      Room.stop(room);
       this.rooms = this.rooms.filter(r => r !== room);
     }
   }
@@ -132,10 +132,10 @@ export default class PVPGameMode extends GameMode {
 
   update(event) {
     for (let room of this.rooms) {
-      room.update(event, this.beforeWorldUpdate.bind(this), this.onKill.bind(this));
+      Room.update(room, event, this.beforeWorldUpdate.bind(this), this.onKill.bind(this));
       if (room.finished) {
         this.assignPoints(room.match);
-        room.stop();
+        Room.stop(room);
       }
     }
   }

@@ -1,25 +1,15 @@
 import * as Configuration from '../../../../lib/src/data/Configuration.js';
-import * as Entity from '../../../../lib/src/data/entity/Entity.js';
 import * as Match from '../../../../lib/src/data/Match.js';
 import * as MatchState from '../../../../lib/src/data/MatchState.js';
 import * as World from '../../../../lib/src/data/World.js';
-import * as ResetLevel from '../../../../lib/src/data/worldevent/ResetLevel.js';
-import * as ResetTanks from '../../../../lib/src/data/worldevent/ResetTanks.js';
-import * as Score from '../../../../lib/src/data/worldevent/Score.js';
-import * as State from '../../../../lib/src/data/worldevent/State.js';
-import * as TankUpdate from '../../../../lib/src/data/worldevent/TankUpdate.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
-import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
-import {FPS} from '../../../../lib/src/Ticker.js';
-import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
-import {copy} from '../../../../lib/src/util/immutable.js';
-import log from '../../../../lib/src/util/log.js';
-import level from '../../level.js';
-import Room from './Room.js';
+import {NetMessage} from '../../../../lib/src/proto/NetMessage.js';
+import {array, copy} from '../../../../lib/src/util/immutable.js';
 import ReviveBlocks from './event/ReviveBlocks.js';
+import * as Room from './Room.js';
 
-export default class FFAGameMode {
+export default class PVEGameMode {
 
   constructor(ticker) {
     this.ticker = ticker;
@@ -29,10 +19,10 @@ export default class FFAGameMode {
   }
 
   init() {
-    this.room = new Room('FFA', this.ticker.tick);
+    this.room = Room.create('PVE', this.ticker.tick);
     let match = this.room.match;
     let world = match.world;
-    world = World.resetLevel(world, level.ffa());
+    world = World.resetLevel(world, array());
     match = copy(match, {
       world,
     });
@@ -51,15 +41,13 @@ export default class FFAGameMode {
     const user = player.user;
     client.send(EventType.MATCH_FOUND);
 
-    this.room.add(player);
+    Room.add(this.room, player);
     player.onDisconnect(this.onDisconnect(player));
     client.on(EventType.MESSAGE, netMessage => {
-      this.room.handleEvent(client, netMessage, user.id);
+      Room.handleEvent(this.room, client, netMessage, user.id);
     });
 
     const match = this.room.match;
-
-    log.info('authorized with tanks', match.world.tanks);
 
     client.sendMessage(
       NetMessage(user.id, MessageType.INIT, Configuration.create(user.id, match))
@@ -68,12 +56,13 @@ export default class FFAGameMode {
 
   onDisconnect(player) {
     return () => {
-      this.room.remove(player);
+      Room.remove(this.room, player);
     };
   }
 
   update(event) {
-    this.room.update(
+    Room.update(
+      this.room,
       event,
       this.onBeforeWorldUpdate.bind(this),
       this.onKill.bind(this)

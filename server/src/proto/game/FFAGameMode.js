@@ -16,7 +16,7 @@ import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import {copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import level from '../../level.js';
-import Room from './Room.js';
+import * as Room from './Room.js';
 import ReviveBlocks from './event/ReviveBlocks.js';
 
 export default class FFAGameMode {
@@ -29,7 +29,7 @@ export default class FFAGameMode {
   }
 
   init() {
-    this.room = new Room('FFA', this.ticker.tick);
+    this.room = Room.create('FFA', this.ticker.tick);
     let match = this.room.match;
     let world = match.world;
     world = World.resetLevel(world, level.ffa());
@@ -51,10 +51,10 @@ export default class FFAGameMode {
     const user = player.user;
     client.send(EventType.MATCH_FOUND);
 
-    this.room.add(player);
+    Room.add(this.room, player);
     player.onDisconnect(this.onDisconnect(player));
     client.on(EventType.MESSAGE, netMessage => {
-      this.room.handleEvent(client, netMessage, user.id);
+      Room.handleEvent(this.room, client, netMessage, user.id);
     });
 
     const match = this.room.match;
@@ -68,12 +68,13 @@ export default class FFAGameMode {
 
   onDisconnect(player) {
     return () => {
-      this.room.remove(player);
+      Room.remove(this.room, player);
     };
   }
 
   update(event) {
-    this.room.update(
+    Room.update(
+      this.room,
       event,
       this.onBeforeWorldUpdate.bind(this),
       this.onKill.bind(this)
@@ -81,13 +82,13 @@ export default class FFAGameMode {
   }
 
   onBeforeWorldUpdate(match, event, updates) {
-    if (this.room.size() >= 2 && match.state === MatchState.state.WAITING_FOR_PLAYERS) {
+    if (Room.size(this.room) >= 2 && match.state === MatchState.state.WAITING_FOR_PLAYERS) {
       match = Match.setState(match, MatchState.state.PLAY, event.tick);
       match = copy(match, {
         nextStateOnTick: event.tick + SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS
       });
       updates.push(State.fromMatch(match));
-    } else if (this.room.size() === 1 && match.state === MatchState.state.PLAY) {
+    } else if (Room.size(this.room) === 1 && match.state === MatchState.state.PLAY) {
       match = Match.setState(match, MatchState.state.WAITING_FOR_PLAYERS, event.tick);
       updates.push(State.fromMatch(match));
     }
