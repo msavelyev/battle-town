@@ -15,10 +15,10 @@ import {FPS} from '../../../../lib/src/Ticker.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import {copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
-import level from '../../level/level.js';
+import Level from '../../level/Level.js';
 import NetClient from '../base/NetClient.js';
 import * as Room from './Room.js';
-import reviveBlocks from './event/reviveBlocks.js';
+import ReviveBlocks from './event/ReviveBlocks.js';
 
 export default class FFAGameMode {
 
@@ -33,7 +33,7 @@ export default class FFAGameMode {
     this.room = Room.create('FFA', this.ticker.tick);
     let match = this.room.match;
     let world = match.world;
-    world = World.resetLevel(world, level.ffa());
+    world = World.resetLevel(world, Level.ffa());
     match = copy(match, {
       world,
     });
@@ -100,7 +100,7 @@ export default class FFAGameMode {
       updates.push(State.fromMatch(match));
     } else if (match.state === MatchState.state.FINISHED && match.nextStateOnTick <= event.tick) {
       let world = match.world;
-      world = World.resetLevel(world, level.ffa());
+      world = World.resetLevel(world, Level.ffa());
       updates.push(ResetLevel.create(world.blocks));
 
       world = World.resetTanks(world, match)
@@ -145,7 +145,7 @@ export default class FFAGameMode {
   }
 
   reviveBlocks() {
-    Room.send(this.room, reviveBlocks());
+    Room.send(this.room, ReviveBlocks());
   }
 
   stop() {

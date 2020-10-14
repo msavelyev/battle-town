@@ -1,5 +1,5 @@
 import Point from '../../../../lib/src/data/primitives/Point.js';
-import level from '../../../../server/src/level/level.js';
+import Level from '../../../../server/src/level/Level.js';
 
 const helper = {
   offset(point, center) {
@@ -7,8 +7,8 @@ const helper = {
       return point;
     }
 
-    const midX = Math.round(level.WIDTH / 2);
-    const midY = Math.round(level.HEIGHT / 2);
+    const midX = Math.round(Level.WIDTH / 2);
+    const midY = Math.round(Level.HEIGHT / 2);
 
     return Point.create(
       midX + point.x - center.x,
@@ -17,7 +17,7 @@ const helper = {
   },
 
   outsideVisibleBoundaries(point) {
-    return point.x < 0 || point.y < 0 || point.x > level.WIDTH || point.y > level.HEIGHT;
+    return point.x < 0 || point.y < 0 || point.x > Level.WIDTH || point.y > Level.HEIGHT;
   }
 };
 

@@ -8,9 +8,9 @@ import MessageType from '../../../../lib/src/proto/MessageType.js';
 import {NetMessage} from '../../../../lib/src/proto/NetMessage.js';
 import {array, copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
-import infiniteLevel from '../../level/infiniteLevel.js';
+import InfiniteLevel from '../../level/InfiniteLevel.js';
 import NetClient from '../base/NetClient.js';
-import reviveBlocks from './event/reviveBlocks.js';
+import ReviveBlocks from './event/ReviveBlocks.js';
 import * as Room from './Room.js';
 
 export default class PVEGameMode {
@@ -84,7 +84,7 @@ export default class PVEGameMode {
   }
 
   reviveBlocks() {
-    Room.send(this.room, reviveBlocks());
+    Room.send(this.room, ReviveBlocks());
   }
 
   stop() {
@@ -96,7 +96,7 @@ export default class PVEGameMode {
     let tank = World.findTank(world, userId);
     log.info('found tank', tank);
 
-    for (const block of infiniteLevel.initBlocks(tank.position)) {
+    for (const block of InfiniteLevel.initBlocks(tank.position)) {
       world = World.updateBlockVisibility(world, block, +1);
       updates.push(BlockVisible.create(block, userId));
     }

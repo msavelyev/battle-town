@@ -13,7 +13,7 @@ import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import {copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import database from '../../database.js';
-import level from '../../level/level.js';
+import Level from '../../level/Level.js';
 import NetClient from '../base/NetClient.js';
 import GameMode from './GameMode.js';
 import Player from './Player.js';
@@ -90,7 +90,7 @@ export default class PVPGameMode extends GameMode {
   createRoom() {
     const id = uuid();
     const room = Room.create(id, this.ticker.tick);
-    Room.setLevel(room, level.generate(level.choose()));
+    Room.setLevel(room, Level.generate(Level.choose()));
     log.info('created room', id);
     this.rooms.push(room);
 
