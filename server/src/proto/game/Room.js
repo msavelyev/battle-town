@@ -7,7 +7,7 @@ import * as UserConnect from '../../../../lib/src/data/worldevent/UserConnect.js
 import * as BlockUpdate from '../../../../lib/src/data/worldevent/BlockUpdate.js';
 import * as UserDisconnect from '../../../../lib/src/data/worldevent/UserDisconnect.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
-import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
+import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import {copy, filter} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import NetClient from '../base/NetClient.js';

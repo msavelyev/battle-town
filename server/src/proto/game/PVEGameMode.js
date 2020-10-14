@@ -5,7 +5,7 @@ import * as World from '../../../../lib/src/data/World.js';
 import BlockVisible from '../../../../lib/src/data/worldevent/BlockVisible.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
-import {NetMessage} from '../../../../lib/src/proto/NetMessage.js';
+import NetMessage from '../../../../lib/src/proto/NetMessage.js';
 import {array, copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import InfiniteLevel from '../../level/InfiniteLevel.js';

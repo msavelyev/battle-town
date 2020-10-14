@@ -5,6 +5,7 @@ import {assign} from '../../../lib/src/util/immutable.js';
 import Level from '../../../server/src/level/Level.js';
 import Game from './Game.js';
 import Input from './Input.js';
+import Client from './proto/Client.js';
 
 const UI_WIDTH = 22;
 
@@ -36,12 +37,12 @@ export default class Main {
   }
 
   start() {
-    this.client.connect();
+    Client.connect(this.client);
   }
 
   init(conf) {
-    this.client.on(EventType.DISCONNECT);
-    this.client.on(EventType.DISCONNECT, this.stop.bind(this));
+    Client.on(this.client, EventType.DISCONNECT);
+    Client.on(this.client, EventType.DISCONNECT, this.stop.bind(this));
 
     this.updateCanvasSize();
 
@@ -49,7 +50,7 @@ export default class Main {
 
     this.game = new Game(ctx, this.client, this.sprites, conf, this.size);
     this.input = new Input(this.game);
-    this.client.onMessage(MessageType.TICK, this.game.onSync.bind(this.game));
+    Client.onMessage(this.client, MessageType.TICK, this.game.onSync.bind(this.game));
 
     this.ticker = Ticker.create(
       window.setInterval.bind(null),
@@ -59,7 +60,7 @@ export default class Main {
   }
 
   disconnect() {
-    this.client.disconnect();
+    Client.disconnect(this.client);
   }
 
   stop() {
@@ -69,7 +70,7 @@ export default class Main {
 
     this.stopped = true;
 
-    this.client.onMessage(MessageType.PING);
+    Client.onMessage(this.client, MessageType.PING);
 
     if (this.game) {
       this.game.stop();

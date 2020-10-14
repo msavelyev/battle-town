@@ -4,9 +4,10 @@ import Point from '../../../lib/src/data/primitives/Point.js';
 import * as World from '../../../lib/src/data/World.js';
 import * as TankMove from '../../../lib/src/event/TankMove.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
-import { NetMessage } from '../../../lib/src/proto/NetMessage.js';
+import NetMessage from '../../../lib/src/proto/NetMessage.js';
 import {copy} from '../../../lib/src/util/immutable.js';
 import increaseTick from '../../../lib/src/util/increaseTick.js';
+import Client from './proto/Client.js';
 import brickRenderer from './renderer/blocks/brickRenderer.js';
 import jungleRenderer from './renderer/blocks/jungleRenderer.js';
 import stoneRenderer from './renderer/blocks/stoneRenderer.js';
@@ -158,7 +159,7 @@ export default class Game {
     const updates = [];
     this.match = Match.handleEvent(this.match, netMessage, updates);
     if (updates.length > 0) {
-      this.client.sendNetMessage(netMessage);
+      Client.sendNetMessage(this.client, netMessage);
       this.match = Match.addUnackedMessage(this.match, netMessage);
       return true;
     }

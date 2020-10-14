@@ -1,22 +1,27 @@
-export default class NetClient {
 
-  constructor() {
-  }
+export default {
+  on(netClient, name, cb) {
+    return netClient.on(name, cb);
+  },
 
-  on(name, cb) {
-    throw new Error('not implemented yet');
-  }
+  connect(netClient) {
+    return netClient.connect();
+  },
 
-  send(name, data) {
-    throw new Error('not implemented yet');
-  }
+  disconnect(netClient) {
+    return netClient.disconnect();
+  },
 
-  connect() {
-    throw new Error('not implemented yet');
-  }
+  sendMessage(netClient, messageType, payload) {
+    return netClient.sendMessage(messageType, payload);
+  },
 
-  disconnect() {
-    throw new Error('not implemented yet');
-  }
+  sendNetMessage(netClient, netMessage) {
+    return netClient.sendNetMessage(netMessage);
+  },
+
+  sendEvent(netClient, eventType, payload) {
+    return netClient.sendEvent(eventType, payload);
+  },
 
 }

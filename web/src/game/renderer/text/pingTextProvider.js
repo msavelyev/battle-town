@@ -1,4 +1,5 @@
 import MessageType from '../../../../../lib/src/proto/MessageType.js';
+import Client from '../../proto/Client.js';
 
 export default function(client) {
   let latency;
@@ -7,10 +8,10 @@ export default function(client) {
 
   function ping() {
     lastPing = new Date();
-    client.ping();
+    Client.ping(client);
   }
 
-  client.onMessage(MessageType.PING, function pong() {
+  Client.onMessage(client, MessageType.PING, function pong() {
     latency = new Date() - lastPing;
     timeout = setTimeout(ping, 1000);
   });

@@ -24,8 +24,8 @@ export default class Matchmaking extends Scene {
   setup(user) {
     analytics.log('MATCHMAKING_SETUP');
 
-    this.client = new Client(new SocketioClient());
-    this.client.on(EventType.DISCONNECT, () => {
+    this.client = Client.create(SocketioClient());
+    Client.on(this.client, EventType.DISCONNECT, () => {
       this.onFinishCb('Server disconnected');
     });
     this.startTime = this.now();
@@ -53,16 +53,16 @@ export default class Matchmaking extends Scene {
   stepConnect() {
     this.setStatusText('Connecting to servers');
 
-    this.client.on(EventType.CONNECT, this.stepAuth.bind(this));
-    this.client.connect();
+    Client.on(this.client, EventType.CONNECT, this.stepAuth.bind(this));
+    Client.connect(this.client);
   }
 
   stepAuth() {
     this.setStatusText('Authorizing');
 
-    this.client.on(EventType.AUTH_ACK, this.stepLookingForMatch.bind(this));
+    Client.on(this.client, EventType.AUTH_ACK, this.stepLookingForMatch.bind(this));
 
-    this.client.sendEvent(EventType.AUTH, {
+    Client.sendEvent(this.client, EventType.AUTH, {
       id: this.user.id,
       token: this.user.token
     });
@@ -71,13 +71,13 @@ export default class Matchmaking extends Scene {
   stepLookingForMatch() {
     this.setStatusText('Finding match');
 
-    this.client.on(EventType.MATCH_FOUND, this.stepSettingUp.bind(this));
+    Client.on(this.client, EventType.MATCH_FOUND, this.stepSettingUp.bind(this));
   }
 
   stepSettingUp() {
     this.setStatusText('Match found, setting it up');
 
-    this.client.onMessage(MessageType.INIT, conf => {
+    Client.onMessage(this.client, MessageType.INIT, conf => {
       this.onFinishCb(null, {
         conf,
         client: this.client
