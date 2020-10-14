@@ -9,7 +9,7 @@ import {NetMessage} from '../../../../lib/src/proto/NetMessage.js';
 import {array, copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import infiniteLevel from '../../level/infiniteLevel.js';
-import ReviveBlocks from './event/ReviveBlocks.js';
+import reviveBlocks from './event/reviveBlocks.js';
 import * as Room from './Room.js';
 
 export default class PVEGameMode {
@@ -82,7 +82,7 @@ export default class PVEGameMode {
   }
 
   reviveBlocks() {
-    Room.send(this.room, new ReviveBlocks());
+    Room.send(this.room, reviveBlocks());
   }
 
   stop() {

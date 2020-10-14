@@ -10,9 +10,9 @@ import MessageType from '../../../../lib/src/proto/MessageType.js';
 import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
 import {copy, filter} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
-import ClientMessage from './event/ClientMessage.js';
-import Connect from './event/Connect.js';
-import Disconnect from './event/Disconnect.js';
+import clientMessage from './event/clientMessage.js';
+import connect from './event/connect.js';
+import disconnect from './event/disconnect.js';
 import RoomEventType from './event/RoomEventType.js';
 import Player from './Player.js';
 
@@ -78,11 +78,11 @@ export function isEmpty(room) {
 }
 
 export function add(room, player) {
-  room.queue.push(new Connect(player));
+  room.queue.push(connect(player));
 }
 
 export function remove(room, player) {
-  room.queue.push(new Disconnect(player));
+  room.queue.push(disconnect(player));
 }
 
 function broadcast(room, name, dataFn) {
@@ -103,7 +103,7 @@ export function handleEvent(room, client, netMessage, id) {
   switch (netMessage.type) {
     case MessageType.MOVE:
     case MessageType.SHOOT:
-      room.queue.push(new ClientMessage(id, netMessage));
+      room.queue.push(clientMessage(id, netMessage));
       break;
     case MessageType.PING:
       client.sendMessage(NetMessage(null, MessageType.PING));

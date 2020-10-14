@@ -17,7 +17,7 @@ import {copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import level from '../../level/level.js';
 import * as Room from './Room.js';
-import ReviveBlocks from './event/ReviveBlocks.js';
+import reviveBlocks from './event/reviveBlocks.js';
 
 export default class FFAGameMode {
 
@@ -143,7 +143,7 @@ export default class FFAGameMode {
   }
 
   reviveBlocks() {
-    Room.send(this.room, new ReviveBlocks());
+    Room.send(this.room, reviveBlocks());
   }
 
   stop() {
