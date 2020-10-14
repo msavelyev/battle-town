@@ -1,88 +1,116 @@
+import protocol from '../../../../lib/src/lang/protocol.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import * as rand from '../../../../lib/src/util/rand.js';
 import NetClient from '../base/NetClient.js';
 
-export default class SocketioClient extends NetClient {
+/**
+ *
+ * @returns {any}
+ */
+function getLag() {
+  return SETTINGS.LAG;
+}
 
-  constructor(socket) {
-    super();
-    this.socket = socket;
-    this.lag = SETTINGS.LAG;
+function disconnect(client) {
+  client.socket.disconnect();
+}
 
-    this.callbacks = {};
+function sendMessage(client, netMessage) {
+  send(client, EventType.MESSAGE, netMessage);
+}
 
-    this.socket.on(EventType.MESSAGE, this.handleMessage.bind(this));
+function send(client, eventType, payload) {
+  if (getLag()) {
+    setTimeout(() => {
+      sendImmediately(client, eventType, payload);
+    }, lagValue());
+  } else {
+    sendImmediately(client, eventType, payload);
   }
+}
 
-  disconnect() {
-    this.socket.disconnect();
+function sendImmediately(client, eventType, payload) {
+  client.socket.emit(eventType, payload);
+}
+
+function on(client, eventType, cb) {
+  client.socket.on(eventType, cb);
+}
+
+function off(client, eventType, cb) {
+  client.socket.off(eventType, cb);
+}
+
+function onMessage(client, messageType, cb) {
+  if (cb) {
+    client.callbacks[messageType] = delayedCb(messageType, cb);
+  } else {
+    delete client.callbacks[messageType];
   }
+}
 
-  sendMessage(netMessage) {
-    this.send(EventType.MESSAGE, netMessage);
-  }
-
-  send(eventType, payload) {
-    if (this.lag) {
+function delayedCb(name, cb) {
+  return function() {
+    if (getLag()) {
       setTimeout(() => {
-        this.sendImmediately(eventType, payload);
-      }, this.lagValue());
-    } else {
-      this.sendImmediately(eventType, payload);
-    }
-  }
-
-  sendImmediately(eventType, payload) {
-    this.socket.emit(eventType, payload);
-  }
-
-  on(eventType, cb) {
-    this.socket.on(eventType, cb);
-  }
-
-  off(eventType, cb) {
-    this.socket.off(eventType, cb);
-  }
-
-  onMessage(messageType, cb) {
-    if (cb) {
-      this.callbacks[messageType] = this.delayedCb(messageType, cb);
-    } else {
-      delete this.callbacks[messageType];
-    }
-  }
-
-  delayedCb(name, cb) {
-    const that = this;
-    return function() {
-      if (that.lag) {
-        setTimeout(() => {
-          cb.apply(null, arguments);
-        }, that.lagValue());
-      } else {
         cb.apply(null, arguments);
-      }
-    };
+      }, lagValue());
+    } else {
+      cb.apply(null, arguments);
+    }
+  };
+}
+
+function handleMessage(client, netMessage) {
+  const messageType = netMessage.type;
+  if (client.callbacks[messageType]) {
+    client.callbacks[messageType](netMessage);
+  }
+}
+
+function lagValue() {
+  if (!getLag()) {
+    return null;
   }
 
-  handleMessage(netMessage) {
-    const messageType = netMessage.type;
-    if (this.callbacks[messageType]) {
-      this.callbacks[messageType](netMessage);
-    }
+  if (getLag() === 'RANDOM') {
+    return rand.randomInt(50, 150);
   }
 
-  lagValue() {
-    if (!this.lag) {
-      return null;
-    }
+  return SETTINGS.LAG;
+}
 
-    if (this.lag === 'RANDOM') {
-      return rand.randomInt(50, 150);
-    }
+export default function(socket) {
+  const client = protocol.implement(NetClient, {
+    socket,
+    callbacks: {},
 
-    return SETTINGS.LAG;
-  }
+    disconnect() {
+      return disconnect(client);
+    },
 
+    sendMessage(netMessage) {
+      return sendMessage(client, netMessage);
+    },
+
+    send(eventType, payload) {
+      return send(client, eventType, payload);
+    },
+
+    onMessage(messageType, cb) {
+      return onMessage(client, messageType, cb);
+    },
+
+    on(eventType, cb) {
+      return on(client, eventType, cb);
+    },
+
+    off(eventType, cb) {
+      return off(client, eventType, cb);
+    },
+  });
+
+  on(client, EventType.MESSAGE, handleMessage.bind(null, client));
+  return client;
 }

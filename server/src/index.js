@@ -27,7 +27,7 @@ async function main() {
   await api.init(db, app);
 
   const ticker = Ticker.create(setInterval, performance.now);
-  const gameServer = new GameServer(new SocketioServer(server), ticker, db);
+  const gameServer = new GameServer(SocketioServer(server), ticker, db);
   Ticker.start(ticker, gameServer);
 
   const port = process.env.PORT || 8080;

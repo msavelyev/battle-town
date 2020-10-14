@@ -9,6 +9,7 @@ import {NetMessage} from '../../../../lib/src/proto/NetMessage.js';
 import {array, copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import infiniteLevel from '../../level/infiniteLevel.js';
+import NetClient from '../base/NetClient.js';
 import reviveBlocks from './event/reviveBlocks.js';
 import * as Room from './Room.js';
 
@@ -43,17 +44,18 @@ export default class PVEGameMode {
 
     const client = player.client;
     const user = player.user;
-    client.send(EventType.MATCH_FOUND);
+    NetClient.send(client, EventType.MATCH_FOUND);
 
     Room.add(this.room, player);
     player.onDisconnect(this.onDisconnect(player));
-    client.on(EventType.MESSAGE, netMessage => {
+    NetClient.on(client, EventType.MESSAGE, netMessage => {
       Room.handleEvent(this.room, client, netMessage, user.id);
     });
 
     const match = this.room.match;
 
-    client.sendMessage(
+    NetClient.sendMessage(
+      client,
       NetMessage(user.id, MessageType.INIT, Configuration.create(user.id, match))
     );
   }

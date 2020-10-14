@@ -10,6 +10,7 @@ import MessageType from '../../../../lib/src/proto/MessageType.js';
 import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
 import {copy, filter} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
+import NetClient from '../base/NetClient.js';
 import clientMessage from './event/clientMessage.js';
 import connect from './event/connect.js';
 import disconnect from './event/disconnect.js';
@@ -88,13 +89,13 @@ export function remove(room, player) {
 function broadcast(room, name, dataFn) {
   room.players.forEach(player => {
     const data = dataFn(player.user.id);
-    player.client.sendMessage(NetMessage(player.user.id, name, data));
+    NetClient.sendMessage(player.client, NetMessage(player.user.id, name, data));
   });
 }
 
 export function stop(room) {
   for (let player of room.players) {
-    player.client.disconnect();
+    NetClient.disconnect(player.client);
   }
 
 }
@@ -106,7 +107,7 @@ export function handleEvent(room, client, netMessage, id) {
       room.queue.push(clientMessage(id, netMessage));
       break;
     case MessageType.PING:
-      client.sendMessage(NetMessage(null, MessageType.PING));
+      NetClient.sendMessage(client, NetMessage(null, MessageType.PING));
       break;
     default:
       console.error('Unknown message', netMessage);

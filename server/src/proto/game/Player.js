@@ -1,5 +1,6 @@
 import EventType from '../../../../lib/src/proto/EventType.js';
 import BotClient from '../base/BotClient.js';
+import NetClient from '../base/NetClient.js';
 
 export default class Player {
 
@@ -10,25 +11,25 @@ export default class Player {
 
   onAuth(cb) {
     if (this.onAuthCb) {
-      this.client.off(EventType.AUTH, this.onAuthCb);
+      NetClient.off(this.client, EventType.AUTH, this.onAuthCb);
     }
 
     this.onAuthCb = cb;
 
     if (cb) {
-      this.client.on(EventType.AUTH, this.onAuthCb);
+      NetClient.on(this.client, EventType.AUTH, this.onAuthCb);
     }
   }
 
   onDisconnect(cb) {
     if (this.onDisconnectCb) {
-      this.client.off(EventType.DISCONNECT, this.onDisconnectCb);
+      NetClient.off(this.client, EventType.DISCONNECT, this.onDisconnectCb);
     }
 
     this.onDisconnectCb = cb;
 
     if (cb) {
-      this.client.on(EventType.DISCONNECT, this.onDisconnectCb);
+      NetClient.on(this.client, EventType.DISCONNECT, this.onDisconnectCb);
     }
   }
 
@@ -40,7 +41,7 @@ export default class Player {
   }
 
   static bot() {
-    const player = new Player(new BotClient());
+    const player = new Player(BotClient());
     player.user = {
       id: 'bot',
       name: 'I am a bot'

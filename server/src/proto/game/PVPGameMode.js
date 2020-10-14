@@ -14,6 +14,7 @@ import {copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import database from '../../database.js';
 import level from '../../level/level.js';
+import NetClient from '../base/NetClient.js';
 import GameMode from './GameMode.js';
 import Player from './Player.js';
 import * as Room from './Room.js';
@@ -42,7 +43,7 @@ export default class PVPGameMode extends GameMode {
       log.info('matchmaking players', players.map(p => p.user.id));
 
       for (let player of players) {
-        player.client.send(EventType.MATCH_FOUND);
+        NetClient.send(player.client, EventType.MATCH_FOUND);
         player.onDisconnect();
       }
 
@@ -60,7 +61,7 @@ export default class PVPGameMode extends GameMode {
 
         Room.add(room, player);
 
-        client.on(EventType.MESSAGE, netMessage => {
+        NetClient.on(client, EventType.MESSAGE, netMessage => {
           Room.handleEvent(room, client, netMessage, user.id);
         });
 
@@ -78,7 +79,8 @@ export default class PVPGameMode extends GameMode {
         const client = player.client;
         const user = player.user;
 
-        client.sendMessage(
+        NetClient.sendMessage(
+          client,
           NetMessage(user.id, MessageType.INIT, Configuration.create(user.id, match))
         );
       }

@@ -1,22 +1,20 @@
 import IO from 'socket.io';
-import NetServer from '../base/NetServer.js';
+import protocol from '../../../../lib/src/lang/protocol.js';
+import netServer from '../base/NetServer.js';
 import SocketioClient from './SocketioClient.js';
 
-export default class SocketioServer extends NetServer {
+export default function(server) {
+  const io = IO(server);
 
-  constructor(server) {
-    super();
+  return protocol.implement(netServer, {
+    start() {
 
-    this.io = IO(server);
-  }
+    },
 
-  start() {
-
-  }
-
-  onConnected(cb) {
-    this.io.on('connection', (socket) => {
-      cb(new SocketioClient(socket));
-    });
-  }
+    onConnected(cb) {
+      return io.on('connection', (socket) => {
+        cb(SocketioClient(socket));
+      });
+    }
+  });
 }

@@ -1,28 +1,13 @@
+import protocol from '../../../../lib/src/lang/protocol.js';
+import NetClient from './NetClient.js';
 
-export default class BotClient {
-
-  constructor() {
-  }
-
-  send(name, data) {
-  }
-
-  sendMessage() {
-
-  }
-
-  broadcast(name, data) {
-  }
-
-  on(name, cb) {
-  }
-
-  off() {
-
-  }
-
-  disconnect() {
-
-  }
-
+export default function() {
+  return protocol.implement(NetClient, {
+    send() { },
+    sendMessage() { },
+    onMessage() { },
+    on() { },
+    off() { },
+    disconnect() { }
+  });
 }

@@ -5,6 +5,7 @@ import * as Fps from '../../../../lib/src/util/Fps.js';
 import log from '../../../../lib/src/util/log.js';
 import database from '../../database.js';
 import telegram from '../../telegram.js';
+import NetClient from '../base/NetClient.js';
 import FFAGameMode from './FFAGameMode.js';
 import Player from './Player.js';
 import PVEGameMode from './PVEGameMode.js';
@@ -61,7 +62,7 @@ export default class GameServer {
             player.user = user;
             log.info('authorized', user.id);
             telegram.sendMessage('user authorized ' + user.id + ', ' + user.name);
-            client.send(EventType.AUTH_ACK);
+            NetClient.send(client, EventType.AUTH_ACK);
             this.gameMode.authorizePlayer(player);
           } else {
             throw new Error('Couldn\'t find user');
@@ -69,7 +70,7 @@ export default class GameServer {
         })
         .catch(err => {
           log.error('Couldn\'t authorize', userId, token, err);
-          client.disconnect();
+          NetClient.disconnect(client);
         })
         .then(() => {
           player.onAuth();

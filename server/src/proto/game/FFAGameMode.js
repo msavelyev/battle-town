@@ -16,6 +16,7 @@ import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import {copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import level from '../../level/level.js';
+import NetClient from '../base/NetClient.js';
 import * as Room from './Room.js';
 import reviveBlocks from './event/reviveBlocks.js';
 
@@ -49,11 +50,11 @@ export default class FFAGameMode {
 
     const client = player.client;
     const user = player.user;
-    client.send(EventType.MATCH_FOUND);
+    NetClient.send(client, EventType.MATCH_FOUND);
 
     Room.add(this.room, player);
     player.onDisconnect(this.onDisconnect(player));
-    client.on(EventType.MESSAGE, netMessage => {
+    NetClient.on(client, EventType.MESSAGE, netMessage => {
       Room.handleEvent(this.room, client, netMessage, user.id);
     });
 
@@ -61,7 +62,8 @@ export default class FFAGameMode {
 
     log.info('authorized with tanks', match.world.tanks);
 
-    client.sendMessage(
+    NetClient.sendMessage(
+      client,
       NetMessage(user.id, MessageType.INIT, Configuration.create(user.id, match))
     );
   }

@@ -1,15 +1,10 @@
 
-export default class NetServer {
+export default {
+  start(server) {
+    return server.start();
+  },
 
-  constructor() {
-  }
-
-  start() {
-    throw new Error('not implemented yet');
-  }
-
-  onConnected(cb) {
-    throw new Error('not implemented yet');
-  }
-
-}
+  onConnected(server, cb) {
+    return server.onConnected(cb);
+  },
+};
