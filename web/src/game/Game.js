@@ -7,28 +7,28 @@ import MessageType from '../../../lib/src/proto/MessageType.js';
 import { NetMessage } from '../../../lib/src/proto/NetMessage.js';
 import {copy} from '../../../lib/src/util/immutable.js';
 import increaseTick from '../../../lib/src/util/increaseTick.js';
-import BrickRenderer from './renderer/blocks/BrickRenderer.js';
-import JungleRenderer from './renderer/blocks/JungleRenderer.js';
-import StoneRenderer from './renderer/blocks/StoneRenderer.js';
-import WaterRenderer from './renderer/blocks/WaterRenderer.js';
-import BulletRenderer from './renderer/BulletRenderer.js';
-import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
-import uiBgRenderer from './renderer/func/uiBgRenderer.js';
-import MatchStateRenderer from './renderer/MatchStateRenderer.js';
-import SpawnInRenderer from './renderer/SpawnInRenderer.js';
-import EmptyTextProvider from './renderer/text/EmptyTextProvider.js';
-import MatchTimeTextProvider from './renderer/text/MatchTimeTextProvider.js';
-import NetUsageRenderer from './renderer/text/NetUsageTextProvider.js';
+import brickRenderer from './renderer/blocks/brickRenderer.js';
+import jungleRenderer from './renderer/blocks/jungleRenderer.js';
+import stoneRenderer from './renderer/blocks/stoneRenderer.js';
+import waterRenderer from './renderer/blocks/waterRenderer.js';
+import bulletRenderer from './renderer/bulletRenderer.js';
+import explosionsRenderer from './renderer/explosionsRenderer.js';
+import uiBgRenderer from './renderer/uiBgRenderer.js';
+import matchStateRenderer from './renderer/matchStateRenderer.js';
+import spawnInRenderer from './renderer/spawnInRenderer.js';
+import emptyTextProvider from './renderer/text/emptyTextProvider.js';
+import matchTimeTextProvider from './renderer/text/matchTimeTextProvider.js';
+import netUsageRenderer from './renderer/text/netUsageTextProvider.js';
 import positionTextRenderer from './renderer/text/positionTextRenderer.js';
-import ScoreTextProvider from './renderer/text/ScoreTextProvider.js';
-import TankRenderer from './renderer/TankRenderer.js';
-import FpsTextProvider from './renderer/text/FpsTextProvider.js';
-import PingTextProvider from './renderer/text/PingTextProvider.js';
-import TextRenderer from './renderer/text/TextRenderer.js';
-import TickTextProvider from './renderer/text/TickTextProvider.js';
-import UnackedInputTextProvider from './renderer/text/UnackedInputTextProvider.js';
-import UnitSizeTextProvider from './renderer/text/UnitSizeTextProvider.js';
-import ThisIsYouRenderer from './renderer/ThisIsYouRenderer.js';
+import scoreTextProvider from './renderer/text/scoreTextProvider.js';
+import tankRenderer from './renderer/tankRenderer.js';
+import fpsTextProvider from './renderer/text/fpsTextProvider.js';
+import pingTextProvider from './renderer/text/pingTextProvider.js';
+import textRenderer from './renderer/text/textRenderer.js';
+import tickTextProvider from './renderer/text/tickTextProvider.js';
+import unackedInputTextProvider from './renderer/text/unackedInputTextProvider.js';
+import unitSizeTextProvider from './renderer/text/unitSizeTextProvider.js';
+import thisIsYouRenderer from './renderer/thisIsYouRenderer.js';
 
 export default class Game {
 
@@ -49,52 +49,52 @@ export default class Game {
     this.id = conf.id;
 
     this.renderers = [
-      new StoneRenderer(ctx, this, sprites),
-      new BrickRenderer(ctx, this, sprites),
-      new WaterRenderer(ctx, this, sprites),
-      new BulletRenderer(ctx, this, sprites),
-      new TankRenderer(ctx, this, sprites),
-      new JungleRenderer(ctx, this, sprites),
-      new ExplosionsRenderer(ctx, this, sprites),
+      stoneRenderer(ctx, this, sprites),
+      brickRenderer(ctx, this, sprites),
+      waterRenderer(ctx, this, sprites),
+      bulletRenderer(ctx, this, sprites),
+      tankRenderer(ctx, this, sprites),
+      jungleRenderer(ctx, this, sprites),
+      explosionsRenderer(ctx, this, sprites),
 
-      new SpawnInRenderer(
+      spawnInRenderer(
         ctx,
         this,
         s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2)
       ),
-      new MatchStateRenderer(
+      matchStateRenderer(
         ctx,
         this,
         s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2)
       ),
-      new ThisIsYouRenderer(ctx, this),
+      thisIsYouRenderer(ctx, this),
 
       uiBgRenderer(ctx, this.size),
 
-      new TextRenderer(
+      textRenderer(
         ctx,
         s => Point.create(s.uiX + s.unit / 2, s.unit / 2),
         this.size,
         Direction.Direction.DOWN,
         [
-          new MatchTimeTextProvider(this),
-          new EmptyTextProvider(),
-          new ScoreTextProvider(this)
+          matchTimeTextProvider(this),
+          emptyTextProvider,
+          scoreTextProvider(this)
         ]
       ),
 
-      new TextRenderer(
+      textRenderer(
         ctx,
         s => Point.create(s.uiX + s.unit / 2, s.pixelHeight),
         this.size,
         Direction.Direction.UP,
         [
-          new PingTextProvider(client),
-          new FpsTextProvider(),
-          new TickTextProvider(this),
-          new UnackedInputTextProvider(this),
-          new NetUsageRenderer(this.client),
-          new UnitSizeTextProvider(this),
+          pingTextProvider(client),
+          fpsTextProvider(),
+          tickTextProvider(this),
+          unackedInputTextProvider(this),
+          netUsageRenderer(this.client),
+          unitSizeTextProvider(this),
           positionTextRenderer(this),
         ]
       )
@@ -123,8 +123,8 @@ export default class Game {
       ));
     }
 
-    for (let tick of this.renderers) {
-      tick.update(event);
+    for (let renderer of this.renderers) {
+      renderer(event);
     }
   }
 

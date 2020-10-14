@@ -1,17 +1,11 @@
+import {EntityState} from '../../../../lib/src/data/entity/EntityState.js';
 import {degToRad} from '../../../../lib/src/data/primitives/Direction.js';
-import { EntityState } from '../../../../lib/src/data/entity/EntityState.js';
 import * as World from '../../../../lib/src/data/World.js';
 import helper from './helper.js';
 
-export default class ThisIsYouRenderer {
-
-  constructor(ctx, game) {
-    this.ctx = ctx;
-    this.game = game;
-  }
-
-  update(event) {
-    const tank = World.findTank(this.game.match.world, this.game.id);
+export default function(ctx, game) {
+  return event => {
+    const tank = World.findTank(game.match.world, game.id);
     if (!tank) {
       return;
     }
@@ -20,10 +14,8 @@ export default class ThisIsYouRenderer {
       return;
     }
 
-    const ctx = this.ctx;
-
-    const gameSize = this.game.size;
-    const position = helper.offset(tank.position, this.game.ownPosition());
+    const gameSize = game.size;
+    const position = helper.offset(tank.position, game.ownPosition());
     const x = position.x;
     const y = position.y;
     const size = tank.size * gameSize.unit;
@@ -57,7 +49,5 @@ export default class ThisIsYouRenderer {
     ctx.lineWidth = 1;
 
     ctx.resetTransform();
-
-  }
-
+  };
 }
