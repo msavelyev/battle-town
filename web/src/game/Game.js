@@ -1,6 +1,6 @@
 import * as Direction from '../../../lib/src/data/primitives/Direction.js';
 import * as Match from '../../../lib/src/data/Match.js';
-import * as Point from '../../../lib/src/data/primitives/Point.js';
+import Point from '../../../lib/src/data/primitives/Point.js';
 import * as World from '../../../lib/src/data/World.js';
 import * as TankMove from '../../../lib/src/event/TankMove.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
@@ -13,11 +13,13 @@ import StoneRenderer from './renderer/blocks/StoneRenderer.js';
 import WaterRenderer from './renderer/blocks/WaterRenderer.js';
 import BulletRenderer from './renderer/BulletRenderer.js';
 import ExplosionsRenderer from './renderer/ExplosionsRenderer.js';
+import uiBgRenderer from './renderer/func/uiBgRenderer.js';
 import MatchStateRenderer from './renderer/MatchStateRenderer.js';
 import SpawnInRenderer from './renderer/SpawnInRenderer.js';
 import EmptyTextProvider from './renderer/text/EmptyTextProvider.js';
 import MatchTimeTextProvider from './renderer/text/MatchTimeTextProvider.js';
 import NetUsageRenderer from './renderer/text/NetUsageTextProvider.js';
+import positionTextRenderer from './renderer/text/positionTextRenderer.js';
 import ScoreTextProvider from './renderer/text/ScoreTextProvider.js';
 import TankRenderer from './renderer/TankRenderer.js';
 import FpsTextProvider from './renderer/text/FpsTextProvider.js';
@@ -35,6 +37,7 @@ export default class Game {
     this.match = conf.match;
     this.size = size;
 
+    /** @type {Match} */
     this.match = copy(this.match, {
       world: copy(this.match.world, {
         authoritative: false
@@ -52,6 +55,21 @@ export default class Game {
       new BulletRenderer(ctx, this, sprites),
       new TankRenderer(ctx, this, sprites),
       new JungleRenderer(ctx, this, sprites),
+      new ExplosionsRenderer(ctx, this, sprites),
+
+      new SpawnInRenderer(
+        ctx,
+        this,
+        s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2)
+      ),
+      new MatchStateRenderer(
+        ctx,
+        this,
+        s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2)
+      ),
+      new ThisIsYouRenderer(ctx, this),
+
+      uiBgRenderer(ctx, this.size),
 
       new TextRenderer(
         ctx,
@@ -65,17 +83,6 @@ export default class Game {
         ]
       ),
 
-      new ExplosionsRenderer(ctx, this, sprites),
-      new SpawnInRenderer(
-        ctx,
-        this,
-        s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2)
-      ),
-      new MatchStateRenderer(
-        ctx,
-        this,
-        s => Point.create(s.pixelWidth / 2, s.pixelHeight / 2)
-      ),
       new TextRenderer(
         ctx,
         s => Point.create(s.uiX + s.unit / 2, s.pixelHeight),
@@ -87,11 +94,10 @@ export default class Game {
           new TickTextProvider(this),
           new UnackedInputTextProvider(this),
           new NetUsageRenderer(this.client),
-          new UnitSizeTextProvider(this)
+          new UnitSizeTextProvider(this),
+          positionTextRenderer(this),
         ]
-      ),
-
-      new ThisIsYouRenderer(ctx, this)
+      )
     ];
 
     this.moving = false;
@@ -170,6 +176,15 @@ export default class Game {
     for (let key of Object.keys(size)) {
       this.size[key] = size[key];
     }
+  }
+
+  ownPosition() {
+    const tank = World.findTank(this.match.world, this.id);
+    if (tank) {
+      return tank.position;
+    }
+
+    return null;
   }
 
 }

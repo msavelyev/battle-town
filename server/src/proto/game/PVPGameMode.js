@@ -13,7 +13,7 @@ import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
 import {copy} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import database from '../../database.js';
-import level from '../../level.js';
+import level from '../../level/level.js';
 import GameMode from './GameMode.js';
 import Player from './Player.js';
 import * as Room from './Room.js';

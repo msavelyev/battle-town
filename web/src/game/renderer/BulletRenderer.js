@@ -1,6 +1,7 @@
 import * as Bullet from '../../../../lib/src/data/entity/Bullet.js';
 import * as Direction from '../../../../lib/src/data/primitives/Direction.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
+import helper from './helper.js';
 import {SPRITES} from './sprites.js';
 import * as sprites from './sprites.js';
 
@@ -20,8 +21,14 @@ export default class BulletRenderer {
 
   drawBullet(ctx, tick, bullet) {
     const gameSize = this.game.size;
-    const x = bullet.position.x;
-    const y = bullet.position.y;
+    const position = helper.offset(bullet.position, this.game.ownPosition());
+
+    if (helper.outsideVisibleBoundaries(position)) {
+      return;
+    }
+
+    const x = position.x;
+    const y = position.y;
     const width = bullet.width * gameSize.unit;
     const height = bullet.height * gameSize.unit
     const img = this.sprites[gameSize.unit][SPRITES.BULLET];

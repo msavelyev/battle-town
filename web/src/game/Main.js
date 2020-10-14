@@ -2,7 +2,7 @@ import EventType from '../../../lib/src/proto/EventType.js';
 import MessageType from '../../../lib/src/proto/MessageType.js';
 import * as Ticker from '../../../lib/src/Ticker.js';
 import {assign} from '../../../lib/src/util/immutable.js';
-import level from '../../../server/src/level.js';
+import level from '../../../server/src/level/level.js';
 import Game from './Game.js';
 import Input from './Input.js';
 

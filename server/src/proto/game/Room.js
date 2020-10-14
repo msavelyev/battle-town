@@ -8,7 +8,7 @@ import * as BlockUpdate from '../../../../lib/src/data/worldevent/BlockUpdate.js
 import * as UserDisconnect from '../../../../lib/src/data/worldevent/UserDisconnect.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import { NetMessage } from '../../../../lib/src/proto/NetMessage.js';
-import {copy} from '../../../../lib/src/util/immutable.js';
+import {copy, filter} from '../../../../lib/src/util/immutable.js';
 import log from '../../../../lib/src/util/log.js';
 import ClientMessage from './event/ClientMessage.js';
 import Connect from './event/Connect.js';
@@ -27,6 +27,7 @@ export function create(id, tick) {
     ),
     queue: [],
     finished: false,
+    onConnect() { },
   };
 }
 
@@ -52,11 +53,15 @@ export function update(room, event, beforeWorld, onKill) {
 
   room.queue = [];
 
-  broadcast(room, MessageType.TICK, TickData.create(
-    event.tick,
-    updates,
-    JSON.parse(JSON.stringify(room.match.ack)),
-  ));
+  broadcast(room, MessageType.TICK, playerId => {
+    return TickData.create(
+      event.tick,
+      filter(updates, update => {
+        return update.target === null || update.target === playerId;
+      }),
+      JSON.parse(JSON.stringify(room.match.ack)),
+    )
+  });
 }
 
 export function isEmpty(room) {
@@ -80,8 +85,9 @@ export function remove(room, player) {
   room.queue.push(new Disconnect(player));
 }
 
-function broadcast(room, name, data) {
+function broadcast(room, name, dataFn) {
   room.players.forEach(player => {
+    const data = dataFn(player.user.id);
     player.client.sendMessage(NetMessage(player.user.id, name, data));
   });
 }
@@ -128,6 +134,7 @@ function handleRoomEvent(room, roomEvent, tick, updates) {
       log.info('added player', user.id, 'to room', room.id);
       room.match = Match.addUser(room.match, Player.shortUser(player), tick, updates);
       updates.push(UserConnect.create(user.id, user.name));
+      room.onConnect(room, user.id, updates);
     }
       break;
     case RoomEventType.DISCONNECT:

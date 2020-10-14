@@ -1,6 +1,7 @@
 import {degToRad} from '../../../../lib/src/data/primitives/Direction.js';
 import { EntityState } from '../../../../lib/src/data/entity/EntityState.js';
 import * as World from '../../../../lib/src/data/World.js';
+import helper from './helper.js';
 
 export default class ThisIsYouRenderer {
 
@@ -22,8 +23,9 @@ export default class ThisIsYouRenderer {
     const ctx = this.ctx;
 
     const gameSize = this.game.size;
-    const x = tank.position.x;
-    const y = tank.position.y;
+    const position = helper.offset(tank.position, this.game.ownPosition());
+    const x = position.x;
+    const y = position.y;
     const size = tank.size * gameSize.unit;
 
     ctx.setTransform(1, 0, 0, 1, x * gameSize.unit, y * gameSize.unit);

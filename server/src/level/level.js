@@ -1,8 +1,8 @@
-import * as Block from '../../lib/src/data/entity/Block.js';
-import {BlockType} from '../../lib/src/data/entity/BlockType.js';
-import * as Point from '../../lib/src/data/primitives/Point.js';
-import {SETTINGS} from '../../lib/src/util/dotenv.js';
-import * as rand from '../../lib/src/util/rand.js';
+import * as Block from '../../../lib/src/data/entity/Block.js';
+import {BlockType} from '../../../lib/src/data/entity/BlockType.js';
+import Point from '../../../lib/src/data/primitives/Point.js';
+import {SETTINGS} from '../../../lib/src/util/dotenv.js';
+import * as rand from '../../../lib/src/util/rand.js';
 
 export const DEBUG_LEVEL = `
 1111111111111111111111111
@@ -144,59 +144,31 @@ const BRICK_SIZE = BLOCK_SIZE / BRICKS_PER_CELL;
 function iterate(levelDef, cb) {
   levelDef.trim().split('\n').forEach((row, y) => {
     row.trim().split('').forEach((cell, x) => {
-      cb(x, y, cell);
+      cb(x * BLOCKS_PER_CELL * BLOCK_SIZE, y * BLOCKS_PER_CELL * BLOCK_SIZE, cell);
     });
   });
 }
 
-function createLevel(level) {
+function blockId(point) {
+  return `(${point.x};${point.y})`;
+}
+
+function createLevel(levelDef) {
   const blocks = [];
 
-  let blockId = 0;
-
-  const getBlockId = () => blockId++;
-
-  iterate(level, (x, y, cell) => {
+  iterate(levelDef, (x, y, cell) => {
+    /** @type {BlockType} */
     const blockType = parseInt(cell);
 
-    if (blockType === BlockType.EMPTY) {
-      return;
-    }
-
-    if (blockType === BlockType.SPAWN) {
-      const point = Point.create(x * BLOCKS_PER_CELL * BLOCK_SIZE, y * BLOCKS_PER_CELL * BLOCK_SIZE);
-      blocks.push(Block.create(getBlockId(), point, blockType, BLOCK_SIZE));
-      return;
-    }
-
-    if (blockType === BlockType.BRICK) {
-      for (let dx = 0; dx < BRICKS_PER_CELL; dx++) {
-        for (let dy = 0; dy < BRICKS_PER_CELL; dy++) {
-          const point = Point.create(
-            x * BLOCKS_PER_CELL * BLOCK_SIZE + dx * BRICK_SIZE,
-            y * BLOCKS_PER_CELL * BLOCK_SIZE + dy * BRICK_SIZE
-          );
-          blocks.push(Block.create(getBlockId(), point, brickSubtype(dx, dy), BRICK_SIZE));
-        }
-      }
-      return;
-    }
-
-    for (let dx = 0; dx < BLOCKS_PER_CELL; dx++) {
-      for (let dy = 0; dy < BLOCKS_PER_CELL; dy++) {
-        const point = Point.create(
-          x * BLOCKS_PER_CELL * BLOCK_SIZE + dx,
-          y * BLOCKS_PER_CELL * BLOCK_SIZE + dy
-        );
-        blocks.push(Block.create(getBlockId(), point, blockType, BLOCK_SIZE));
-      }
+    for (let block of level.createBlocksForPoint(Point.create(x, y), blockType)) {
+      blocks.push(block);
     }
   });
 
   return blocks;
 }
 
-export default Object.freeze({
+const level = Object.freeze({
   choose: () => {
     return rand.randomInt(0, LEVELS.length - 1)
   },
@@ -212,8 +184,45 @@ export default Object.freeze({
     return createLevel(FFA_LEVEL)
   },
 
+  BLOCK_SIZE,
+
   WIDTH: WIDTH * BLOCKS_PER_CELL * BLOCK_SIZE,
   HEIGHT: HEIGHT * BLOCKS_PER_CELL * BLOCK_SIZE,
 
-  iterate: iterate
+  iterate: iterate,
+
+  createBlocksForPoint(start, blockType) {
+    const x = start.x;
+    const y = start.y;
+
+    if (blockType === BlockType.EMPTY) {
+      return [];
+    }
+
+    if (blockType === BlockType.SPAWN) {
+      return [Block.create(blockId(start), start, blockType, BLOCK_SIZE)];
+    }
+
+    if (blockType === BlockType.BRICK) {
+      const result = [];
+      for (let dx = 0; dx < BRICKS_PER_CELL; dx++) {
+        for (let dy = 0; dy < BRICKS_PER_CELL; dy++) {
+          const point = Point.create(x + dx * BRICK_SIZE, y + dy * BRICK_SIZE);
+          result.push(Block.create(blockId(point), point, brickSubtype(dx, dy), BRICK_SIZE));
+        }
+      }
+      return result;
+    }
+
+    const result = []
+    for (let dx = 0; dx < BLOCKS_PER_CELL; dx++) {
+      for (let dy = 0; dy < BLOCKS_PER_CELL; dy++) {
+        const point = Point.create(x + dx, y + dy);
+        result.push(Block.create(blockId(point), point, blockType, BLOCK_SIZE));
+      }
+    }
+    return result;
+  }
+
 });
+export default level;

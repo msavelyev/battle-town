@@ -1,4 +1,5 @@
 import {EntityState} from '../../../../../lib/src/data/entity/EntityState.js';
+import helper from '../helper.js';
 import * as sprites from '../sprites.js';
 
 export default class BlockRenderer {
@@ -26,7 +27,14 @@ export default class BlockRenderer {
   drawBlock(ctx, block, event) {
     const gameSize = this.game.size;
     const size = block.size * gameSize.unit;
-    ctx.setTransform(1, 0, 0, 1, block.position.x * gameSize.unit, block.position.y * gameSize.unit);
+
+    const position = helper.offset(block.position, this.game.ownPosition());
+
+    if (helper.outsideVisibleBoundaries(position)) {
+      return;
+    }
+
+    ctx.setTransform(1, 0, 0, 1, position.x * gameSize.unit, position.y * gameSize.unit);
     if (block.state === EntityState.REVIVING) {
       ctx.globalAlpha = 0.5;
     }

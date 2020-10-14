@@ -2,10 +2,13 @@ import * as Configuration from '../../../../lib/src/data/Configuration.js';
 import * as Match from '../../../../lib/src/data/Match.js';
 import * as MatchState from '../../../../lib/src/data/MatchState.js';
 import * as World from '../../../../lib/src/data/World.js';
+import BlockVisible from '../../../../lib/src/data/worldevent/BlockVisible.js';
 import EventType from '../../../../lib/src/proto/EventType.js';
 import MessageType from '../../../../lib/src/proto/MessageType.js';
 import {NetMessage} from '../../../../lib/src/proto/NetMessage.js';
 import {array, copy} from '../../../../lib/src/util/immutable.js';
+import log from '../../../../lib/src/util/log.js';
+import infiniteLevel from '../../level/infiniteLevel.js';
 import ReviveBlocks from './event/ReviveBlocks.js';
 import * as Room from './Room.js';
 
@@ -20,6 +23,7 @@ export default class PVEGameMode {
 
   init() {
     this.room = Room.create('PVE', this.ticker.tick);
+    this.room.onConnect = this.onConnect.bind(this);
     let match = this.room.match;
     let world = match.world;
     world = World.resetLevel(world, array());
@@ -83,6 +87,21 @@ export default class PVEGameMode {
 
   stop() {
     clearInterval(this.blockReviveInterval);
+  }
+
+  onConnect(room, userId, updates) {
+    let world = this.room.match.world;
+    let tank = World.findTank(world, userId);
+    log.info('found tank', tank);
+
+    for (const block of infiniteLevel.initBlocks(tank.position)) {
+      world = World.updateBlockVisibility(world, block, +1);
+      updates.push(BlockVisible.create(block, userId));
+    }
+
+    this.room.match = copy(this.room.match, {
+      world,
+    });
   }
 
 }

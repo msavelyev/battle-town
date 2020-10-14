@@ -4,6 +4,7 @@ import {EntityState} from '../../../../lib/src/data/entity/EntityState.js';
 import * as Direction from '../../../../lib/src/data/primitives/Direction.js';
 import * as World from '../../../../lib/src/data/World.js';
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
+import helper from './helper.js';
 import * as sprites from './sprites.js';
 import {SPRITES} from './sprites.js';
 
@@ -36,8 +37,14 @@ export default class TankRenderer {
 
   drawTank(ctx, event, tank) {
     const gameSize = this.game.size;
-    const x = tank.position.x;
-    const y = tank.position.y;
+    const position = helper.offset(tank.position, this.game.ownPosition());
+
+    if (helper.outsideVisibleBoundaries(position)) {
+      return;
+    }
+
+    const x = position.x;
+    const y = position.y;
     const size = tank.size * gameSize.unit;
 
     if (tank.state === EntityState.REVIVING) {

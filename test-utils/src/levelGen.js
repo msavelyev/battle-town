@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { BlockType } from '../../lib/src/data/entity/BlockType.js';
 import * as Direction from '../../lib/src/data/primitives/Direction.js';
-import * as Point from '../../lib/src/data/primitives/Point.js';
+import Point from '../../lib/src/data/primitives/Point.js';
 import * as rand from '../../lib/src/util/rand.js';
 
 function print() {

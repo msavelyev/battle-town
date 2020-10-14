@@ -1,4 +1,5 @@
 import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
+import helper from './helper.js';
 import {SPRITES} from './sprites.js';
 import * as sprites from './sprites.js';
 
@@ -13,8 +14,14 @@ export default class ExplosionsRenderer {
   update(event) {
     for (let explosion of this.game.match.world.explosions) {
       const gameSize = this.game.size;
-      const x = explosion.position.x;
-      const y = explosion.position.y;
+      const position = helper.offset(explosion.position, this.game.ownPosition());
+
+      if (helper.outsideVisibleBoundaries(position)) {
+        continue;
+      }
+
+      const x = position.x;
+      const y = position.y;
       const size = explosion.size * gameSize.unit;
       this.ctx.setTransform(1, 0, 0, 1, x * gameSize.unit, y * gameSize.unit);
       sprites.draw(
