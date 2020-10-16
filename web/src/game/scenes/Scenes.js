@@ -1,4 +1,4 @@
-import log from '../../../../lib/src/util/log.js';
+import log from '../../../../lib/src/tanks/lib/util/log.js';
 import Loading from './Loading.js';
 
 export default class Scenes {

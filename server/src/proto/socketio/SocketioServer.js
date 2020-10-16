@@ -1,5 +1,5 @@
 import IO from 'socket.io';
-import protocol from '../../../../lib/src/lang/protocol.js';
+import protocol from '../../../../lib/src/tanks/lib/lang/protocol.js';
 import netServer from '../base/NetServer.js';
 import SocketioClient from './SocketioClient.js';
 

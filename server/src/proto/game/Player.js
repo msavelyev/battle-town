@@ -1,4 +1,4 @@
-import EventType from '../../../../lib/src/proto/EventType.js';
+import EventType from '../../../../lib/src/tanks/lib/proto/EventType.js';
 import BotClient from '../base/BotClient.js';
 import NetClient from '../base/NetClient.js';
 

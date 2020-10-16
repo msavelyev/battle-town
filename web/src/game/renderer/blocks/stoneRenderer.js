@@ -1,4 +1,4 @@
-import {BlockType} from '../../../../../lib/src/data/entity/BlockType.js';
+import {BlockType} from '../../../../../lib/src/tanks/lib/data/entity/BlockType.js';
 import {SPRITES} from '../sprites.js';
 import blockRenderer from './blockRenderer.js';
 

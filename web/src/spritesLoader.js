@@ -1,5 +1,5 @@
 
-import {createCb, onAllReady} from '../../lib/src/util/async.js';
+import {createCb, onAllReady} from '../../lib/src/tanks/lib/util/async.js';
 import {createSpriteSheet} from '../public/free-sprites.js';
 import sprites1x from '../public/free-sprites.png';
 import sprites2x from '../public/free-sprites-2x.png';

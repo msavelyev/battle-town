@@ -1,7 +1,7 @@
 import userStorage from '../userStorage.js';
 import api from '../api.js';
 import Scene from './Scene.js';
-import analytics from '../../../../lib/src/util/analytics.js';
+import analytics from '../../../../lib/src/tanks/lib/util/analytics.js';
 
 import './Loading.css';
 

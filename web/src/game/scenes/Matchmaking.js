@@ -1,10 +1,10 @@
-import {convertToTime} from '../../../../lib/src/util/time.js';
+import {convertToTime} from '../../../../lib/src/tanks/lib/util/time.js';
 import Scene from './Scene.js';
 import Client from '../proto/Client.js';
 import SocketioClient from '../proto/SocketioClient.js';
-import EventType from '../../../../lib/src/proto/EventType.js';
-import MessageType from '../../../../lib/src/proto/MessageType.js';
-import analytics from '../../../../lib/src/util/analytics.js';
+import EventType from '../../../../lib/src/tanks/lib/proto/EventType.js';
+import MessageType from '../../../../lib/src/tanks/lib/proto/MessageType.js';
+import analytics from '../../../../lib/src/tanks/lib/util/analytics.js';
 
 import './Matchmaking.css';
 

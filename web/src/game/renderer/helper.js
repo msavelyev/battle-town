@@ -1,4 +1,4 @@
-import Point from '../../../../lib/src/data/primitives/Point.js';
+import Point from '../../../../lib/src/tanks/lib/data/primitives/Point.js';
 import Level from '../../../../server/src/level/Level.js';
 
 const helper = {

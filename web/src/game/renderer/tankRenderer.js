@@ -1,9 +1,9 @@
-import {BlockType} from '../../../../lib/src/data/entity/BlockType.js';
-import * as Entity from '../../../../lib/src/data/entity/Entity.js';
-import {EntityState} from '../../../../lib/src/data/entity/EntityState.js';
-import * as Direction from '../../../../lib/src/data/primitives/Direction.js';
-import * as World from '../../../../lib/src/data/World.js';
-import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
+import {BlockType} from '../../../../lib/src/tanks/lib/data/entity/BlockType.js';
+import * as Entity from '../../../../lib/src/tanks/lib/data/entity/Entity.js';
+import {EntityState} from '../../../../lib/src/tanks/lib/data/entity/EntityState.js';
+import * as Direction from '../../../../lib/src/tanks/lib/data/primitives/Direction.js';
+import * as World from '../../../../lib/src/tanks/lib/data/World.js';
+import {SETTINGS} from '../../../../lib/src/tanks/lib/util/dotenv.js';
 import helper from './helper.js';
 import * as sprites from './sprites.js';
 import {SPRITES} from './sprites.js';

@@ -1,9 +1,9 @@
 import io from 'socket.io-client';
-import protocol from '../../../../lib/src/lang/protocol.js';
+import protocol from '../../../../lib/src/tanks/lib/lang/protocol.js';
 import NetClient from './NetClient.js';
-import NetMessage from '../../../../lib/src/proto/NetMessage.js';
-import EventType from '../../../../lib/src/proto/EventType.js';
-import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
+import NetMessage from '../../../../lib/src/tanks/lib/proto/NetMessage.js';
+import EventType from '../../../../lib/src/tanks/lib/proto/EventType.js';
+import {SETTINGS} from '../../../../lib/src/tanks/lib/util/dotenv.js';
 import NetUsage from './NetUsage.js';
 
 function sendNetMessage(netClient, netMessage) {

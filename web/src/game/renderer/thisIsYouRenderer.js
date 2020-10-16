@@ -1,6 +1,6 @@
-import {EntityState} from '../../../../lib/src/data/entity/EntityState.js';
-import {degToRad} from '../../../../lib/src/data/primitives/Direction.js';
-import * as World from '../../../../lib/src/data/World.js';
+import {EntityState} from '../../../../lib/src/tanks/lib/data/entity/EntityState.js';
+import {degToRad} from '../../../../lib/src/tanks/lib/data/primitives/Direction.js';
+import * as World from '../../../../lib/src/tanks/lib/data/World.js';
 import helper from './helper.js';
 
 export default function(ctx, game) {

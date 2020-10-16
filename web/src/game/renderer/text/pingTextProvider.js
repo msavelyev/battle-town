@@ -1,4 +1,4 @@
-import MessageType from '../../../../../lib/src/proto/MessageType.js';
+import MessageType from '../../../../../lib/src/tanks/lib/proto/MessageType.js';
 import Client from '../../proto/Client.js';
 
 export default function(client) {

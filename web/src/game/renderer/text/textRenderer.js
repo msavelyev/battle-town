@@ -1,4 +1,4 @@
-import * as Direction from '../../../../../lib/src/data/primitives/Direction.js';
+import * as Direction from '../../../../../lib/src/tanks/lib/data/primitives/Direction.js';
 import {renderText} from '../text.js';
 
 function baseline(direction) {

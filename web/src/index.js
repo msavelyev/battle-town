@@ -6,8 +6,8 @@ import Matchmaking from './game/scenes/Matchmaking.js';
 import Disconnected from './game/scenes/Disconnected.js';
 import userStorage from './game/userStorage.js';
 
-import dotenv, {SETTINGS} from '../../lib/src/util/dotenv.js';
-import analytics from '../../lib/src/util/analytics.js';
+import dotenv, {SETTINGS} from '../../lib/src/tanks/lib/util/dotenv.js';
+import analytics from '../../lib/src/tanks/lib/util/analytics.js';
 
 import landscapeSvg from '../public/imgs/landscape.svg';
 import '../public/main.css';

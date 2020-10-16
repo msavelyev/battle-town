@@ -1,4 +1,4 @@
-import {EntityState} from '../../../../../lib/src/data/entity/EntityState.js';
+import {EntityState} from '../../../../../lib/src/tanks/lib/data/entity/EntityState.js';
 import helper from '../helper.js';
 import * as sprites from '../sprites.js';
 

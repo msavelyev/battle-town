@@ -1,5 +1,5 @@
-import MessageType from '../../../../lib/src/proto/MessageType.js';
-import EventType from '../../../../lib/src/proto/EventType.js';
+import MessageType from '../../../../lib/src/tanks/lib/proto/MessageType.js';
+import EventType from '../../../../lib/src/tanks/lib/proto/EventType.js';
 import NetClient from './NetClient.js';
 
 function create(netClient) {

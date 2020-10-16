@@ -1,6 +1,6 @@
-import * as Bullet from '../../../../lib/src/data/entity/Bullet.js';
-import * as Direction from '../../../../lib/src/data/primitives/Direction.js';
-import {SETTINGS} from '../../../../lib/src/util/dotenv.js';
+import * as Bullet from '../../../../lib/src/tanks/lib/data/entity/Bullet.js';
+import * as Direction from '../../../../lib/src/tanks/lib/data/primitives/Direction.js';
+import {SETTINGS} from '../../../../lib/src/tanks/lib/util/dotenv.js';
 import helper from './helper.js';
 import * as sprites from './sprites.js';
 import {SPRITES} from './sprites.js';

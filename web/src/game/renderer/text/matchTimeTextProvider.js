@@ -1,7 +1,7 @@
-import * as MatchState from '../../../../../lib/src/data/MatchState.js';
-import {FPS} from '../../../../../lib/src/Ticker.js';
-import {SETTINGS} from '../../../../../lib/src/util/dotenv.js';
-import {convertToTime} from '../../../../../lib/src/util/time.js';
+import * as MatchState from '../../../../../lib/src/tanks/lib/data/MatchState.js';
+import {FPS} from '../../../../../lib/src/tanks/lib/Ticker.js';
+import {SETTINGS} from '../../../../../lib/src/tanks/lib/util/dotenv.js';
+import {convertToTime} from '../../../../../lib/src/tanks/lib/util/time.js';
 
 const PREFIX = 'time left: ';
 

@@ -1,7 +1,7 @@
 import Main from '../Main.js';
 import * as sprites from '../renderer/sprites.js';
 import Scene from './Scene.js';
-import analytics from '../../../../lib/src/util/analytics.js';
+import analytics from '../../../../lib/src/tanks/lib/util/analytics.js';
 
 export default class GameScene extends Scene {
 

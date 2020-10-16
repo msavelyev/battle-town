@@ -1,7 +1,7 @@
-import {DEAD_TICKS} from '../../../../lib/src/data/entity/Entity.js';
-import {EntityState} from '../../../../lib/src/data/entity/EntityState.js';
-import * as World from '../../../../lib/src/data/World.js';
-import * as Ticker from '../../../../lib/src/Ticker.js';
+import {DEAD_TICKS} from '../../../../lib/src/tanks/lib/data/entity/Entity.js';
+import {EntityState} from '../../../../lib/src/tanks/lib/data/entity/EntityState.js';
+import * as World from '../../../../lib/src/tanks/lib/data/World.js';
+import * as Ticker from '../../../../lib/src/tanks/lib/Ticker.js';
 import {renderText} from './text.js';
 
 function createText(game, tank) {

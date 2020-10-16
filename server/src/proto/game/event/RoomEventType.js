@@ -1,4 +1,4 @@
-import { freeze } from '../../../../../lib/src/util/immutable.js';
+import { freeze } from '../../../../../lib/src/tanks/lib/util/immutable.js';
 
 export default freeze({
   CONNECT: 'connect',

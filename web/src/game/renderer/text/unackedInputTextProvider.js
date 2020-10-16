@@ -1,4 +1,4 @@
-import {SETTINGS} from '../../../../../lib/src/util/dotenv.js';
+import {SETTINGS} from '../../../../../lib/src/tanks/lib/util/dotenv.js';
 
 export default function(game) {
   return () => {
