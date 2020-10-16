@@ -11,12 +11,12 @@
     "@Server": "-"
   },
   "scripts": {
-    "start": "node src/tanks/server/index.js",
+    "start": "node src/js/tanks/server/index.js",
     "postinstall": "link-module-alias"
   },
   "_moduleAliases": {
-    "@Server": "src",
-    "@Lib": "../lib/src"
+    "@Server": "src/js",
+    "@Lib": "../lib/src/js"
   },
   "devDependencies": {
     "link-module-alias": "^1.2.0"

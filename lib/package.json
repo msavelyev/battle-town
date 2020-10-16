@@ -9,8 +9,8 @@
     "postinstall": "link-module-alias"
   },
   "_moduleAliases": {
-    "@Lib": "src",
-    "@Server": "../server/src"
+    "@Lib": "src/js",
+    "@Server": "../server/src/js"
   },
   "devDependencies": {
     "link-module-alias": "^1.2.0"
