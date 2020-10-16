@@ -9,6 +9,7 @@ module.exports = {
   entry: {
     index: '../web/src/js/tanks/client/index.js',
   },
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
     port: 1234,
@@ -39,6 +40,11 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        enforce: 'pre',
+        use: ['source-map-loader'],
+      },
       {
         test: /\.css$/,
         use: [

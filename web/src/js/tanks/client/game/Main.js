@@ -7,6 +7,8 @@ import Game from '@Client/tanks/client/game/Game.js';
 import Input from '@Client/tanks/client/game/Input.js';
 import Client from '@Client/tanks/client/game/proto/Client.js';
 
+import gameloop from '@Cljs/code/tanks.client.gameloop.js';
+
 const UI_WIDTH = 22;
 
 function updateSize(size) {
@@ -58,7 +60,13 @@ export default class Main {
       window.setInterval.bind(null),
       window.performance.now.bind(window.performance)
     );
-    Ticker.start(this.ticker, this.game);
+    const gameLoop = gameloop.create_game_loop(
+      this.game,
+      ctx,
+      this.input,
+      gameloop.create_client(Client, this.client)
+    );
+    Ticker.start(this.ticker, gameLoop);
   }
 
   disconnect() {

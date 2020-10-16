@@ -13,6 +13,7 @@
       :entries [
         tanks.lib.data
         tanks.client.renderer
+        tanks.client.gameloop
       ]
       :output-dir "src/gen/code" ;; node doesn't want to use a module with just js files in the root
     }
