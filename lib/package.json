@@ -1,17 +1,6 @@
 {
   "dependencies": {
-    "uuid": "^8.3.0",
-    "@Lib": "-",
-    "@Server": "-"
+    "uuid": "^8.3.0"
   },
-  "scripts": {
-    "postinstall": "link-module-alias"
-  },
-  "_moduleAliases": {
-    "@Lib": "src/js",
-    "@Server": "../server/src/js"
-  },
-  "devDependencies": {
-    "link-module-alias": "^1.2.0"
-  }
+  "devDependencies": {}
 }

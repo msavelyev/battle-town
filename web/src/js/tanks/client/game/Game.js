@@ -30,7 +30,8 @@ import unackedInputTextProvider from '@Client/tanks/client/game/renderer/text/un
 import unitSizeTextProvider from '@Client/tanks/client/game/renderer/text/unitSizeTextProvider.js';
 import thisIsYouRenderer from '@Client/tanks/client/game/renderer/thisIsYouRenderer.js';
 
-import renderer from '@ClientCljs/tanks.client.renderer.js';
+import renderer from '@Cljs/code/tanks.client.renderer.js';
+import data from '@Cljs/code/tanks.lib.data.js';
 
 export default class Game {
 
@@ -118,11 +119,12 @@ export default class Game {
 
     if (this.moving) {
       const move = TankMove.create(increaseTick(this.moveId, val => this.moveId = val), this.direction);
-      this.handleEvent(NetMessage(
+      const result = this.handleEvent(this.match, NetMessage(
         this.id,
         MessageType.MOVE,
         move
       ));
+      this.match = data.get_result(result);
     }
 
     for (let renderer of this.renderers) {
@@ -149,22 +151,24 @@ export default class Game {
     if (!tank) {
       return;
     }
-    this.handleEvent(NetMessage(
+    const result = this.handleEvent(this.match, NetMessage(
       this.id,
       MessageType.SHOOT,
       TankMove.create(increaseTick(this.moveId, val => this.moveId = val), tank.direction)
     ));
+    this.match = data.get_result(result);
   }
 
-  handleEvent(netMessage) {
+  handleEvent(match, netMessage) {
     const updates = [];
-    this.match = Match.handleEvent(this.match, netMessage, updates);
-    if (updates.length > 0) {
+    const result = Match.handleEvent(match, netMessage, updates);
+    match = data.get_result(result);
+    if (data.is_successful(result)) {
       Client.sendNetMessage(this.client, netMessage);
-      this.match = Match.addUnackedMessage(this.match, netMessage);
-      return true;
+      match = Match.addUnackedMessage(match, netMessage);
+      return data.modified_successfully(match);
     }
-    return false;
+    return data.modified_unsuccessfully(match);
   }
 
   onSync(tickData) {
