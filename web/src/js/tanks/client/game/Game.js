@@ -134,6 +134,11 @@ export default class Game {
       this.shoot();
     }
 
+    for (let tickData of Client.getTicks(this.client)) {
+      this.match = Match.sync(this.match, this.id, tickData);
+    }
+    Client.clearTicks(this.client);
+
     for (let renderer of this.renderers) {
       renderer(event);
     }
@@ -162,10 +167,6 @@ export default class Game {
       return data.modified_successfully(match);
     }
     return data.modified_unsuccessfully(match);
-  }
-
-  onSync(tickData) {
-    this.match = Match.sync(this.match, this.id, tickData);
   }
 
   stop() {

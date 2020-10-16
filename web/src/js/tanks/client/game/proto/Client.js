@@ -2,10 +2,13 @@ import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
 import NetClient from '@Client/tanks/client/game/proto/NetClient.js';
 
+import immutable from '@Lib/tanks/lib/util/immutable.js';
+
 function create(netClient) {
   const client = {
     netClient,
-    callbacks: {}
+    callbacks: {},
+    ticksQueue: immutable.array()
   };
 
   NetClient.on(netClient, EventType.MESSAGE, handleMessage.bind(null, client));
@@ -52,6 +55,18 @@ function sendEvent(client, eventType, payload) {
   NetClient.sendEvent(client.netClient, eventType, payload);
 }
 
+function storeTick(client, tickData) {
+  client.ticksQueue = immutable.push(client.ticksQueue, tickData);
+}
+
+function getTicks(client) {
+  return client.ticksQueue;
+}
+
+function clearTicks(client) {
+  client.ticksQueue = immutable.array();
+}
+
 export default {
   create,
   connect,
@@ -61,4 +76,7 @@ export default {
   onMessage,
   sendNetMessage,
   sendEvent,
+  storeTick,
+  getTicks,
+  clearTicks,
 };

@@ -50,7 +50,9 @@ export default class Main {
 
     this.input = new Input();
     this.game = new Game(ctx, this.client, this.sprites, conf, this.size, this.input);
-    Client.onMessage(this.client, MessageType.TICK, this.game.onSync.bind(this.game));
+    Client.onMessage(this.client, MessageType.TICK, tickData => {
+      Client.storeTick(this.client, tickData);
+    });
 
     this.ticker = Ticker.create(
       window.setInterval.bind(null),
