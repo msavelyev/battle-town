@@ -7,7 +7,7 @@ const TerserJSPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: '../web/src/index.js',
+    index: '../web/src/tanks/client/index.js',
   },
   devServer: {
     contentBase: './dist',
