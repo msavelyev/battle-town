@@ -1,5 +1,5 @@
 import https from 'https';
-import {SETTINGS} from '../../lib/src/tanks/lib/util/dotenv.js';
+import {SETTINGS} from '../../../../lib/src/tanks/lib/util/dotenv.js';
 
 function createUrl(apiKey, chatId, text) {
   text = encodeURIComponent(text);

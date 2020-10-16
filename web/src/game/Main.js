@@ -2,7 +2,7 @@ import EventType from '../../../lib/src/tanks/lib/proto/EventType.js';
 import MessageType from '../../../lib/src/tanks/lib/proto/MessageType.js';
 import * as Ticker from '../../../lib/src/tanks/lib/Ticker.js';
 import {assign} from '../../../lib/src/tanks/lib/util/immutable.js';
-import Level from '../../../server/src/level/Level.js';
+import Level from '../../../server/src/tanks/server/level/Level.js';
 import Game from './Game.js';
 import Input from './Input.js';
 import Client from './proto/Client.js';

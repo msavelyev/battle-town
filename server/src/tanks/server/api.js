@@ -1,5 +1,5 @@
 import {v4 as uuid} from 'uuid';
-import log from '../../lib/src/tanks/lib/util/log.js';
+import log from '../../../../lib/src/tanks/lib/util/log.js';
 import database from './database.js';
 import telegram from './telegram.js';
 import username from './username.js';

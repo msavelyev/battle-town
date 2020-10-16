@@ -1,8 +1,8 @@
 import * as process from 'process';
-import EventType from '../../../../lib/src/tanks/lib/proto/EventType.js';
-import {SETTINGS} from '../../../../lib/src/tanks/lib/util/dotenv.js';
-import * as Fps from '../../../../lib/src/tanks/lib/util/Fps.js';
-import log from '../../../../lib/src/tanks/lib/util/log.js';
+import EventType from '../../../../../../lib/src/tanks/lib/proto/EventType.js';
+import {SETTINGS} from '../../../../../../lib/src/tanks/lib/util/dotenv.js';
+import * as Fps from '../../../../../../lib/src/tanks/lib/util/Fps.js';
+import log from '../../../../../../lib/src/tanks/lib/util/log.js';
 import database from '../../database.js';
 import telegram from '../../telegram.js';
 import NetClient from '../base/NetClient.js';

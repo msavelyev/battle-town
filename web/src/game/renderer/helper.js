@@ -1,5 +1,5 @@
 import Point from '../../../../lib/src/tanks/lib/data/primitives/Point.js';
-import Level from '../../../../server/src/level/Level.js';
+import Level from '../../../../server/src/tanks/server/level/Level.js';
 
 const helper = {
   offset(point, center) {
