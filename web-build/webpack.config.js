@@ -32,6 +32,7 @@ module.exports = {
   resolve: {
     alias: {
       '@Client': path.resolve(__dirname, '../web/src/js'),
+      '@ClientCljs': path.resolve(__dirname, '../web/src/gen'),
       '@Server': path.resolve(__dirname, '../server/src/js'),
       '@Lib': path.resolve(__dirname, '../lib/src/js'),
     }

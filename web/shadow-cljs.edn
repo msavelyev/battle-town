@@ -1,0 +1,19 @@
+;; shadow-cljs configuration
+{
+  :source-paths [
+    "src/cljs"
+  ]
+
+  :dependencies [
+  ]
+
+  :builds {
+    :code {
+      :target :npm-module
+      :entries [
+        tanks.client.renderer
+      ]
+      :output-dir "src/gen"
+    }
+  }
+}

@@ -14,7 +14,6 @@ import stoneRenderer from '@Client/tanks/client/game/renderer/blocks/stoneRender
 import waterRenderer from '@Client/tanks/client/game/renderer/blocks/waterRenderer.js';
 import bulletRenderer from '@Client/tanks/client/game/renderer/bulletRenderer.js';
 import explosionsRenderer from '@Client/tanks/client/game/renderer/explosionsRenderer.js';
-import uiBgRenderer from '@Client/tanks/client/game/renderer/uiBgRenderer.js';
 import matchStateRenderer from '@Client/tanks/client/game/renderer/matchStateRenderer.js';
 import spawnInRenderer from '@Client/tanks/client/game/renderer/spawnInRenderer.js';
 import emptyTextProvider from '@Client/tanks/client/game/renderer/text/emptyTextProvider.js';
@@ -30,6 +29,8 @@ import tickTextProvider from '@Client/tanks/client/game/renderer/text/tickTextPr
 import unackedInputTextProvider from '@Client/tanks/client/game/renderer/text/unackedInputTextProvider.js';
 import unitSizeTextProvider from '@Client/tanks/client/game/renderer/text/unitSizeTextProvider.js';
 import thisIsYouRenderer from '@Client/tanks/client/game/renderer/thisIsYouRenderer.js';
+
+import renderer from '@ClientCljs/tanks.client.renderer.js';
 
 export default class Game {
 
@@ -70,7 +71,7 @@ export default class Game {
       ),
       thisIsYouRenderer(ctx, this),
 
-      uiBgRenderer(ctx, this.size),
+      renderer.ui_bg_renderer(ctx, this.size),
 
       textRenderer(
         ctx,
