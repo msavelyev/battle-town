@@ -10,7 +10,7 @@
                     rgba(0, 0, 0, 0.7),
                     rgba(0, 0, 0, 0.7)
             ),
-            url('../../../../../public/menu-bg.png') no-repeat;
+            url('../../assets/menu-bg.png') no-repeat;
     background-size: cover;
 }
 

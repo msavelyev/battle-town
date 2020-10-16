@@ -1,15 +1,15 @@
 import * as process from 'process';
-import EventType from '../../../../../../lib/src/tanks/lib/proto/EventType.js';
-import {SETTINGS} from '../../../../../../lib/src/tanks/lib/util/dotenv.js';
-import * as Fps from '../../../../../../lib/src/tanks/lib/util/Fps.js';
-import log from '../../../../../../lib/src/tanks/lib/util/log.js';
-import database from '../../database.js';
-import telegram from '../../telegram.js';
-import NetClient from '../base/NetClient.js';
-import FFAGameMode from './FFAGameMode.js';
-import Player from './Player.js';
-import PVEGameMode from './PVEGameMode.js';
-import PVPGameMode from './PVPGameMode.js';
+import EventType from '@Lib/tanks/lib/proto/EventType.js';
+import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import * as Fps from '@Lib/tanks/lib/util/Fps.js';
+import log from '@Lib/tanks/lib/util/log.js';
+import database from '@Server/tanks/server/database.js';
+import telegram from '@Server/tanks/server/telegram.js';
+import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
+import FFAGameMode from '@Server/tanks/server/proto/game/FFAGameMode.js';
+import Player from '@Server/tanks/server/proto/game/Player.js';
+import PVEGameMode from '@Server/tanks/server/proto/game/PVEGameMode.js';
+import PVPGameMode from '@Server/tanks/server/proto/game/PVPGameMode.js';
 
 function createGameMode(db, ticker) {
   const gameMode = SETTINGS.GAME_MODE;

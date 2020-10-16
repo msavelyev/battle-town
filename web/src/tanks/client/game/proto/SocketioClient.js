@@ -1,10 +1,10 @@
 import io from 'socket.io-client';
-import protocol from '../../../../../../lib/src/tanks/lib/lang/protocol.js';
-import NetClient from './NetClient.js';
-import NetMessage from '../../../../../../lib/src/tanks/lib/proto/NetMessage.js';
-import EventType from '../../../../../../lib/src/tanks/lib/proto/EventType.js';
-import {SETTINGS} from '../../../../../../lib/src/tanks/lib/util/dotenv.js';
-import NetUsage from './NetUsage.js';
+import protocol from '@Lib/tanks/lib/lang/protocol.js';
+import NetClient from '@Client/tanks/client/game/proto/NetClient.js';
+import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
+import EventType from '@Lib/tanks/lib/proto/EventType.js';
+import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import NetUsage from '@Client/tanks/client/game/proto/NetUsage.js';
 
 function sendNetMessage(netClient, netMessage) {
   sendEvent(netClient, EventType.MESSAGE, netMessage);

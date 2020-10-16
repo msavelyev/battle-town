@@ -1,23 +1,23 @@
 import {v4 as uuid} from 'uuid';
-import * as Configuration from '../../../../../../lib/src/tanks/lib/data/Configuration.js';
-import * as Match from '../../../../../../lib/src/tanks/lib/data/Match.js';
-import * as MatchState from '../../../../../../lib/src/tanks/lib/data/MatchState.js';
-import * as World from '../../../../../../lib/src/tanks/lib/data/World.js';
-import * as Score from '../../../../../../lib/src/tanks/lib/data/worldevent/Score.js';
-import * as State from '../../../../../../lib/src/tanks/lib/data/worldevent/State.js';
-import * as TankRemove from '../../../../../../lib/src/tanks/lib/data/worldevent/TankRemove.js';
-import EventType from '../../../../../../lib/src/tanks/lib/proto/EventType.js';
-import MessageType from '../../../../../../lib/src/tanks/lib/proto/MessageType.js';
-import NetMessage from '../../../../../../lib/src/tanks/lib/proto/NetMessage.js';
-import {SETTINGS} from '../../../../../../lib/src/tanks/lib/util/dotenv.js';
-import {copy} from '../../../../../../lib/src/tanks/lib/util/immutable.js';
-import log from '../../../../../../lib/src/tanks/lib/util/log.js';
-import database from '../../database.js';
-import Level from '../../level/Level.js';
-import NetClient from '../base/NetClient.js';
-import GameMode from './GameMode.js';
-import Player from './Player.js';
-import * as Room from './Room.js';
+import * as Configuration from '@Lib/tanks/lib/data/Configuration.js';
+import * as Match from '@Lib/tanks/lib/data/Match.js';
+import * as MatchState from '@Lib/tanks/lib/data/MatchState.js';
+import * as World from '@Lib/tanks/lib/data/World.js';
+import * as Score from '@Lib/tanks/lib/data/worldevent/Score.js';
+import * as State from '@Lib/tanks/lib/data/worldevent/State.js';
+import * as TankRemove from '@Lib/tanks/lib/data/worldevent/TankRemove.js';
+import EventType from '@Lib/tanks/lib/proto/EventType.js';
+import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
+import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
+import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import {copy} from '@Lib/tanks/lib/util/immutable.js';
+import log from '@Lib/tanks/lib/util/log.js';
+import database from '@Server/tanks/server/database.js';
+import Level from '@Server/tanks/server/level/Level.js';
+import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
+import GameMode from '@Server/tanks/server/proto/game/GameMode.js';
+import Player from '@Server/tanks/server/proto/game/Player.js';
+import * as Room from '@Server/tanks/server/proto/game/Room.js';
 
 export default class PVPGameMode extends GameMode {
 

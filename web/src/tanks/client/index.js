@@ -1,19 +1,19 @@
-import MainMenu from './game/scenes/MainMenu.js';
-import Loading from './game/scenes/Loading.js';
-import GameScene from './game/scenes/GameScene.js';
-import Scenes from './game/scenes/Scenes.js';
-import Matchmaking from './game/scenes/Matchmaking.js';
-import Disconnected from './game/scenes/Disconnected.js';
-import userStorage from './game/userStorage.js';
+import MainMenu from '@Client/tanks/client/game/scenes/MainMenu.js';
+import Loading from '@Client/tanks/client/game/scenes/Loading.js';
+import GameScene from '@Client/tanks/client/game/scenes/GameScene.js';
+import Scenes from '@Client/tanks/client/game/scenes/Scenes.js';
+import Matchmaking from '@Client/tanks/client/game/scenes/Matchmaking.js';
+import Disconnected from '@Client/tanks/client/game/scenes/Disconnected.js';
+import userStorage from '@Client/tanks/client/game/userStorage.js';
 
-import dotenv, {SETTINGS} from '../../../../lib/src/tanks/lib/util/dotenv.js';
-import analytics from '../../../../lib/src/tanks/lib/util/analytics.js';
+import dotenv, {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import analytics from '@Lib/tanks/lib/util/analytics.js';
 
-import landscapeSvg from '../../../public/imgs/landscape.svg';
-import '../../../public/main.css';
-import * as spritesLoader from './spritesLoader.js';
+import landscapeSvg from '@Client/tanks/client/assets/imgs/landscape.svg';
+import '@Client/tanks/client/assets/main.css';
+import * as spritesLoader from '@Client/tanks/client/spritesLoader.js';
 
-import './polyfill/object-entries.js';
+import '@Client/tanks/client/polyfill/object-entries.js';
 
 analytics.init();
 

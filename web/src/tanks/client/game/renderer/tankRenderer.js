@@ -1,12 +1,12 @@
-import {BlockType} from '../../../../../../lib/src/tanks/lib/data/entity/BlockType.js';
-import * as Entity from '../../../../../../lib/src/tanks/lib/data/entity/Entity.js';
-import {EntityState} from '../../../../../../lib/src/tanks/lib/data/entity/EntityState.js';
-import * as Direction from '../../../../../../lib/src/tanks/lib/data/primitives/Direction.js';
-import * as World from '../../../../../../lib/src/tanks/lib/data/World.js';
-import {SETTINGS} from '../../../../../../lib/src/tanks/lib/util/dotenv.js';
-import helper from './helper.js';
-import * as sprites from './sprites.js';
-import {SPRITES} from './sprites.js';
+import {BlockType} from '@Lib/tanks/lib/data/entity/BlockType.js';
+import * as Entity from '@Lib/tanks/lib/data/entity/Entity.js';
+import {EntityState} from '@Lib/tanks/lib/data/entity/EntityState.js';
+import * as Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
+import * as World from '@Lib/tanks/lib/data/World.js';
+import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import helper from '@Client/tanks/client/game/renderer/helper.js';
+import * as sprites from '@Client/tanks/client/game/renderer/sprites.js';
+import {SPRITES} from '@Client/tanks/client/game/renderer/sprites.js';
 
 function inJungle(game, tank) {
   for (let block of World.findBlocksByType(game.match.world, BlockType.JUNGLE)) {

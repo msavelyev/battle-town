@@ -1,11 +1,11 @@
-import EventType from '../../../../../lib/src/tanks/lib/proto/EventType.js';
-import MessageType from '../../../../../lib/src/tanks/lib/proto/MessageType.js';
-import * as Ticker from '../../../../../lib/src/tanks/lib/Ticker.js';
-import {assign} from '../../../../../lib/src/tanks/lib/util/immutable.js';
-import Level from '../../../../../server/src/tanks/server/level/Level.js';
-import Game from './Game.js';
-import Input from './Input.js';
-import Client from './proto/Client.js';
+import EventType from '@Lib/tanks/lib/proto/EventType.js';
+import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
+import * as Ticker from '@Lib/tanks/lib/Ticker.js';
+import {assign} from '@Lib/tanks/lib/util/immutable.js';
+import Level from '@Server/tanks/server/level/Level.js';
+import Game from '@Client/tanks/client/game/Game.js';
+import Input from '@Client/tanks/client/game/Input.js';
+import Client from '@Client/tanks/client/game/proto/Client.js';
 
 const UI_WIDTH = 22;
 

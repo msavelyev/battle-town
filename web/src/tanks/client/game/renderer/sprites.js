@@ -1,5 +1,5 @@
-import {chooseFrame} from '../../../../../../lib/src/tanks/lib/Ticker.js';
-import {copy, freeze} from '../../../../../../lib/src/tanks/lib/util/immutable.js';
+import {chooseFrame} from '@Lib/tanks/lib/Ticker.js';
+import {copy, freeze} from '@Lib/tanks/lib/util/immutable.js';
 
 export const SPRITES = freeze({
   JUNGLE: 'jungle',

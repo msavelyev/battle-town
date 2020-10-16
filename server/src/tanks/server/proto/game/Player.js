@@ -1,6 +1,6 @@
-import EventType from '../../../../../../lib/src/tanks/lib/proto/EventType.js';
-import BotClient from '../base/BotClient.js';
-import NetClient from '../base/NetClient.js';
+import EventType from '@Lib/tanks/lib/proto/EventType.js';
+import BotClient from '@Server/tanks/server/proto/base/BotClient.js';
+import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
 
 export default class Player {
 

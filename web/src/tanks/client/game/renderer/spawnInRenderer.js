@@ -1,8 +1,8 @@
-import {DEAD_TICKS} from '../../../../../../lib/src/tanks/lib/data/entity/Entity.js';
-import {EntityState} from '../../../../../../lib/src/tanks/lib/data/entity/EntityState.js';
-import * as World from '../../../../../../lib/src/tanks/lib/data/World.js';
-import * as Ticker from '../../../../../../lib/src/tanks/lib/Ticker.js';
-import {renderText} from './text.js';
+import {DEAD_TICKS} from '@Lib/tanks/lib/data/entity/Entity.js';
+import {EntityState} from '@Lib/tanks/lib/data/entity/EntityState.js';
+import * as World from '@Lib/tanks/lib/data/World.js';
+import * as Ticker from '@Lib/tanks/lib/Ticker.js';
+import {renderText} from '@Client/tanks/client/game/renderer/text.js';
 
 function createText(game, tank) {
   const tick = game.match.tick;

@@ -1,14 +1,14 @@
 import express from 'express';
 import * as http from 'http'
-import log from '../../../../lib/src/tanks/lib/util/log.js';
-import GameServer from './proto/game/GameServer.js';
+import log from '@Lib/tanks/lib/util/log.js';
+import GameServer from '@Server/tanks/server/proto/game/GameServer.js';
 import * as process from 'process';
 import { performance } from 'perf_hooks';
-import SocketioServer from './proto/socketio/SocketioServer.js';
-import * as Ticker from '../../../../lib/src/tanks/lib/Ticker.js';
-import api from './api.js';
-import database from './database.js';
-import dotenv from '../../../../lib/src/tanks/lib/util/dotenv.js';
+import SocketioServer from '@Server/tanks/server/proto/socketio/SocketioServer.js';
+import * as Ticker from '@Lib/tanks/lib/Ticker.js';
+import api from '@Server/tanks/server/api.js';
+import database from '@Server/tanks/server/database.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
 
 dotenv();
 

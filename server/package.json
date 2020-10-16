@@ -6,9 +6,19 @@
     "express": "^4.17.1",
     "socket.io": "^2.3.0",
     "sqlite3": "^5.0.0",
-    "uuid": "^8.1.0"
+    "uuid": "^8.1.0",
+    "@Lib": "-",
+    "@Server": "-"
   },
   "scripts": {
-    "start": "node src/tanks/server/index.js"
+    "start": "node src/tanks/server/index.js",
+    "postinstall": "link-module-alias"
+  },
+  "_moduleAliases": {
+    "@Server": "src",
+    "@Lib": "../lib/src"
+  },
+  "devDependencies": {
+    "link-module-alias": "^1.2.0"
   }
 }

@@ -1,8 +1,8 @@
 import chalk from 'chalk';
-import { BlockType } from '../../lib/src/tanks/lib/data/entity/BlockType.js';
-import * as Direction from '../../lib/src/tanks/lib/data/primitives/Direction.js';
-import Point from '../../lib/src/tanks/lib/data/primitives/Point.js';
-import * as rand from '../../lib/src/tanks/lib/util/rand.js';
+import { BlockType } from '@Lib/tanks/lib/data/entity/BlockType.js';
+import * as Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
+import Point from '@Lib/tanks/lib/data/primitives/Point.js';
+import * as rand from '@Lib/tanks/lib/util/rand.js';
 
 function print() {
   process.stdout.write(...arguments);

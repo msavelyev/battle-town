@@ -1,6 +1,6 @@
-import {EntityState} from '../../../../../../../lib/src/tanks/lib/data/entity/EntityState.js';
-import helper from '../helper.js';
-import * as sprites from '../sprites.js';
+import {EntityState} from '@Lib/tanks/lib/data/entity/EntityState.js';
+import helper from '@Client/tanks/client/game/renderer/helper.js';
+import * as sprites from '@Client/tanks/client/game/renderer/sprites.js';
 
 
 function drawBlock(game, spritesConf, spriteName, ctx, block, event) {

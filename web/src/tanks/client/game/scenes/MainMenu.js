@@ -1,9 +1,9 @@
-import api from '../api.js';
-import Scene from './Scene.js';
-import analytics from '../../../../../../lib/src/tanks/lib/util/analytics.js';
-import howto from '../../../../../public/howto.png';
+import api from '@Client/tanks/client/game/api.js';
+import Scene from '@Client/tanks/client/game/scenes/Scene.js';
+import analytics from '@Lib/tanks/lib/util/analytics.js';
+import howto from '@Client/tanks/client/assets/howto.png';
 
-import './MainMenu.css';
+import '@Client/tanks/client/game/scenes/MainMenu.css';
 
 export default class MainMenu extends Scene {
 

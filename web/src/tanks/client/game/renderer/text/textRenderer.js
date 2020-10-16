@@ -1,5 +1,5 @@
-import * as Direction from '../../../../../../../lib/src/tanks/lib/data/primitives/Direction.js';
-import {renderText} from '../text.js';
+import * as Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
+import {renderText} from '@Client/tanks/client/game/renderer/text.js';
 
 function baseline(direction) {
   if (direction === Direction.Direction.UP) {

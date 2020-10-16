@@ -1,9 +1,9 @@
 
-import {createCb, onAllReady} from '../../../../lib/src/tanks/lib/util/async.js';
-import {createSpriteSheet} from '../../../public/free-sprites.js';
-import sprites1x from '../../../public/free-sprites.png';
-import sprites2x from '../../../public/free-sprites-2x.png';
-import sprites4x from '../../../public/free-sprites-4x.png';
+import {createCb, onAllReady} from '@Lib/tanks/lib/util/async.js';
+import {createSpriteSheet} from '@Client/tanks/client/assets/free-sprites.js';
+import sprites1x from '@Client/tanks/client/assets/free-sprites.png';
+import sprites2x from '@Client/tanks/client/assets/free-sprites-2x.png';
+import sprites4x from '@Client/tanks/client/assets/free-sprites-4x.png';
 
 function createImage(src, cb) {
   const image = new Image();

@@ -1,4 +1,4 @@
-import api from './api.js';
+import api from '@Client/tanks/client/game/api.js';
 
 const KEY_USER_ID = 'userId';
 const KEY_TOKEN = 'token';

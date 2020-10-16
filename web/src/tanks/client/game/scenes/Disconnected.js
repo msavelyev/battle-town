@@ -1,6 +1,6 @@
-import Scene from './Scene.js';
+import Scene from '@Client/tanks/client/game/scenes/Scene.js';
 
-import './Disconnected.css';
+import '@Client/tanks/client/game/scenes/Disconnected.css';
 
 export default class Disconnected extends Scene {
 

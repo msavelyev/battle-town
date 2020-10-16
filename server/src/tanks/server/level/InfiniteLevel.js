@@ -1,7 +1,7 @@
-import {BlockType} from '../../../../../lib/src/tanks/lib/data/entity/BlockType.js';
-import Point from '../../../../../lib/src/tanks/lib/data/primitives/Point.js';
-import * as rand from '../../../../../lib/src/tanks/lib/util/rand.js';
-import Level from './Level.js';
+import {BlockType} from '@Lib/tanks/lib/data/entity/BlockType.js';
+import Point from '@Lib/tanks/lib/data/primitives/Point.js';
+import * as rand from '@Lib/tanks/lib/util/rand.js';
+import Level from '@Server/tanks/server/level/Level.js';
 
 const VIS_RAD = 10;
 

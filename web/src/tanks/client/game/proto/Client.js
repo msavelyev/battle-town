@@ -1,6 +1,6 @@
-import MessageType from '../../../../../../lib/src/tanks/lib/proto/MessageType.js';
-import EventType from '../../../../../../lib/src/tanks/lib/proto/EventType.js';
-import NetClient from './NetClient.js';
+import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
+import EventType from '@Lib/tanks/lib/proto/EventType.js';
+import NetClient from '@Client/tanks/client/game/proto/NetClient.js';
 
 function create(netClient) {
   const client = {

@@ -1,7 +1,7 @@
-import {SETTINGS} from '../../../../../../lib/src/tanks/lib/util/dotenv.js';
-import helper from './helper.js';
-import * as sprites from './sprites.js';
-import {SPRITES} from './sprites.js';
+import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import helper from '@Client/tanks/client/game/renderer/helper.js';
+import * as sprites from '@Client/tanks/client/game/renderer/sprites.js';
+import {SPRITES} from '@Client/tanks/client/game/renderer/sprites.js';
 
 export default function(ctx, game, spritesConf) {
   return event => {

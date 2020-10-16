@@ -1,8 +1,8 @@
-import protocol from '../../../../../../lib/src/tanks/lib/lang/protocol.js';
-import EventType from '../../../../../../lib/src/tanks/lib/proto/EventType.js';
-import {SETTINGS} from '../../../../../../lib/src/tanks/lib/util/dotenv.js';
-import * as rand from '../../../../../../lib/src/tanks/lib/util/rand.js';
-import NetClient from '../base/NetClient.js';
+import protocol from '@Lib/tanks/lib/lang/protocol.js';
+import EventType from '@Lib/tanks/lib/proto/EventType.js';
+import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import * as rand from '@Lib/tanks/lib/util/rand.js';
+import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
 
 /**
  *

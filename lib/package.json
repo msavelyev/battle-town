@@ -1,6 +1,18 @@
 {
   "type": "module",
   "dependencies": {
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "@Lib": "-",
+    "@Server": "-"
+  },
+  "scripts": {
+    "postinstall": "link-module-alias"
+  },
+  "_moduleAliases": {
+    "@Lib": "src",
+    "@Server": "../server/src"
+  },
+  "devDependencies": {
+    "link-module-alias": "^1.2.0"
   }
 }

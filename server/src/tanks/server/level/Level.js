@@ -1,8 +1,8 @@
-import * as Block from '../../../../../lib/src/tanks/lib/data/entity/Block.js';
-import {BlockType} from '../../../../../lib/src/tanks/lib/data/entity/BlockType.js';
-import Point from '../../../../../lib/src/tanks/lib/data/primitives/Point.js';
-import {SETTINGS} from '../../../../../lib/src/tanks/lib/util/dotenv.js';
-import * as rand from '../../../../../lib/src/tanks/lib/util/rand.js';
+import * as Block from '@Lib/tanks/lib/data/entity/Block.js';
+import {BlockType} from '@Lib/tanks/lib/data/entity/BlockType.js';
+import Point from '@Lib/tanks/lib/data/primitives/Point.js';
+import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import * as rand from '@Lib/tanks/lib/util/rand.js';
 
 const DEBUG_LEVEL = `
 1111111111111111111111111

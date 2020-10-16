@@ -1,7 +1,7 @@
-import * as Match from '../../../../../../lib/src/tanks/lib/data/Match.js';
-import * as MatchState from '../../../../../../lib/src/tanks/lib/data/MatchState.js';
-import * as Ticker from '../../../../../../lib/src/tanks/lib/Ticker.js';
-import {renderText} from './text.js';
+import * as Match from '@Lib/tanks/lib/data/Match.js';
+import * as MatchState from '@Lib/tanks/lib/data/MatchState.js';
+import * as Ticker from '@Lib/tanks/lib/Ticker.js';
+import {renderText} from '@Client/tanks/client/game/renderer/text.js';
 
 function createText(game) {
   const match = game.match;
