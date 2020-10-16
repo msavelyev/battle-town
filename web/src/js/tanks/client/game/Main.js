@@ -48,8 +48,8 @@ export default class Main {
 
     const ctx = this.canvas.getContext('2d');
 
-    this.game = new Game(ctx, this.client, this.sprites, conf, this.size);
-    this.input = new Input(this.game);
+    this.input = new Input();
+    this.game = new Game(ctx, this.client, this.sprites, conf, this.size, this.input);
     Client.onMessage(this.client, MessageType.TICK, this.game.onSync.bind(this.game));
 
     this.ticker = Ticker.create(

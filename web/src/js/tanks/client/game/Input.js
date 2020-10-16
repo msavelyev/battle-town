@@ -22,17 +22,18 @@ function positionToDirection(original, touch) {
 
 export default class Input {
 
-  constructor(game) {
-    this.game = game;
-
+  constructor() {
     this.movingTouch = null;
     this.movingPos = null;
+
+    this.movingDirection = null;
+    this.shooting = false;
   }
 
   keydown(event) {
     const direction = this.keyToDirection(event.code);
     if (direction !== null) {
-      this.game.startMoving(direction);
+      this.movingDirection = direction;
       event.preventDefault();
       return;
     }
@@ -40,26 +41,30 @@ export default class Input {
     switch (event.code) {
       case 'Space':
       case 'KeyK':
-        this.game.shoot();
+        this.shooting = true;
         event.preventDefault();
         break;
     }
   }
 
   keyup(event) {
-    if (!this.game.moving) {
-      return;
+    switch (event.code) {
+      case 'Space':
+      case 'KeyK':
+        this.shooting = false;
+        event.preventDefault();
+        return;
     }
 
-    if (this.game.direction !== this.keyToDirection(event.code)) {
-      return;
+    if (this.movingDirection === this.keyToDirection(event.code)) {
+      this.movingDirection = false;
+      event.preventDefault();
     }
-
-    this.game.stopMoving();
   }
 
   handleTouches(touches) {
     let stillMoving = false;
+    let stillShooting = false;
     for (let touch of touches) {
       if (touch.pageX < (window.innerWidth / 2) && this.movingTouch === null) {
         this.movingTouch = touch.identifier;
@@ -72,19 +77,22 @@ export default class Input {
         stillMoving = true;
         const direction = positionToDirection(this.movingPos, touch);
         if (direction !== null) {
-          this.game.startMoving(direction);
+          this.moving = direction;
         }
       }
 
       if (touch.pageX > (window.innerWidth / 2)) {
-        this.game.shoot();
+        stillShooting = true;
       }
     }
 
     if (!stillMoving) {
       this.movingPos = null;
       this.movingTouch = null;
-      this.game.stopMoving();
+      this.movingDirection = null;
+    }
+    if (!stillShooting) {
+      this.shooting = false;
     }
   }
 

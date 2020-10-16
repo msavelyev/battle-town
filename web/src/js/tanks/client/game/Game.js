@@ -35,7 +35,7 @@ import data from '@Cljs/code/tanks.lib.data.js';
 
 export default class Game {
 
-  constructor(ctx, client, sprites, conf, size) {
+  constructor(ctx, client, sprites, conf, size, input) {
     this.ctx = ctx;
     this.match = conf.match;
     this.size = size;
@@ -50,6 +50,8 @@ export default class Game {
     this.client = client;
 
     this.id = conf.id;
+
+    this.input = input;
 
     this.renderers = [
       stoneRenderer(ctx, this, sprites),
@@ -103,8 +105,6 @@ export default class Game {
       )
     ];
 
-    this.moving = false;
-    this.direction = null;
     this.moveId = 0;
   }
 
@@ -117,8 +117,11 @@ export default class Game {
     this.ctx.strokeStyle = 'black';
     this.ctx.strokeRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-    if (this.moving) {
-      const move = TankMove.create(increaseTick(this.moveId, val => this.moveId = val), this.direction);
+    if (this.input.movingDirection) {
+      const move = TankMove.create(
+        increaseTick(this.moveId, val => this.moveId = val),
+        this.input.movingDirection
+      );
       const result = this.handleEvent(this.match, NetMessage(
         this.id,
         MessageType.MOVE,
@@ -127,23 +130,13 @@ export default class Game {
       this.match = data.get_result(result);
     }
 
+    if (this.input.shooting) {
+      this.shoot();
+    }
+
     for (let renderer of this.renderers) {
       renderer(event);
     }
-  }
-
-  startMoving(direction) {
-    if (this.moving && this.direction === direction) {
-      return;
-    }
-
-    this.moving = true;
-    this.direction = direction;
-  }
-
-  stopMoving() {
-    this.moving = false;
-    this.direction = null;
   }
 
   shoot() {
