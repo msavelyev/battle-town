@@ -1,8 +1,8 @@
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
 
 export default function(game) {
   return () => {
-    if (!SETTINGS.DEBUG_INFO) {
+    if (!dotenv.SETTINGS.DEBUG_INFO) {
       return null;
     }
 

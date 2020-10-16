@@ -1,14 +1,14 @@
-import * as Configuration from '@Lib/tanks/lib/data/Configuration.js';
-import * as Match from '@Lib/tanks/lib/data/Match.js';
-import * as MatchState from '@Lib/tanks/lib/data/MatchState.js';
-import * as World from '@Lib/tanks/lib/data/World.js';
+import Configuration from '@Lib/tanks/lib/data/Configuration.js';
+import Match from '@Lib/tanks/lib/data/Match.js';
+import MatchState from '@Lib/tanks/lib/data/MatchState.js';
+import World from '@Lib/tanks/lib/data/World.js';
 import BlockVisible from '@Lib/tanks/lib/data/worldevent/BlockVisible.js';
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
 import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
 import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
-import {array, copy} from '@Lib/tanks/lib/util/immutable.js';
+import immutable from '@Lib/tanks/lib/util/immutable.js';
 import log from '@Lib/tanks/lib/util/log.js';
-import InfiniteLevel from '@Server/tanks/server/level/InfiniteLevel.js';
+import InfiniteLevel from '@Lib/tanks/lib/level/InfiniteLevel.js';
 import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
 import ReviveBlocks from '@Server/tanks/server/proto/game/event/ReviveBlocks.js';
 import * as Room from '@Server/tanks/server/proto/game/Room.js';
@@ -27,8 +27,8 @@ export default class PVEGameMode {
     this.room.onConnect = this.onConnect.bind(this);
     let match = this.room.match;
     let world = match.world;
-    world = World.resetLevel(world, array());
-    match = copy(match, {
+    world = World.resetLevel(world, immutable.array());
+    match = immutable.copy(match, {
       world,
     });
     match = Match.setState(match, MatchState.state.PLAY, this.ticker.tick);
@@ -101,7 +101,7 @@ export default class PVEGameMode {
       updates.push(BlockVisible.create(block, userId));
     }
 
-    this.room.match = copy(this.room.match, {
+    this.room.match = immutable.copy(this.room.match, {
       world,
     });
   }

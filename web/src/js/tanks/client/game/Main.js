@@ -1,8 +1,8 @@
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
 import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
-import * as Ticker from '@Lib/tanks/lib/Ticker.js';
-import {assign} from '@Lib/tanks/lib/util/immutable.js';
-import Level from '@Server/tanks/server/level/Level.js';
+import Ticker from '@Lib/tanks/lib/Ticker.js';
+import immutable from '@Lib/tanks/lib/util/immutable.js';
+import Level from '@Lib/tanks/lib/level/Level.js';
 import Game from '@Client/tanks/client/game/Game.js';
 import Input from '@Client/tanks/client/game/Input.js';
 import Client from '@Client/tanks/client/game/proto/Client.js';
@@ -12,7 +12,7 @@ const UI_WIDTH = 22;
 function updateSize(size) {
   let unitSize = Math.floor(Math.min(size.pixelWidth / Level.WIDTH, size.pixelHeight / Level.HEIGHT));
   unitSize = Math.pow(2, Math.floor(Math.log(unitSize) / Math.log(2)));
-  return assign(assign({}, size), {
+  return immutable.assign(immutable.assign({}, size), {
     pixelWidth: (Level.WIDTH + UI_WIDTH) * unitSize,
     pixelHeight: Level.HEIGHT * unitSize,
     unit: unitSize,

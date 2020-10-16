@@ -1,19 +1,19 @@
 import {v4 as uuid} from 'uuid';
-import * as Configuration from '@Lib/tanks/lib/data/Configuration.js';
-import * as Match from '@Lib/tanks/lib/data/Match.js';
-import * as MatchState from '@Lib/tanks/lib/data/MatchState.js';
-import * as World from '@Lib/tanks/lib/data/World.js';
-import * as Score from '@Lib/tanks/lib/data/worldevent/Score.js';
-import * as State from '@Lib/tanks/lib/data/worldevent/State.js';
-import * as TankRemove from '@Lib/tanks/lib/data/worldevent/TankRemove.js';
+import Configuration from '@Lib/tanks/lib/data/Configuration.js';
+import Match from '@Lib/tanks/lib/data/Match.js';
+import MatchState from '@Lib/tanks/lib/data/MatchState.js';
+import World from '@Lib/tanks/lib/data/World.js';
+import Score from '@Lib/tanks/lib/data/worldevent/Score.js';
+import State from '@Lib/tanks/lib/data/worldevent/State.js';
+import TankRemove from '@Lib/tanks/lib/data/worldevent/TankRemove.js';
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
 import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
 import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
-import {copy} from '@Lib/tanks/lib/util/immutable.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import immutable from '@Lib/tanks/lib/util/immutable.js';
 import log from '@Lib/tanks/lib/util/log.js';
 import database from '@Server/tanks/server/database.js';
-import Level from '@Server/tanks/server/level/Level.js';
+import Level from '@Lib/tanks/lib/level/Level.js';
 import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
 import GameMode from '@Server/tanks/server/proto/game/GameMode.js';
 import Player from '@Server/tanks/server/proto/game/Player.js';
@@ -71,7 +71,7 @@ export default class PVPGameMode extends GameMode {
         });
       }
 
-      match = copy(match, {
+      match = immutable.copy(match, {
         world: World.resetTanks(match.world, match)
       });
 
@@ -127,7 +127,7 @@ export default class PVPGameMode extends GameMode {
       this.queue = this.queue.filter(p => p !== player);
     });
 
-    if (SETTINGS.ALLOW_SINGLE) {
+    if (dotenv.SETTINGS.ALLOW_SINGLE) {
       this.queue.push(Player.bot());
     }
   }
@@ -143,7 +143,7 @@ export default class PVPGameMode extends GameMode {
   }
 
   beforeWorldUpdate(match, event, updates) {
-    match = copy(match, {
+    match = immutable.copy(match, {
       tick: event.tick,
       event: event,
     });
@@ -158,7 +158,7 @@ export default class PVPGameMode extends GameMode {
 
   onKill(match, event, killer, victim, updates) {
     if (match.state === MatchState.state.PLAY) {
-      match = copy(match, {
+      match = immutable.copy(match, {
         world: World.removeTank(match.world, victim.id)
       });
       updates.push(TankRemove.create(victim.id));
@@ -168,7 +168,7 @@ export default class PVPGameMode extends GameMode {
 
       if (match.world.authoritative) {
         match = Match.transitionState(match, event, updates);
-        match = copy(match, {
+        match = immutable.copy(match, {
           stateSpotlight: killer,
         });
         updates.push(State.fromMatch(match));

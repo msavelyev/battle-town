@@ -1,13 +1,13 @@
-import * as MatchState from '@Lib/tanks/lib/data/MatchState.js';
-import {FPS} from '@Lib/tanks/lib/Ticker.js';
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
-import {convertToTime} from '@Lib/tanks/lib/util/time.js';
+import MatchState from '@Lib/tanks/lib/data/MatchState.js';
+import Ticker from '@Lib/tanks/lib/Ticker.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import time from '@Lib/tanks/lib/util/time.js';
 
 const PREFIX = 'time left: ';
 
 export default function(game) {
   return () => {
-    if (SETTINGS.GAME_MODE !== 'FFA') {
+    if (dotenv.SETTINGS.GAME_MODE !== 'FFA') {
       return null;
     }
 
@@ -18,9 +18,9 @@ export default function(game) {
     const match = game.match;
 
     const ticksPassed = match.tick - match.stateSinceTick;
-    const ticksLeft = SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS - ticksPassed;
-    const secondsLeft = Math.floor(ticksLeft / FPS);
+    const ticksLeft = dotenv.SETTINGS.FFA_MATCH_LENGTH_SECONDS * Ticker.FPS - ticksPassed;
+    const secondsLeft = Math.floor(ticksLeft / Ticker.FPS);
 
-    return PREFIX + convertToTime(secondsLeft);
+    return PREFIX + time.convertToTime(secondsLeft);
   };
 }

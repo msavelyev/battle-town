@@ -1,6 +1,6 @@
-import * as Bullet from '@Lib/tanks/lib/data/entity/Bullet.js';
-import * as Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import Bullet from '@Lib/tanks/lib/data/entity/Bullet.js';
+import Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
 import helper from '@Client/tanks/client/game/renderer/helper.js';
 import * as sprites from '@Client/tanks/client/game/renderer/sprites.js';
 import {SPRITES} from '@Client/tanks/client/game/renderer/sprites.js';
@@ -35,7 +35,7 @@ function drawBullet(game, spritesConf, ctx, tick, bullet) {
     size
   );
 
-  if (SETTINGS.DEBUG_RENDER) {
+  if (dotenv.SETTINGS.DEBUG_RENDER) {
     ctx.transform(1, 0, 0, 1, width / 2, height / 2);
     ctx.rotate(-Direction.toRad(bullet.direction));
     ctx.transform(1, 0, 0, 1, -width / 2, -height / 2);

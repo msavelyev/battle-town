@@ -1,9 +1,9 @@
-import {copy} from '@Lib/tanks/lib/util/immutable.js';
+import immutable from '@Lib/tanks/lib/util/immutable.js';
 import RoomEvent from '@Server/tanks/server/proto/game/event/RoomEvent.js';
 import RoomEventType from '@Server/tanks/server/proto/game/event/RoomEventType.js';
 
 export default function(player) {
-  return copy(RoomEvent(RoomEventType.DISCONNECT), {
+  return immutable.copy(RoomEvent(RoomEventType.DISCONNECT), {
     player,
   });
 }

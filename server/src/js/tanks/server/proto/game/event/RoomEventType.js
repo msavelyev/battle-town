@@ -1,6 +1,6 @@
-import { freeze } from '@Lib/tanks/lib/util/immutable.js';
+import immutable from '@Lib/tanks/lib/util/immutable.js';
 
-export default freeze({
+export default immutable.freeze({
   CONNECT: 'connect',
   DISCONNECT: 'disconnect',
   CLIENT_MESSAGE: 'client-message',

@@ -1,4 +1,4 @@
-import * as Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
+import Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
 import {renderText} from '@Client/tanks/client/game/renderer/text.js';
 
 function baseline(direction) {

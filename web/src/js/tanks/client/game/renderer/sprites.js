@@ -1,7 +1,7 @@
-import {chooseFrame} from '@Lib/tanks/lib/Ticker.js';
-import {copy, freeze} from '@Lib/tanks/lib/util/immutable.js';
+import Ticker from '@Lib/tanks/lib/Ticker.js';
+import immutable from '@Lib/tanks/lib/util/immutable.js';
 
-export const SPRITES = freeze({
+export const SPRITES = immutable.freeze({
   JUNGLE: 'jungle',
   WATER: 'water',
   BRICK_TL: 'brick-tl',
@@ -30,7 +30,7 @@ export function configure(spritesheet) {
         throw new Error(`Sprite ${spriteName} isn't configured properly`);
       }
 
-      result[unitSize][spriteName] = copy(conf, {
+      result[unitSize][spriteName] = immutable.copy(conf, {
         img: scaledSprites.img,
         name: spriteName,
         loop: conf.loop || false,
@@ -39,12 +39,12 @@ export function configure(spritesheet) {
 
   }
 
-  return freeze(result);
+  return immutable.freeze(result);
 }
 
 export function draw(ctx, tick, conf, x, y, w, h, startTick=0) {
   const frames = conf.frames;
-  const frameIdx = chooseFrame(tick, frames.length, conf.frameLength, startTick, conf.loop);
+  const frameIdx = Ticker.chooseFrame(tick, frames.length, conf.frameLength, startTick, conf.loop);
 
   if (frameIdx < 0) {
     return;

@@ -1,11 +1,11 @@
-import * as Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
-import * as Match from '@Lib/tanks/lib/data/Match.js';
+import Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
+import Match from '@Lib/tanks/lib/data/Match.js';
 import Point from '@Lib/tanks/lib/data/primitives/Point.js';
-import * as World from '@Lib/tanks/lib/data/World.js';
-import * as TankMove from '@Lib/tanks/lib/event/TankMove.js';
+import World from '@Lib/tanks/lib/data/World.js';
+import TankMove from '@Lib/tanks/lib/event/TankMove.js';
 import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
 import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
-import {copy} from '@Lib/tanks/lib/util/immutable.js';
+import immutable from '@Lib/tanks/lib/util/immutable.js';
 import increaseTick from '@Lib/tanks/lib/util/increaseTick.js';
 import Client from '@Client/tanks/client/game/proto/Client.js';
 import brickRenderer from '@Client/tanks/client/game/renderer/blocks/brickRenderer.js';
@@ -40,8 +40,8 @@ export default class Game {
     this.size = size;
 
     /** @type {Match} */
-    this.match = copy(this.match, {
-      world: copy(this.match.world, {
+    this.match = immutable.copy(this.match, {
+      world: immutable.copy(this.match.world, {
         authoritative: false
       }),
     });

@@ -1,14 +1,14 @@
-import * as Entity from '@Lib/tanks/lib/data/entity/Entity.js';
-import * as Match from '@Lib/tanks/lib/data/Match.js';
-import * as TickData from '@Lib/tanks/lib/data/TickData.js';
-import * as World from '@Lib/tanks/lib/data/World.js';
-import { EntityState } from '@Lib/tanks/lib/data/entity/EntityState.js';
-import * as UserConnect from '@Lib/tanks/lib/data/worldevent/UserConnect.js';
-import * as BlockUpdate from '@Lib/tanks/lib/data/worldevent/BlockUpdate.js';
-import * as UserDisconnect from '@Lib/tanks/lib/data/worldevent/UserDisconnect.js';
+import Entity from '@Lib/tanks/lib/data/entity/Entity.js';
+import Match from '@Lib/tanks/lib/data/Match.js';
+import TickData from '@Lib/tanks/lib/data/TickData.js';
+import World from '@Lib/tanks/lib/data/World.js';
+import EntityState from '@Lib/tanks/lib/data/entity/EntityState.js';
+import UserConnect from '@Lib/tanks/lib/data/worldevent/UserConnect.js';
+import BlockUpdate from '@Lib/tanks/lib/data/worldevent/BlockUpdate.js';
+import UserDisconnect from '@Lib/tanks/lib/data/worldevent/UserDisconnect.js';
 import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
 import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
-import {copy, filter} from '@Lib/tanks/lib/util/immutable.js';
+import immutable from '@Lib/tanks/lib/util/immutable.js';
 import log from '@Lib/tanks/lib/util/log.js';
 import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
 import ClientMessage from '@Server/tanks/server/proto/game/event/ClientMessage.js';
@@ -57,7 +57,7 @@ export function update(room, event, beforeWorld, onKill) {
   broadcast(room, MessageType.TICK, playerId => {
     return TickData.create(
       event.tick,
-      filter(updates, update => {
+      immutable.filter(updates, update => {
         return update.target === null || update.target === playerId;
       }),
       JSON.parse(JSON.stringify(room.match.ack)),
@@ -156,7 +156,7 @@ function handleRoomEvent(room, roomEvent, tick, updates) {
           updates.push(BlockUpdate.fromBlock(block));
         }
       }
-      room.match = copy(room.match, {
+      room.match = immutable.copy(room.match, {
         world
       });
       break;

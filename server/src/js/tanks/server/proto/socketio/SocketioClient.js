@@ -1,7 +1,7 @@
 import protocol from '@Lib/tanks/lib/lang/protocol.js';
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
-import * as rand from '@Lib/tanks/lib/util/rand.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import rand from '@Lib/tanks/lib/util/rand.js';
 import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
 
 /**
@@ -9,7 +9,7 @@ import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
  * @returns {any}
  */
 function getLag() {
-  return SETTINGS.LAG;
+  return dotenv.SETTINGS.LAG;
 }
 
 function disconnect(client) {
@@ -78,7 +78,7 @@ function lagValue() {
     return rand.randomInt(50, 150);
   }
 
-  return SETTINGS.LAG;
+  return dotenv.SETTINGS.LAG;
 }
 
 export default function(socket) {

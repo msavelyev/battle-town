@@ -1,7 +1,7 @@
 import * as process from 'process';
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
-import * as Fps from '@Lib/tanks/lib/util/Fps.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import Fps from '@Lib/tanks/lib/util/Fps.js';
 import log from '@Lib/tanks/lib/util/log.js';
 import database from '@Server/tanks/server/database.js';
 import telegram from '@Server/tanks/server/telegram.js';
@@ -12,7 +12,7 @@ import PVEGameMode from '@Server/tanks/server/proto/game/PVEGameMode.js';
 import PVPGameMode from '@Server/tanks/server/proto/game/PVPGameMode.js';
 
 function createGameMode(db, ticker) {
-  const gameMode = SETTINGS.GAME_MODE;
+  const gameMode = dotenv.SETTINGS.GAME_MODE;
   switch (gameMode) {
     case 'PVP':
       return new PVPGameMode(db, ticker);

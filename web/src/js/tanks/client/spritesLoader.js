@@ -1,5 +1,5 @@
 
-import {createCb, onAllReady} from '@Lib/tanks/lib/util/async.js';
+import async from '@Lib/tanks/lib/util/async.js';
 import {createSpriteSheet} from '@Client/tanks/client/assets/free-sprites.js';
 import sprites1x from '@Client/tanks/client/assets/free-sprites.png';
 import sprites2x from '@Client/tanks/client/assets/free-sprites-2x.png';
@@ -24,7 +24,7 @@ export function loadSpriteSheets(cb) {
   const callbacks = [];
   for (let unitSize of Object.keys(imgs)) {
     const src = imgs[unitSize];
-    const imgOnLoad = createCb();
+    const imgOnLoad = async.createCb();
     const image = createImage(src, imgOnLoad);
 
     callbacks.push(imgOnLoad);
@@ -35,7 +35,7 @@ export function loadSpriteSheets(cb) {
     };
   }
 
-  onAllReady(callbacks, () => {
+  async.onAllReady(callbacks, () => {
     cb(result);
   });
 }

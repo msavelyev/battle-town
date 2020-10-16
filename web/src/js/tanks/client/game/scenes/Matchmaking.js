@@ -1,4 +1,4 @@
-import {convertToTime} from '@Lib/tanks/lib/util/time.js';
+import time from '@Lib/tanks/lib/util/time.js';
 import Scene from '@Client/tanks/client/game/scenes/Scene.js';
 import Client from '@Client/tanks/client/game/proto/Client.js';
 import SocketioClient from '@Client/tanks/client/game/proto/SocketioClient.js';
@@ -88,7 +88,7 @@ export default class Matchmaking extends Scene {
   updateTimer(timer) {
     return () => {
       const elapsed = this.now() - this.startTime;
-      timer.innerText = convertToTime(elapsed);
+      timer.innerText = time.convertToTime(elapsed);
     };
   }
 

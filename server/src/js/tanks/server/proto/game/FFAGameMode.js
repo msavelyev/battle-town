@@ -1,21 +1,21 @@
-import * as Configuration from '@Lib/tanks/lib/data/Configuration.js';
-import * as Entity from '@Lib/tanks/lib/data/entity/Entity.js';
-import * as Match from '@Lib/tanks/lib/data/Match.js';
-import * as MatchState from '@Lib/tanks/lib/data/MatchState.js';
-import * as World from '@Lib/tanks/lib/data/World.js';
-import * as ResetLevel from '@Lib/tanks/lib/data/worldevent/ResetLevel.js';
-import * as ResetTanks from '@Lib/tanks/lib/data/worldevent/ResetTanks.js';
-import * as Score from '@Lib/tanks/lib/data/worldevent/Score.js';
-import * as State from '@Lib/tanks/lib/data/worldevent/State.js';
-import * as TankUpdate from '@Lib/tanks/lib/data/worldevent/TankUpdate.js';
+import Configuration from '@Lib/tanks/lib/data/Configuration.js';
+import Entity from '@Lib/tanks/lib/data/entity/Entity.js';
+import Match from '@Lib/tanks/lib/data/Match.js';
+import MatchState from '@Lib/tanks/lib/data/MatchState.js';
+import World from '@Lib/tanks/lib/data/World.js';
+import ResetLevel from '@Lib/tanks/lib/data/worldevent/ResetLevel.js';
+import ResetTanks from '@Lib/tanks/lib/data/worldevent/ResetTanks.js';
+import Score from '@Lib/tanks/lib/data/worldevent/Score.js';
+import State from '@Lib/tanks/lib/data/worldevent/State.js';
+import TankUpdate from '@Lib/tanks/lib/data/worldevent/TankUpdate.js';
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
 import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
 import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
-import {FPS} from '@Lib/tanks/lib/Ticker.js';
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
-import {copy} from '@Lib/tanks/lib/util/immutable.js';
+import Ticker from '@Lib/tanks/lib/Ticker.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import immutable from '@Lib/tanks/lib/util/immutable.js';
 import log from '@Lib/tanks/lib/util/log.js';
-import Level from '@Server/tanks/server/level/Level.js';
+import Level from '@Lib/tanks/lib/level/Level.js';
 import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
 import * as Room from '@Server/tanks/server/proto/game/Room.js';
 import ReviveBlocks from '@Server/tanks/server/proto/game/event/ReviveBlocks.js';
@@ -34,7 +34,7 @@ export default class FFAGameMode {
     let match = this.room.match;
     let world = match.world;
     world = World.resetLevel(world, Level.ffa());
-    match = copy(match, {
+    match = immutable.copy(match, {
       world,
     });
     match = Match.setState(match, MatchState.state.WAITING_FOR_PLAYERS, this.ticker.tick);
@@ -86,8 +86,8 @@ export default class FFAGameMode {
   onBeforeWorldUpdate(match, event, updates) {
     if (Room.size(this.room) >= 2 && match.state === MatchState.state.WAITING_FOR_PLAYERS) {
       match = Match.setState(match, MatchState.state.PLAY, event.tick);
-      match = copy(match, {
-        nextStateOnTick: event.tick + SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS
+      match = immutable.copy(match, {
+        nextStateOnTick: event.tick + dotenv.SETTINGS.FFA_MATCH_LENGTH_SECONDS * Ticker.FPS
       });
       updates.push(State.fromMatch(match));
     } else if (Room.size(this.room) === 1 && match.state === MatchState.state.PLAY) {
@@ -110,7 +110,7 @@ export default class FFAGameMode {
       }
       updates.push(ResetTanks.create(world.tanks));
 
-      match = copy(match, {
+      match = immutable.copy(match, {
         world
       });
 
@@ -118,8 +118,8 @@ export default class FFAGameMode {
       updates.push(Score.create(match.score));
 
       match = Match.setState(match, MatchState.state.PLAY, event.tick);
-      match = copy(match, {
-        nextStateOnTick: event.tick + SETTINGS.FFA_MATCH_LENGTH_SECONDS * FPS
+      match = immutable.copy(match, {
+        nextStateOnTick: event.tick + dotenv.SETTINGS.FFA_MATCH_LENGTH_SECONDS * Ticker.FPS
       });
       updates.push(State.fromMatch(match));
     }
@@ -135,7 +135,7 @@ export default class FFAGameMode {
     let victimTank = World.findTank(world, victimId);
     victimTank = Entity.kill(victimTank, event.tick);
     world = World.replaceTank(world, victimTank);
-    match = copy(match, {
+    match = immutable.copy(match, {
       world
     });
 

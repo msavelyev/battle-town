@@ -1,4 +1,4 @@
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
 import helper from '@Client/tanks/client/game/renderer/helper.js';
 import * as sprites from '@Client/tanks/client/game/renderer/sprites.js';
 import {SPRITES} from '@Client/tanks/client/game/renderer/sprites.js';
@@ -28,7 +28,7 @@ export default function(ctx, game, spritesConf) {
         explosion.tick
       );
 
-      if (SETTINGS.DEBUG_RENDER) {
+      if (dotenv.SETTINGS.DEBUG_RENDER) {
         ctx.strokeStyle = 'orange';
         ctx.strokeRect(
           0,

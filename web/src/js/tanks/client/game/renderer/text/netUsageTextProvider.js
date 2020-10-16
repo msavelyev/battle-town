@@ -1,4 +1,4 @@
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
 
 function format(value) {
   let power = 0;
@@ -18,7 +18,7 @@ const LITERALS = [
 
 export default function(client) {
   return () => {
-    if (!SETTINGS.DEBUG_INFO) {
+    if (!dotenv.SETTINGS.DEBUG_INFO) {
       return null;
     }
 

@@ -1,5 +1,5 @@
 import https from 'https';
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
 
 function createUrl(apiKey, chatId, text) {
   text = encodeURIComponent(text);
@@ -8,8 +8,8 @@ function createUrl(apiKey, chatId, text) {
 
 export default {
   sendMessage: function(text) {
-    const chatId = SETTINGS.TELEGRAM_CHAT_ID;
-    const apiKey = SETTINGS.TELEGRAM_API_KEY;
+    const chatId = dotenv.SETTINGS.TELEGRAM_CHAT_ID;
+    const apiKey = dotenv.SETTINGS.TELEGRAM_API_KEY;
 
     if (!apiKey || !chatId) {
       return;

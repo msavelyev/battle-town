@@ -1,4 +1,4 @@
-import {EntityState} from '@Lib/tanks/lib/data/entity/EntityState.js';
+import EntityState from '@Lib/tanks/lib/data/entity/EntityState.js';
 import helper from '@Client/tanks/client/game/renderer/helper.js';
 import * as sprites from '@Client/tanks/client/game/renderer/sprites.js';
 

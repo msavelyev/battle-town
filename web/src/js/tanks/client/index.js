@@ -6,7 +6,7 @@ import Matchmaking from '@Client/tanks/client/game/scenes/Matchmaking.js';
 import Disconnected from '@Client/tanks/client/game/scenes/Disconnected.js';
 import userStorage from '@Client/tanks/client/game/userStorage.js';
 
-import dotenv, {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
 import analytics from '@Lib/tanks/lib/util/analytics.js';
 
 import landscapeSvg from '@Client/tanks/client/assets/imgs/landscape.svg';
@@ -17,7 +17,7 @@ import '@Client/tanks/client/polyfill/object-entries.js';
 
 analytics.init();
 
-dotenv();
+dotenv.dotenv();
 
 function resizeOverlay(overlay) {
   const maxWidth = document.body.offsetWidth;
@@ -56,7 +56,7 @@ window.addEventListener('load', () => {
       new Disconnected(overlay)
     ], size);
 
-    if (SETTINGS.START_WITH_MATCHMAKING) {
+    if (dotenv.SETTINGS.START_WITH_MATCHMAKING) {
       userStorage.get()
         .then(user => {
           scenes.start(Matchmaking, user);

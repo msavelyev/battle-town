@@ -3,7 +3,7 @@ import protocol from '@Lib/tanks/lib/lang/protocol.js';
 import NetClient from '@Client/tanks/client/game/proto/NetClient.js';
 import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
 import NetUsage from '@Client/tanks/client/game/proto/NetUsage.js';
 
 function sendNetMessage(netClient, netMessage) {
@@ -16,7 +16,7 @@ function sendEvent(netClient, eventType, payload) {
 }
 
 export default function() {
-  const socket = io(SETTINGS.SERVER_WS_HOST, { autoConnect: false });
+  const socket = io(dotenv.SETTINGS.SERVER_WS_HOST, { autoConnect: false });
   const usage = NetUsage.create();
 
   const netClient = protocol.implement(NetClient, {

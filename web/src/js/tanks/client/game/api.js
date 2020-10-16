@@ -1,6 +1,6 @@
-import {SETTINGS} from '@Lib/tanks/lib/util/dotenv.js';
+import dotenv from '@Lib/tanks/lib/util/dotenv.js';
 
-const host = SETTINGS.SERVER_API_HOST || window.location.origin;
+const host = dotenv.SETTINGS.SERVER_API_HOST || window.location.origin;
 
 function url(path) {
   return host + path;

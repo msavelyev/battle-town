@@ -1,12 +1,12 @@
-import {DEAD_TICKS} from '@Lib/tanks/lib/data/entity/Entity.js';
-import {EntityState} from '@Lib/tanks/lib/data/entity/EntityState.js';
-import * as World from '@Lib/tanks/lib/data/World.js';
-import * as Ticker from '@Lib/tanks/lib/Ticker.js';
+import Entity from '@Lib/tanks/lib/data/entity/Entity.js';
+import EntityState from '@Lib/tanks/lib/data/entity/EntityState.js';
+import World from '@Lib/tanks/lib/data/World.js';
+import Ticker from '@Lib/tanks/lib/Ticker.js';
 import {renderText} from '@Client/tanks/client/game/renderer/text.js';
 
 function createText(game, tank) {
   const tick = game.match.tick;
-  const spawnOnTick = tank.stateSince + DEAD_TICKS;
+  const spawnOnTick = tank.stateSince + Entity.DEAD_TICKS;
   const countdown = Ticker.countdown(tick, spawnOnTick);
 
   return 'Respawn in: ' + countdown;

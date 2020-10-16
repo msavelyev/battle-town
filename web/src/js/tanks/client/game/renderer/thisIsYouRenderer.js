@@ -1,6 +1,6 @@
-import {EntityState} from '@Lib/tanks/lib/data/entity/EntityState.js';
-import {degToRad} from '@Lib/tanks/lib/data/primitives/Direction.js';
-import * as World from '@Lib/tanks/lib/data/World.js';
+import EntityState from '@Lib/tanks/lib/data/entity/EntityState.js';
+import Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
+import World from '@Lib/tanks/lib/data/World.js';
 import helper from '@Client/tanks/client/game/renderer/helper.js';
 
 export default function(ctx, game) {
@@ -23,7 +23,7 @@ export default function(ctx, game) {
     ctx.setTransform(1, 0, 0, 1, x * gameSize.unit, y * gameSize.unit);
     ctx.transform(1, 0, 0, 1, size / 2, size / 2);
 
-    ctx.rotate(degToRad((event.tick - tank.stateSince) * 1.5));
+    ctx.rotate(Direction.degToRad((event.tick - tank.stateSince) * 1.5));
 
     ctx.strokeStyle = '#ff0';
     ctx.lineWidth = gameSize.unit / 2;
@@ -43,7 +43,7 @@ export default function(ctx, game) {
       ctx.lineTo(-gameSize.unit * 3 + n, 0);
       ctx.stroke();
 
-      ctx.rotate(degToRad(90));
+      ctx.rotate(Direction.degToRad(90));
     }
 
     ctx.lineWidth = 1;
