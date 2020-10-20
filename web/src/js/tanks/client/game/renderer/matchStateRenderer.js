@@ -1,6 +1,6 @@
-import Match from '@Lib/tanks/lib/data/Match.js';
-import MatchState from '@Lib/tanks/lib/data/MatchState.js';
-import Ticker from '@Lib/tanks/lib/Ticker.js';
+import * as Match from '@Lib/tanks/lib/data/Match.js';
+import * as MatchState from '@Lib/tanks/lib/data/MatchState.js';
+import * as Ticker from '@Lib/tanks/lib/Ticker.js';
 import {renderText} from '@Client/tanks/client/game/renderer/text.js';
 
 function createText(game) {

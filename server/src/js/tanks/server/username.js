@@ -1,4 +1,4 @@
-import rand from '@Lib/tanks/lib/util/rand.js';
+import * as rand from '@Lib/tanks/lib/util/rand.js';
 
 export default Object.freeze({
   generate: function() {

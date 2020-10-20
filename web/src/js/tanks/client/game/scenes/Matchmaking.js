@@ -1,4 +1,4 @@
-import time from '@Lib/tanks/lib/util/time.js';
+import * as time from '@Lib/tanks/lib/util/time.js';
 import Scene from '@Client/tanks/client/game/scenes/Scene.js';
 import Client from '@Client/tanks/client/game/proto/Client.js';
 import SocketioClient from '@Client/tanks/client/game/proto/SocketioClient.js';

@@ -1,9 +1,9 @@
 import BlockType from '@Lib/tanks/lib/data/entity/BlockType.js';
-import Entity from '@Lib/tanks/lib/data/entity/Entity.js';
+import * as Entity from '@Lib/tanks/lib/data/entity/Entity.js';
 import EntityState from '@Lib/tanks/lib/data/entity/EntityState.js';
-import Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
-import World from '@Lib/tanks/lib/data/World.js';
-import dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import * as Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
+import * as World from '@Lib/tanks/lib/data/World.js';
+import * as dotenv from '@Lib/tanks/lib/util/dotenv.js';
 import helper from '@Client/tanks/client/game/renderer/helper.js';
 import * as sprites from '@Client/tanks/client/game/renderer/sprites.js';
 import {SPRITES} from '@Client/tanks/client/game/renderer/sprites.js';

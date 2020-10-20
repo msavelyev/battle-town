@@ -1,13 +1,13 @@
 import {createGameLoopResult} from '@Client/tanks/client/game/gameLoop.js';
 import uiBgRenderer from '@Client/tanks/client/game/renderer/uiBgRenderer.js';
-import Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
-import Match from '@Lib/tanks/lib/data/Match.js';
+import * as Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
+import * as Match from '@Lib/tanks/lib/data/Match.js';
 import Point from '@Lib/tanks/lib/data/primitives/Point.js';
-import World from '@Lib/tanks/lib/data/World.js';
-import TankMove from '@Lib/tanks/lib/event/TankMove.js';
+import * as World from '@Lib/tanks/lib/data/World.js';
+import * as TankMove from '@Lib/tanks/lib/event/TankMove.js';
 import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
 import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
-import immutable from '@Lib/tanks/lib/util/immutable.js';
+import * as immutable from '@Lib/tanks/lib/util/immutable.js';
 import increaseTick from '@Lib/tanks/lib/util/increaseTick.js';
 import brickRenderer from '@Client/tanks/client/game/renderer/blocks/brickRenderer.js';
 import jungleRenderer from '@Client/tanks/client/game/renderer/blocks/jungleRenderer.js';
@@ -31,7 +31,7 @@ import unackedInputTextProvider from '@Client/tanks/client/game/renderer/text/un
 import unitSizeTextProvider from '@Client/tanks/client/game/renderer/text/unitSizeTextProvider.js';
 import thisIsYouRenderer from '@Client/tanks/client/game/renderer/thisIsYouRenderer.js';
 
-import returnResult from '@Lib/tanks/lib/data/returnResult.js';
+import * as returnResult from '@Lib/tanks/lib/data/returnResult.js';
 
 export default class Game {
 

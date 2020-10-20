@@ -1,4 +1,4 @@
-import dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import * as dotenv from '@Lib/tanks/lib/util/dotenv.js';
 import helper from '@Client/tanks/client/game/renderer/helper.js';
 import * as sprites from '@Client/tanks/client/game/renderer/sprites.js';
 import {SPRITES} from '@Client/tanks/client/game/renderer/sprites.js';

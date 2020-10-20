@@ -1,8 +1,8 @@
 import {createGameLoop} from '@Client/tanks/client/game/gameLoop.js';
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
 import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
-import Ticker from '@Lib/tanks/lib/Ticker.js';
-import immutable from '@Lib/tanks/lib/util/immutable.js';
+import * as Ticker from '@Lib/tanks/lib/Ticker.js';
+import * as immutable from '@Lib/tanks/lib/util/immutable.js';
 import Level from '@Lib/tanks/lib/level/Level.js';
 import Game from '@Client/tanks/client/game/Game.js';
 import Input from '@Client/tanks/client/game/Input.js';

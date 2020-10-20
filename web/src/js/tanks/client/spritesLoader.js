@@ -1,5 +1,4 @@
-
-import async from '@Lib/tanks/lib/util/async.js';
+import * as async from '@Lib/tanks/lib/util/async.js';
 import {createSpriteSheet} from '@Client/tanks/client/assets/free-sprites.js';
 import sprites1x from '@Client/tanks/client/assets/free-sprites.png';
 import sprites2x from '@Client/tanks/client/assets/free-sprites-2x.png';

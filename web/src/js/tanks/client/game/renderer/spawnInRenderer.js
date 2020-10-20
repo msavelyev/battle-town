@@ -1,7 +1,7 @@
-import Entity from '@Lib/tanks/lib/data/entity/Entity.js';
+import * as Entity from '@Lib/tanks/lib/data/entity/Entity.js';
 import EntityState from '@Lib/tanks/lib/data/entity/EntityState.js';
-import World from '@Lib/tanks/lib/data/World.js';
-import Ticker from '@Lib/tanks/lib/Ticker.js';
+import * as World from '@Lib/tanks/lib/data/World.js';
+import * as Ticker from '@Lib/tanks/lib/Ticker.js';
 import {renderText} from '@Client/tanks/client/game/renderer/text.js';
 
 function createText(game, tank) {

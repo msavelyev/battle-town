@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
 import util from 'util';
-import rand from '@Lib/tanks/lib/util/rand.js';
+import * as rand from '@Lib/tanks/lib/util/rand.js';
 import username from '@Server/tanks/server/username.js';
 
 const fileExists = util.promisify(fs.exists);

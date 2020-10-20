@@ -1,7 +1,7 @@
 import * as process from 'process';
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
-import dotenv from '@Lib/tanks/lib/util/dotenv.js';
-import Fps from '@Lib/tanks/lib/util/Fps.js';
+import * as dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import * as Fps from '@Lib/tanks/lib/util/Fps.js';
 import log from '@Lib/tanks/lib/util/log.js';
 import database from '@Server/tanks/server/database.js';
 import telegram from '@Server/tanks/server/telegram.js';

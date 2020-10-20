@@ -6,7 +6,7 @@ import Matchmaking from '@Client/tanks/client/game/scenes/Matchmaking.js';
 import Disconnected from '@Client/tanks/client/game/scenes/Disconnected.js';
 import userStorage from '@Client/tanks/client/game/userStorage.js';
 
-import dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import * as dotenv from '@Lib/tanks/lib/util/dotenv.js';
 import analytics from '@Lib/tanks/lib/util/analytics.js';
 
 import landscapeSvg from '@Client/tanks/client/assets/imgs/landscape.svg';

@@ -5,10 +5,10 @@ import GameServer from '@Server/tanks/server/proto/game/GameServer.js';
 import * as process from 'process';
 import {performance} from 'perf_hooks';
 import SocketioServer from '@Server/tanks/server/proto/socketio/SocketioServer.js';
-import Ticker from '@Lib/tanks/lib/Ticker.js';
+import * as Ticker from '@Lib/tanks/lib/Ticker.js';
 import api from '@Server/tanks/server/api.js';
 import database from '@Server/tanks/server/database.js';
-import dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import * as dotenv from '@Lib/tanks/lib/util/dotenv.js';
 
 dotenv.dotenv();
 

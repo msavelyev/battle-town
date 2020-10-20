@@ -1,5 +1,5 @@
-import Ticker from '@Lib/tanks/lib/Ticker.js';
-import immutable from '@Lib/tanks/lib/util/immutable.js';
+import * as Ticker from '@Lib/tanks/lib/Ticker.js';
+import * as immutable from '@Lib/tanks/lib/util/immutable.js';
 
 export const SPRITES = immutable.freeze({
   JUNGLE: 'jungle',
