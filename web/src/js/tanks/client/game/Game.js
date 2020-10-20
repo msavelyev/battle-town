@@ -1,3 +1,5 @@
+import {createGameLoopResult} from '@Client/tanks/client/game/gameLoop.js';
+import uiBgRenderer from '@Client/tanks/client/game/renderer/uiBgRenderer.js';
 import Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
 import Match from '@Lib/tanks/lib/data/Match.js';
 import Point from '@Lib/tanks/lib/data/primitives/Point.js';
@@ -7,7 +9,6 @@ import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
 import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
 import immutable from '@Lib/tanks/lib/util/immutable.js';
 import increaseTick from '@Lib/tanks/lib/util/increaseTick.js';
-import Client from '@Client/tanks/client/game/proto/Client.js';
 import brickRenderer from '@Client/tanks/client/game/renderer/blocks/brickRenderer.js';
 import jungleRenderer from '@Client/tanks/client/game/renderer/blocks/jungleRenderer.js';
 import stoneRenderer from '@Client/tanks/client/game/renderer/blocks/stoneRenderer.js';
@@ -30,9 +31,7 @@ import unackedInputTextProvider from '@Client/tanks/client/game/renderer/text/un
 import unitSizeTextProvider from '@Client/tanks/client/game/renderer/text/unitSizeTextProvider.js';
 import thisIsYouRenderer from '@Client/tanks/client/game/renderer/thisIsYouRenderer.js';
 
-import renderer from '@Cljs/code/tanks.client.renderer.js';
-import data from '@Cljs/code/tanks.lib.data.js';
-import gameloop from '@Cljs/code/tanks.client.gameloop.js';
+import returnResult from '@Lib/tanks/lib/data/returnResult.js';
 
 export default class Game {
 
@@ -75,7 +74,8 @@ export default class Game {
       ),
       thisIsYouRenderer(ctx, this),
 
-      renderer.ui_bg_renderer(ctx, this.size),
+
+      uiBgRenderer(ctx, this.size),
 
       textRenderer(
         ctx,
@@ -110,6 +110,13 @@ export default class Game {
   }
 
   render(event) {
+    const ctx = this.ctx;
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    ctx.strokeStyle = 'black';
+    ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
     for (let renderer of this.renderers) {
       renderer(event);
     }
@@ -120,18 +127,11 @@ export default class Game {
       event,
       input,
       networkInput,
-      ctx,
       match,
       id
     } = gameLoopInput;
 
     event.tick = match.tick;
-
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-    ctx.strokeStyle = 'black';
-    ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     const netMessages = [];
     if (input.movingDirection) {
@@ -141,16 +141,16 @@ export default class Game {
       );
       const netMessage = NetMessage(id, MessageType.MOVE, move);
       const result = this.handleEvent(match, netMessage);
-      if (data.is_successful(result)) {
+      if (returnResult.isSuccessful(result)) {
         netMessages.push(netMessage);
       }
-      match = data.get_result(result);
+      match = returnResult.getResult(result);
     }
 
     if (input.shooting) {
-      const result = this.shoot(match, netMessages);
-      if (data.is_successful(result)) {
-        match = data.get_result(result);
+      const result = this.shoot(match, netMessages, id);
+      if (returnResult.isSuccessful(result)) {
+        match = returnResult.getResult(result);
       }
     }
 
@@ -158,13 +158,13 @@ export default class Game {
       match = Match.sync(match, id, tickData);
     }
 
-    return gameloop.create_result(match, netMessages);
+    return createGameLoopResult(match, netMessages);
   }
 
   shoot(match, netMessages, id) {
     const tank = World.findTank(match.world, id);
     if (!tank) {
-      return data.modified_unsuccessfully(match);
+      return returnResult.modifiedUnsuccessfully(match);
     }
     const netMessage = NetMessage(
       id,
@@ -172,7 +172,7 @@ export default class Game {
       TankMove.create(increaseTick(this.moveId, val => this.moveId = val), tank.direction)
     );
     const result = this.handleEvent(match, netMessage);
-    if (data.is_successful(result)) {
+    if (returnResult.isSuccessful(result)) {
       netMessages.push(netMessage);
     }
     return result;
@@ -181,12 +181,12 @@ export default class Game {
   handleEvent(match, netMessage) {
     const updates = [];
     const result = Match.handleEvent(match, netMessage, updates);
-    match = data.get_result(result);
-    if (data.is_successful(result)) {
+    match = returnResult.getResult(result);
+    if (returnResult.isSuccessful(result)) {
       match = Match.addUnackedMessage(match, netMessage);
-      return data.modified_successfully(match);
+      return returnResult.modifiedSuccessfully(match);
     }
-    return data.modified_unsuccessfully(match);
+    return returnResult.modifiedUnsuccessfully(match);
   }
 
   stop() {

@@ -17,7 +17,7 @@ import Disconnect from '@Server/tanks/server/proto/game/event/Disconnect.js';
 import RoomEventType from '@Server/tanks/server/proto/game/event/RoomEventType.js';
 import Player from '@Server/tanks/server/proto/game/Player.js';
 
-import data from '@Cljs/code/tanks.lib.data.js';
+import returnResult from '@Lib/tanks/lib/data/returnResult.js';
 
 export function create(id, tick) {
   return {
@@ -173,7 +173,7 @@ function handleClientMessage(room, netMessage, updates) {
   switch (netMessage.type){
     case MessageType.SHOOT:
     case MessageType.MOVE:
-      room.match = data.get_result(Match.handleEvent(room.match, netMessage, updates));
+      room.match = returnResult.getResult(Match.handleEvent(room.match, netMessage, updates));
       break;
   }
 }

@@ -35,7 +35,6 @@ module.exports = {
       '@Client': path.resolve(__dirname, '../web/src/js'),
       '@Server': path.resolve(__dirname, '../server/src/js'),
       '@Lib': path.resolve(__dirname, '../lib/src/js'),
-      '@Cljs': path.resolve(__dirname, '../cljs/src/gen'),
     }
   },
   module: {

@@ -1,3 +1,4 @@
+import {createGameLoop} from '@Client/tanks/client/game/gameLoop.js';
 import EventType from '@Lib/tanks/lib/proto/EventType.js';
 import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
 import Ticker from '@Lib/tanks/lib/Ticker.js';
@@ -6,8 +7,6 @@ import Level from '@Lib/tanks/lib/level/Level.js';
 import Game from '@Client/tanks/client/game/Game.js';
 import Input from '@Client/tanks/client/game/Input.js';
 import Client from '@Client/tanks/client/game/proto/Client.js';
-
-import gameloop from '@Cljs/code/tanks.client.gameloop.js';
 
 const UI_WIDTH = 22;
 
@@ -60,11 +59,11 @@ export default class Main {
       window.setInterval.bind(null),
       window.performance.now.bind(window.performance)
     );
-    const gameLoop = gameloop.create_game_loop(
+    const gameLoop = createGameLoop(
       this.game,
       ctx,
       this.input,
-      gameloop.create_client(Client, this.client)
+      this.client
     );
     Ticker.start(this.ticker, gameLoop);
   }
