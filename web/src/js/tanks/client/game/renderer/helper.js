@@ -1,8 +1,13 @@
 import Point from 'Lib/tanks/lib/data/primitives/Point.js';
 import Level from 'Lib/tanks/lib/level/Level.js';
+import * as dotenv from 'Lib/tanks/lib/util/dotenv.js';
 
 const helper = {
   offset(point, center) {
+    if (dotenv.SETTINGS.FIXED_CAMERA) {
+      return point;
+    }
+
     if (!center) {
       return point;
     }
