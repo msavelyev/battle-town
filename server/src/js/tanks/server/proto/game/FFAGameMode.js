@@ -1,24 +1,24 @@
-import * as Configuration from '@Lib/tanks/lib/data/Configuration.js';
-import * as Entity from '@Lib/tanks/lib/data/entity/Entity.js';
-import * as Match from '@Lib/tanks/lib/data/Match.js';
-import * as MatchState from '@Lib/tanks/lib/data/MatchState.js';
-import * as World from '@Lib/tanks/lib/data/World.js';
-import * as ResetLevel from '@Lib/tanks/lib/data/worldevent/ResetLevel.js';
-import * as ResetTanks from '@Lib/tanks/lib/data/worldevent/ResetTanks.js';
-import * as Score from '@Lib/tanks/lib/data/worldevent/Score.js';
-import * as State from '@Lib/tanks/lib/data/worldevent/State.js';
-import * as TankUpdate from '@Lib/tanks/lib/data/worldevent/TankUpdate.js';
-import EventType from '@Lib/tanks/lib/proto/EventType.js';
-import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
-import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
-import * as Ticker from '@Lib/tanks/lib/Ticker.js';
-import * as dotenv from '@Lib/tanks/lib/util/dotenv.js';
-import * as immutable from '@Lib/tanks/lib/util/immutable.js';
-import log from '@Lib/tanks/lib/util/log.js';
-import Level from '@Lib/tanks/lib/level/Level.js';
-import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
-import * as Room from '@Server/tanks/server/proto/game/Room.js';
-import ReviveBlocks from '@Server/tanks/server/proto/game/event/ReviveBlocks.js';
+import * as Configuration from 'Lib/tanks/lib/data/Configuration.js';
+import * as Entity from 'Lib/tanks/lib/data/entity/Entity.js';
+import * as Match from 'Lib/tanks/lib/data/Match.js';
+import * as MatchState from 'Lib/tanks/lib/data/MatchState.js';
+import * as World from 'Lib/tanks/lib/data/World.js';
+import * as ResetLevel from 'Lib/tanks/lib/data/worldevent/ResetLevel.js';
+import * as ResetTanks from 'Lib/tanks/lib/data/worldevent/ResetTanks.js';
+import * as Score from 'Lib/tanks/lib/data/worldevent/Score.js';
+import * as State from 'Lib/tanks/lib/data/worldevent/State.js';
+import * as TankUpdate from 'Lib/tanks/lib/data/worldevent/TankUpdate.js';
+import EventType from 'Lib/tanks/lib/proto/EventType.js';
+import MessageType from 'Lib/tanks/lib/proto/MessageType.js';
+import NetMessage from 'Lib/tanks/lib/proto/NetMessage.js';
+import * as Ticker from 'Lib/tanks/lib/Ticker.js';
+import * as dotenv from 'Lib/tanks/lib/util/dotenv.js';
+import * as immutable from 'Lib/tanks/lib/util/immutable.js';
+import log from 'Lib/tanks/lib/util/log.js';
+import Level from 'Lib/tanks/lib/level/Level.js';
+import NetClient from 'Server/tanks/server/proto/base/NetClient.js';
+import * as Room from 'Server/tanks/server/proto/game/Room.js';
+import ReviveBlocks from 'Server/tanks/server/proto/game/event/ReviveBlocks.js';
 
 export default class FFAGameMode {
 

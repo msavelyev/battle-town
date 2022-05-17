@@ -1,12 +1,12 @@
-import * as time from '@Lib/tanks/lib/util/time.js';
-import Scene from '@Client/tanks/client/game/scenes/Scene.js';
-import Client from '@Client/tanks/client/game/proto/Client.js';
-import SocketioClient from '@Client/tanks/client/game/proto/SocketioClient.js';
-import EventType from '@Lib/tanks/lib/proto/EventType.js';
-import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
-import analytics from '@Lib/tanks/lib/util/analytics.js';
+import * as time from 'Lib/tanks/lib/util/time.js';
+import Scene from 'Client/tanks/client/game/scenes/Scene.js';
+import Client from 'Client/tanks/client/game/proto/Client.js';
+import SocketioClient from 'Client/tanks/client/game/proto/SocketioClient.js';
+import EventType from 'Lib/tanks/lib/proto/EventType.js';
+import MessageType from 'Lib/tanks/lib/proto/MessageType.js';
+import analytics from 'Lib/tanks/lib/util/analytics.js';
 
-import '@Client/tanks/client/game/scenes/Matchmaking.css';
+import 'Client/tanks/client/game/scenes/Matchmaking.css';
 
 export default class Matchmaking extends Scene {
 

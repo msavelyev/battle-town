@@ -1,17 +1,17 @@
-import * as Configuration from '@Lib/tanks/lib/data/Configuration.js';
-import * as Match from '@Lib/tanks/lib/data/Match.js';
-import * as MatchState from '@Lib/tanks/lib/data/MatchState.js';
-import * as World from '@Lib/tanks/lib/data/World.js';
-import BlockVisible from '@Lib/tanks/lib/data/worldevent/BlockVisible.js';
-import EventType from '@Lib/tanks/lib/proto/EventType.js';
-import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
-import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
-import * as immutable from '@Lib/tanks/lib/util/immutable.js';
-import log from '@Lib/tanks/lib/util/log.js';
-import InfiniteLevel from '@Lib/tanks/lib/level/InfiniteLevel.js';
-import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
-import ReviveBlocks from '@Server/tanks/server/proto/game/event/ReviveBlocks.js';
-import * as Room from '@Server/tanks/server/proto/game/Room.js';
+import * as Configuration from 'Lib/tanks/lib/data/Configuration.js';
+import * as Match from 'Lib/tanks/lib/data/Match.js';
+import * as MatchState from 'Lib/tanks/lib/data/MatchState.js';
+import * as World from 'Lib/tanks/lib/data/World.js';
+import BlockVisible from 'Lib/tanks/lib/data/worldevent/BlockVisible.js';
+import EventType from 'Lib/tanks/lib/proto/EventType.js';
+import MessageType from 'Lib/tanks/lib/proto/MessageType.js';
+import NetMessage from 'Lib/tanks/lib/proto/NetMessage.js';
+import * as immutable from 'Lib/tanks/lib/util/immutable.js';
+import log from 'Lib/tanks/lib/util/log.js';
+import InfiniteLevel from 'Lib/tanks/lib/level/InfiniteLevel.js';
+import NetClient from 'Server/tanks/server/proto/base/NetClient.js';
+import ReviveBlocks from 'Server/tanks/server/proto/game/event/ReviveBlocks.js';
+import * as Room from 'Server/tanks/server/proto/game/Room.js';
 
 export default class PVEGameMode {
 

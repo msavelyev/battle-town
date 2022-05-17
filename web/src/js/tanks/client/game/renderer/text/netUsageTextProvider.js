@@ -1,4 +1,4 @@
-import * as dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import * as dotenv from 'Lib/tanks/lib/util/dotenv.js';
 
 function format(value) {
   let power = 0;

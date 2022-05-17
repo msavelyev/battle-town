@@ -1,7 +1,7 @@
-import * as MatchState from '@Lib/tanks/lib/data/MatchState.js';
-import * as Ticker from '@Lib/tanks/lib/Ticker.js';
-import * as dotenv from '@Lib/tanks/lib/util/dotenv.js';
-import * as time from '@Lib/tanks/lib/util/time.js';
+import * as MatchState from 'Lib/tanks/lib/data/MatchState.js';
+import * as Ticker from 'Lib/tanks/lib/Ticker.js';
+import * as dotenv from 'Lib/tanks/lib/util/dotenv.js';
+import * as time from 'Lib/tanks/lib/util/time.js';
 
 const PREFIX = 'time left: ';
 

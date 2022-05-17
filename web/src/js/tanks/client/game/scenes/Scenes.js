@@ -1,5 +1,5 @@
-import log from '@Lib/tanks/lib/util/log.js';
-import Loading from '@Client/tanks/client/game/scenes/Loading.js';
+import log from 'Lib/tanks/lib/util/log.js';
+import Loading from 'Client/tanks/client/game/scenes/Loading.js';
 
 export default class Scenes {
 

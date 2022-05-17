@@ -1,5 +1,5 @@
-import * as Direction from '@Lib/tanks/lib/data/primitives/Direction.js';
-import Point from '@Lib/tanks/lib/data/primitives/Point.js';
+import * as Direction from 'Lib/tanks/lib/data/primitives/Direction.js';
+import Point from 'Lib/tanks/lib/data/primitives/Point.js';
 
 function positionToDirection(original, touch) {
   const dx = touch.pageX - original.x;

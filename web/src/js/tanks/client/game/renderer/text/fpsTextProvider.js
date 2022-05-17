@@ -1,4 +1,4 @@
-import * as Fps from '@Lib/tanks/lib/util/Fps.js';
+import * as Fps from 'Lib/tanks/lib/util/Fps.js';
 
 export default function() {
   const fps = Fps.fps();

@@ -1,23 +1,23 @@
-import * as Entity from '@Lib/tanks/lib/data/entity/Entity.js';
-import * as Match from '@Lib/tanks/lib/data/Match.js';
-import * as TickData from '@Lib/tanks/lib/data/TickData.js';
-import * as World from '@Lib/tanks/lib/data/World.js';
-import EntityState from '@Lib/tanks/lib/data/entity/EntityState.js';
-import * as UserConnect from '@Lib/tanks/lib/data/worldevent/UserConnect.js';
-import * as BlockUpdate from '@Lib/tanks/lib/data/worldevent/BlockUpdate.js';
-import * as UserDisconnect from '@Lib/tanks/lib/data/worldevent/UserDisconnect.js';
-import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
-import NetMessage from '@Lib/tanks/lib/proto/NetMessage.js';
-import * as immutable from '@Lib/tanks/lib/util/immutable.js';
-import log from '@Lib/tanks/lib/util/log.js';
-import NetClient from '@Server/tanks/server/proto/base/NetClient.js';
-import ClientMessage from '@Server/tanks/server/proto/game/event/ClientMessage.js';
-import Connect from '@Server/tanks/server/proto/game/event/Connect.js';
-import Disconnect from '@Server/tanks/server/proto/game/event/Disconnect.js';
-import RoomEventType from '@Server/tanks/server/proto/game/event/RoomEventType.js';
-import Player from '@Server/tanks/server/proto/game/Player.js';
+import * as Entity from 'Lib/tanks/lib/data/entity/Entity.js';
+import * as Match from 'Lib/tanks/lib/data/Match.js';
+import * as TickData from 'Lib/tanks/lib/data/TickData.js';
+import * as World from 'Lib/tanks/lib/data/World.js';
+import EntityState from 'Lib/tanks/lib/data/entity/EntityState.js';
+import * as UserConnect from 'Lib/tanks/lib/data/worldevent/UserConnect.js';
+import * as BlockUpdate from 'Lib/tanks/lib/data/worldevent/BlockUpdate.js';
+import * as UserDisconnect from 'Lib/tanks/lib/data/worldevent/UserDisconnect.js';
+import MessageType from 'Lib/tanks/lib/proto/MessageType.js';
+import NetMessage from 'Lib/tanks/lib/proto/NetMessage.js';
+import * as immutable from 'Lib/tanks/lib/util/immutable.js';
+import log from 'Lib/tanks/lib/util/log.js';
+import NetClient from 'Server/tanks/server/proto/base/NetClient.js';
+import ClientMessage from 'Server/tanks/server/proto/game/event/ClientMessage.js';
+import Connect from 'Server/tanks/server/proto/game/event/Connect.js';
+import Disconnect from 'Server/tanks/server/proto/game/event/Disconnect.js';
+import RoomEventType from 'Server/tanks/server/proto/game/event/RoomEventType.js';
+import Player from 'Server/tanks/server/proto/game/Player.js';
 
-import * as returnResult from '@Lib/tanks/lib/data/returnResult.js';
+import * as returnResult from 'Lib/tanks/lib/data/returnResult.js';
 
 export function create(id, tick) {
   return {

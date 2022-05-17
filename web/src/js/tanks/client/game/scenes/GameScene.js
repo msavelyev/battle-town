@@ -1,7 +1,7 @@
-import Main from '@Client/tanks/client/game/Main.js';
-import * as sprites from '@Client/tanks/client/game/renderer/sprites.js';
-import Scene from '@Client/tanks/client/game/scenes/Scene.js';
-import analytics from '@Lib/tanks/lib/util/analytics.js';
+import Main from 'Client/tanks/client/game/Main.js';
+import * as sprites from 'Client/tanks/client/game/renderer/sprites.js';
+import Scene from 'Client/tanks/client/game/scenes/Scene.js';
+import analytics from 'Lib/tanks/lib/util/analytics.js';
 
 export default class GameScene extends Scene {
 

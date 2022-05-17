@@ -1,4 +1,4 @@
-import * as Match from '@Lib/tanks/lib/data/Match.js';
+import * as Match from 'Lib/tanks/lib/data/Match.js';
 
 function trimName(name) {
   if (name.length <= 13) {

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import BlockType from '@Lib/tanks/lib/data/entity/BlockType.js';
+import BlockType from 'Lib/tanks/lib/data/entity/BlockType.js';
 
 function blockTypeToColor(blockType) {
   switch (blockType) {

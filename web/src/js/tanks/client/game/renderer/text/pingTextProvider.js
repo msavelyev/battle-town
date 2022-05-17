@@ -1,5 +1,5 @@
-import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
-import Client from '@Client/tanks/client/game/proto/Client.js';
+import MessageType from 'Lib/tanks/lib/proto/MessageType.js';
+import Client from 'Client/tanks/client/game/proto/Client.js';
 
 export default function(client) {
   let latency;

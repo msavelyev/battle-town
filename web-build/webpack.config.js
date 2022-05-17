@@ -31,11 +31,11 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {
-    alias: {
-      '@Client': path.resolve(__dirname, '../web/src/js'),
-      '@Server': path.resolve(__dirname, '../server/src/js'),
-      '@Lib': path.resolve(__dirname, '../lib/src/js'),
-    }
+    // alias: {
+    //   'Client': path.resolve(__dirname, '../web/src/js'),
+    //   'Server': path.resolve(__dirname, '../server/src/js'),
+    //   'Lib': path.resolve(__dirname, '../lib/src/js'),
+    // }
   },
   module: {
     rules: [

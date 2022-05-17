@@ -1,7 +1,7 @@
 import IO from 'socket.io';
-import protocol from '@Lib/tanks/lib/lang/protocol.js';
-import netServer from '@Server/tanks/server/proto/base/NetServer.js';
-import SocketioClient from '@Server/tanks/server/proto/socketio/SocketioClient.js';
+import protocol from 'Lib/tanks/lib/lang/protocol.js';
+import netServer from 'Server/tanks/server/proto/base/NetServer.js';
+import SocketioClient from 'Server/tanks/server/proto/socketio/SocketioClient.js';
 
 export default function(server) {
   const io = IO(server);

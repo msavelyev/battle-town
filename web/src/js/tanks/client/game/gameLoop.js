@@ -1,4 +1,4 @@
-import Client from '@Client/tanks/client/game/proto/Client.js';
+import Client from 'Client/tanks/client/game/proto/Client.js';
 
 export function createGameLoopResult(match, netMessages) {
   return {

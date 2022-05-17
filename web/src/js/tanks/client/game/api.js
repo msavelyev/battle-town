@@ -1,4 +1,4 @@
-import * as dotenv from '@Lib/tanks/lib/util/dotenv.js';
+import * as dotenv from 'Lib/tanks/lib/util/dotenv.js';
 
 const host = dotenv.SETTINGS.SERVER_API_HOST || window.location.origin;
 

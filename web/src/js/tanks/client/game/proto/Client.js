@@ -1,8 +1,8 @@
-import MessageType from '@Lib/tanks/lib/proto/MessageType.js';
-import EventType from '@Lib/tanks/lib/proto/EventType.js';
-import NetClient from '@Client/tanks/client/game/proto/NetClient.js';
+import MessageType from 'Lib/tanks/lib/proto/MessageType.js';
+import EventType from 'Lib/tanks/lib/proto/EventType.js';
+import NetClient from 'Client/tanks/client/game/proto/NetClient.js';
 
-import * as immutable from '@Lib/tanks/lib/util/immutable.js';
+import * as immutable from 'Lib/tanks/lib/util/immutable.js';
 
 function create(netClient) {
   const client = {
