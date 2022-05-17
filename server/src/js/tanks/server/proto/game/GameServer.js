@@ -18,7 +18,7 @@ function createGameMode(db, ticker) {
       return new PVPGameMode(db, ticker);
     case 'PVE':
       return new PVEGameMode(ticker);
-    case 'FFE':
+    case 'FFA':
       return new FFAGameMode(ticker);
     default:
       throw new Error('Unknown game mode ' + gameMode);
