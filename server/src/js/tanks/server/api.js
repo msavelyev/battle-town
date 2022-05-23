@@ -3,6 +3,7 @@ import log from 'Lib/tanks/lib/util/log.js';
 import database from 'Server/tanks/server/database.js';
 import telegram from 'Server/tanks/server/telegram.js';
 import username from 'Server/tanks/server/username.js';
+import { exportClient } from 'Lib/tanks/lib/util/dotenv.js';
 
 import express from 'express';
 
@@ -29,6 +30,10 @@ export async function init(db, expressApp) {
 
     next();
   });
+
+  expressApp.get('/api/settings', handleErrors(async (req, res) => {
+    await res.json(exportClient());
+  }));
 
   expressApp.get('/api/new', handleErrors(async (req, res) => {
     const user = await database.createUser(db, uuid(), username.generate(), uuid());

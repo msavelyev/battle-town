@@ -1,4 +1,3 @@
-import * as process from 'process';
 import EventType from 'Lib/tanks/lib/proto/EventType.js';
 import * as dotenv from 'Lib/tanks/lib/util/dotenv.js';
 import * as Fps from 'Lib/tanks/lib/util/Fps.js';

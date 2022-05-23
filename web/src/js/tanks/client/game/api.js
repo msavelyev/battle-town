@@ -7,6 +7,10 @@ function url(path) {
 }
 
 export default {
+  settings: function() {
+    return fetch(url('/api/settings'))
+      .then(response => response.json());
+  },
   findUser: function(id, token) {
     const options = {
       method: 'POST',

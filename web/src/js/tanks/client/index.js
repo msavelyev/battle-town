@@ -5,6 +5,7 @@ import Scenes from 'Client/tanks/client/game/scenes/Scenes.js';
 import Matchmaking from 'Client/tanks/client/game/scenes/Matchmaking.js';
 import Disconnected from 'Client/tanks/client/game/scenes/Disconnected.js';
 import userStorage from 'Client/tanks/client/game/userStorage.js';
+import api from 'Client/tanks/client/game/api.js';
 
 import * as dotenv from 'Lib/tanks/lib/util/dotenv.js';
 import analytics from 'Lib/tanks/lib/util/analytics.js';
@@ -16,8 +17,6 @@ import * as spritesLoader from 'Client/tanks/client/spritesLoader.js';
 import 'Client/tanks/client/polyfill/object-entries.js';
 
 analytics.init();
-
-dotenv.dotenv();
 
 function resizeOverlay(overlay) {
   const maxWidth = document.body.offsetWidth;
@@ -39,8 +38,10 @@ function resizeOverlay(overlay) {
   };
 }
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
   document.getElementById('landscape-svg').src = landscapeSvg;
+
+  dotenv.dotenv(await api.settings());
 
   analytics.log('LOADED');
 
