@@ -1,4 +1,4 @@
-FROM node:14.10 AS lib-builder
+FROM node:14.10 AS builder
 
 WORKDIR /app
 COPY ./lib/package.json ./lib/package-lock.json /app/lib/
@@ -13,9 +13,8 @@ RUN npm --prefix /app/server install --unsafe-perm
 COPY ./server /app/server
 RUN npm --prefix /app/server run postinstall --unsafe-perm
 
-ENTRYPOINT npm --prefix /app/server start
+FROM node:14.10-alpine
 
-#FROM node:14.10
-#
-#WORKDIR /app
-#COPY --from=builder /app /app
+WORKDIR /app
+COPY --from=builder /app /app
+ENTRYPOINT npm --prefix /app/server start
