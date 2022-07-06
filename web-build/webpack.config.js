@@ -5,11 +5,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 
-module.exports = {
+module.exports = (env, argv) => ({
   entry: {
     index: '../web/src/js/tanks/client/index.js',
   },
-  devtool: 'inline-source-map',
+  devtool: argv.mode === 'production' ? false : 'inline-source-map',
   devServer: {
     contentBase: './dist',
     port: 1234,
@@ -76,4 +76,4 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({})
     ]
   }
-};
+});
